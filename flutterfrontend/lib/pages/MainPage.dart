@@ -1,11 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:file_picker/file_picker.dart';
+
 import '../api/ApiCaller.dart';
 
-class MainPage extends StatelessWidget {
-  double screenWidth = 0;
-  double screenHeight = 0;
+double screenWidth = 0;
+double screenHeight = 0;
 
+Future<void> setInfoToRead() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  await prefs.setBool('read', true);
+}
+
+Future<bool> getInfoRead() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  bool? result = prefs.getBool('read');
+
+  if (result == null) {
+    return false;
+  }
+  return true;
+}
+
+TextStyle getTextStyle(Color color, {double fontSize = 0.025}) {
+  return GoogleFonts.getFont(
+    'DM Serif Text',
+    textStyle: TextStyle(
+      fontSize: screenHeight * fontSize,
+      color: color,
+      fontWeight: FontWeight.normal,
+    ),
+  );
+}
+
+Future<PlatformFile> getLocalFile() async{
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['png', 'jpg', 'tiff', 'bmp'], // call api here
+  );
+ 
+  if (result != null) {
+    return Future.value(result.files.first);
+  } else {
+    return Future.value(null); // probably throw an exception 
+  }
+}
+
+class MainPage extends StatelessWidget {
   @override
   MainPage({super.key});
 
@@ -27,14 +71,18 @@ class MainPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: screenHeight * 0.05,
                   ),
-                  child: Text(textAlign: TextAlign.center, text, style: GoogleFonts.getFont(
-                    'DM Serif Text',
-                    textStyle: TextStyle(
-                      fontSize: screenHeight * 0.025,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.normal,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    text,
+                    style: GoogleFonts.getFont(
+                      'DM Serif Text',
+                      textStyle: TextStyle(
+                        fontSize: screenHeight * 0.025,
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  )),
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.1),
               ],
@@ -111,11 +159,7 @@ class MainPage extends StatelessWidget {
           'Diagnozer paznokci',
           style: GoogleFonts.getFont(
             'DM Serif Text',
-            textStyle: TextStyle(
-              fontSize: screenHeight * 0.031,
-              color: const Color.fromARGB(255, 0, 0, 0),
-              fontWeight: FontWeight.bold,
-            ),
+            textStyle: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
           ),
           textAlign: TextAlign.left,
         ),
@@ -129,6 +173,18 @@ class MainPage extends StatelessWidget {
                 context,
                 'Tutaj pojawią się informacje na temat działania aplikacji, porady korzystania z niej, informacje dotyczące zdjęć itd.',
               );
+            },
+          ),
+
+          IconButton(
+            icon: const Icon(Icons.share_location_sharp),
+            color: Colors.black,
+            onPressed: () async {
+              getLocalFile();
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const InfoPage()),
+              // );
             },
           ),
 
@@ -215,13 +271,8 @@ class MainPage extends StatelessWidget {
                         Text(
                           'Kliknij ikonę znaku zapytania, aby uzyskać więcej informacji o aplikacji.\n\nKliknij ikonę info, aby uzyskać więcej informacji o autorach i projekcie.',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.getFont(
-                            'DM Serif Text',
-                            textStyle: TextStyle(
-                              fontSize: screenHeight * 0.025,
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.normal,
-                            ),
+                          style: getTextStyle(
+                            Color.fromARGB(255, 255, 255, 255),
                           ),
                         ),
                       ],
@@ -231,6 +282,51 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class InfoPage extends StatelessWidget {
+  const InfoPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Ważne informacje',
+          style: getTextStyle(Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Center(
+        child: RichText(
+          text: TextSpan(
+            style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+            children: [
+              TextSpan(
+                text: 'Nasza aplikacja',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: ' służy do wczesnego diagnozowania chorób paznokci. Udziela jedynie porad, które mogą być podstawą wizyty u dermatologa.'),
+              
+              TextSpan(
+                text: '\n\nZdjęcia, które zrobisz',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry. Obsługiwane formaty to PNG, JPEG, TIFF i BMP, a maksymalna wielkość zdjęcia to 5 MB.'),
+            
+              TextSpan(
+                text: '\n\nWięcej informacji',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: ' uzyskasz na naszym Githubie: github.com'),
+            ],
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
