@@ -8,21 +8,21 @@ import '../api/ApiCaller.dart';
 double screenWidth = 0;
 double screenHeight = 0;
 
-Future<void> setInfoToRead() async {
+Future<void> setInfoRead(String value) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  
-  await prefs.setBool('read', true);
+
+  await prefs.setString('read', value);
 }
 
-Future<bool> getInfoRead() async {
+Future<String> getInfoReadString() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  
-  bool? result = prefs.getBool('read');
+
+  String? result = prefs.getString("read");
 
   if (result == null) {
-    return false;
+    return "false";
   }
-  return true;
+  return "true";
 }
 
 TextStyle getTextStyle(Color color, {double fontSize = 0.025}) {
@@ -36,118 +36,118 @@ TextStyle getTextStyle(Color color, {double fontSize = 0.025}) {
   );
 }
 
-Future<PlatformFile> getLocalFile() async{
+Future<PlatformFile> getLocalFile() async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['png', 'jpg', 'tiff', 'bmp'], // call api here
   );
- 
+
   if (result != null) {
     return Future.value(result.files.first);
   } else {
-    return Future.value(null); // probably throw an exception 
+    return Future.value(null); // probably throw an exception
   }
 }
 
-class MainPage extends StatelessWidget {
-  @override
-  MainPage({super.key});
+Material customButton(
+  BuildContext context,
+  String text,
+  IconData iconData, {
+  onPressedEvent = null,
+}) {
+  return Material(
+    elevation: 20,
+    borderRadius: BorderRadius.circular(8),
 
-  void showCustomModalBottomSheet(BuildContext context, String text) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Container(
-          height: screenWidth * 0.75,
-          color: Colors.transparent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
+    child: Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+            gradient: const LinearGradient(
+              colors: [
+                Color.fromARGB(255, 0, 0, 0),
+                Color.fromARGB(255, 61, 61, 61),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: IconButton(
+            icon: Icon(
+              iconData,
+              size: screenHeight * 0.15,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            onPressed: onPressedEvent,
 
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenHeight * 0.05,
-                  ),
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    text,
-                    style: GoogleFonts.getFont(
-                      'DM Serif Text',
-                      textStyle: TextStyle(
-                        fontSize: screenHeight * 0.025,
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        fontWeight: FontWeight.normal,
-                      ),
+            style: IconButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+
+              fixedSize: Size(screenWidth * 0.4, screenHeight * 0.25),
+            ),
+          ),
+        ),
+
+        //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
+      ],
+    ),
+  );
+}
+
+void showCustomModalBottomSheet(BuildContext context, String text) {
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return Container(
+        height: screenWidth * 0.75,
+        color: Colors.transparent,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.05),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  text,
+                  style: GoogleFonts.getFont(
+                    'DM Serif Text',
+                    textStyle: TextStyle(
+                      fontSize: screenHeight * 0.025,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.1),
-              ],
-            ),
+              ),
+              SizedBox(height: screenHeight * 0.1),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
-  Material customButton(BuildContext context, String text, IconData iconData) {
-    return Material(
-      elevation: 20,
-      borderRadius: BorderRadius.circular(8),
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 0, 0, 0),
-                  Color.fromARGB(255, 61, 61, 61),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(
-                iconData,
-                size: screenHeight * 0.15,
-                color: Color.fromARGB(255, 255, 255, 255),
-              ),
-              onPressed: () async {
-                //String result = await ApiCaller.getResult();
+  @override
+  State<MainPage> createState() => MainPageState();
+}
 
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(content: Text(result)),
-                // );
-              },
-
-              style: IconButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-
-                fixedSize: Size(screenWidth * 0.4, screenHeight * 0.25),
-              ),
-            ),
-          ),
-
-          //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
-        ],
-      ),
-    );
-  }
+class MainPageContent extends StatelessWidget {
+  const MainPageContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -159,6 +159,7 @@ class MainPage extends StatelessWidget {
           'Diagnozer paznokci',
           style: GoogleFonts.getFont(
             'DM Serif Text',
+            fontWeight: FontWeight.bold,
             textStyle: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
           ),
           textAlign: TextAlign.left,
@@ -169,22 +170,12 @@ class MainPage extends StatelessWidget {
             icon: const Icon(Icons.question_mark_rounded),
             color: Colors.black,
             onPressed: () {
-              showCustomModalBottomSheet(
+              Navigator.push(
                 context,
-                'Tutaj pojawią się informacje na temat działania aplikacji, porady korzystania z niej, informacje dotyczące zdjęć itd.',
+                MaterialPageRoute(
+                  builder: (context) => const InfoPage(),
+                ),
               );
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.share_location_sharp),
-            color: Colors.black,
-            onPressed: () async {
-              getLocalFile();
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const InfoPage()),
-              // );
             },
           ),
 
@@ -192,9 +183,11 @@ class MainPage extends StatelessWidget {
             icon: const Icon(Icons.info_rounded),
             color: Colors.black,
             onPressed: () {
-              showCustomModalBottomSheet(
+              Navigator.push(
                 context,
-                'Tutaj pojawią się informacje na temat autorów i projektu.',
+                MaterialPageRoute(
+                  builder: (context) => const AuthorsPage(),
+                ),
               );
             },
           ),
@@ -224,7 +217,14 @@ class MainPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  customButton(context, 'Wybierz zdjęcie', Icons.image_rounded),
+                  customButton(
+                    context,
+                    'Wybierz zdjęcie',
+                    Icons.image_rounded,
+                    onPressedEvent: () async {
+                      getLocalFile();
+                    },
+                  ),
 
                   SizedBox(width: screenHeight * 0.06),
 
@@ -232,6 +232,9 @@ class MainPage extends StatelessWidget {
                     context,
                     'Prześlij zdjęcie',
                     Icons.camera_alt_rounded,
+                    onPressedEvent: () async {
+                      getLocalFile();
+                    },
                   ),
                 ],
               ),
@@ -288,6 +291,53 @@ class MainPage extends StatelessWidget {
   }
 }
 
+class MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
+    setInfoRead("false"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
+
+    var builder = FutureBuilder<String>(
+      future: getInfoReadString(),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Text(
+              'Ładowanie...',
+              style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+            ),
+          );
+        } else {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Błąd: ${snapshot.error}',
+                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+              ),
+            );
+          }
+          if (snapshot.data == "true") {
+            // TODO: INVERSE THIS (THIS IS FOR TESTING ONLY)
+            setInfoRead("true");
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const InfoPage()),
+              );
+            });
+          }
+          return MainPageContent();
+        }
+      },
+    );
+
+    return builder;
+  }
+}
+
 class InfoPage extends StatelessWidget {
   const InfoPage({super.key});
 
@@ -302,32 +352,91 @@ class InfoPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: Center(
-        child: RichText(
-          text: TextSpan(
-            style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
-            children: [
-              TextSpan(
-                text: 'Nasza aplikacja',
-                style: TextStyle(fontWeight: FontWeight.bold),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: screenHeight * 0.1),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+            child: RichText(
+              text: TextSpan(
+                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+                children: [
+                  TextSpan(
+                    text: 'Nasza aplikacja',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text:
+                        ' służy do wczesnego diagnozowania chorób paznokci. Udziela jedynie porad, które mogą być podstawą wizyty u dermatologa.',
+                  ),
+
+                  TextSpan(
+                    text: '\n\nZdjęcia, które zrobisz',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text:
+                        ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry. Obsługiwane formaty to PNG, JPEG, TIFF i BMP, a maksymalna wielkość zdjęcia to 5 MB.',
+                  ),
+
+                  TextSpan(
+                    text: '\n\nWięcej informacji',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text:
+                        ' uzyskasz na naszym Githubie: xyz.github.com - projekt realizowany w ramach koła naukowego "Praktyka".',
+                  ),
+                ],
               ),
-              TextSpan(text: ' służy do wczesnego diagnozowania chorób paznokci. Udziela jedynie porad, które mogą być podstawą wizyty u dermatologa.'),
-              
-              TextSpan(
-                text: '\n\nZdjęcia, które zrobisz',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry. Obsługiwane formaty to PNG, JPEG, TIFF i BMP, a maksymalna wielkość zdjęcia to 5 MB.'),
-            
-              TextSpan(
-                text: '\n\nWięcej informacji',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: ' uzyskasz na naszym Githubie: github.com'),
-            ],
+              textAlign: TextAlign.center,
+            ),
           ),
-          textAlign: TextAlign.center,
+        ],
+      ),
+    );
+  }
+}
+
+class AuthorsPage extends StatelessWidget {
+  const AuthorsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Informacje o autorach',
+          style: getTextStyle(Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
         ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: screenHeight * 0.1),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+            child: RichText(
+              text: TextSpan(
+                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+                children: [
+                  TextSpan(
+                    text: 'Autorzy projektu:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text:
+                        ' tutaj pojawią się autorzy projektu.',
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }
