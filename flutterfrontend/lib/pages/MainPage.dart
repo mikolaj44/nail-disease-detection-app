@@ -67,11 +67,11 @@ Material customButton(
             borderRadius: BorderRadius.circular(10),
             gradient: const SweepGradient(
               colors: [
-                 Color.fromARGB(255, 209, 178, 146),
+                Color.fromARGB(255, 209, 178, 146),
                 Color.fromARGB(255, 220, 171, 175),
-                Color.fromARGB(255,193,173,204),
-                  //Color.fromARGB(255, 155, 176, 208),
-                  Color.fromARGB(255, 209, 178, 146),
+                Color.fromARGB(255, 193, 173, 204),
+                //Color.fromARGB(255, 155, 176, 208),
+                Color.fromARGB(255, 209, 178, 146),
               ],
               //radius: 0.1,
               //begin: Alignment.topRight,
@@ -102,6 +102,17 @@ Material customButton(
   );
 }
 
+RouteTransitionsBuilder getSlideTransition() {
+  return (context, animation, secondaryAnimation, child) {
+    const begin = Offset(0.0, 1.0);
+    const end = Offset.zero;
+    final tween = Tween(begin: begin, end: end);
+    final offsetAnimation = animation.drive(tween);
+
+    return SlideTransition(position: offsetAnimation, child: child);
+  };
+}
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -128,7 +139,7 @@ class MainPageContent extends StatelessWidget {
                 Color.fromARGB(255, 220, 194, 168),
                 //Color.fromARGB(255,222,177,181),
                 //Color.fromARGB(255,193,173,204),
-                  Color.fromARGB(255, 155, 176, 208),
+                Color.fromARGB(255, 155, 176, 208),
               ],
               //stops: [0.2, 0.3, 0.4, 0.6],
               begin: Alignment.centerLeft,
@@ -138,7 +149,6 @@ class MainPageContent extends StatelessWidget {
         ),
 
         //shape: Border(bottom: BorderSide(color: const Color.fromARGB(255, 255, 205, 205), width: 1)),
-
         title: Text(
           'Diagnozer paznokci',
           style: GoogleFonts.getFont(
@@ -154,20 +164,28 @@ class MainPageContent extends StatelessWidget {
             icon: const Icon(Icons.question_mark_rounded),
             color: Colors.black,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const InfoPage()),
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          const InfoPage(),
+                  transitionsBuilder: getSlideTransition(),
+                ),
               );
             },
           ),
 
           IconButton(
-            icon: const Icon(Icons.info_rounded),
+            icon: const Icon(Icons.people),
             color: Colors.black,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AuthorsPage()),
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          const AuthorsPage(),
+                  transitionsBuilder: getSlideTransition(),
+                ),
               );
             },
           ),
@@ -310,9 +328,13 @@ class MainPageState extends State<MainPage> {
             setInfoRead("true");
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const InfoPage()),
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          const InfoPage(),
+                  transitionsBuilder: getSlideTransition(),
+                ),
               );
             });
           }
