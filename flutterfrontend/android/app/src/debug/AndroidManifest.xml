@@ -3,5 +3,11 @@
          the Flutter tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+<!--    <uses-permission android:name="android.permission.INTERNET"/>-->
+
+    <application
+        android:label="flutter_application_1">
+<!--        android:icon="@mipmap/ic_launcher"-->
+        <!-- your activities and other components go here -->
+    </application>
 </manifest>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/CameraPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
@@ -237,8 +238,11 @@ class MainPageContent extends StatelessWidget {
                     context,
                     'Prześlij zdjęcie',
                     Icons.camera_alt_rounded,
-                    onPressedEvent: () async {
-                      getLocalFile();
+                    onPressedEvent: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CameraPage()),
+                      );
                     },
                   ),
                 ],
@@ -257,6 +261,10 @@ class MainPageContent extends StatelessWidget {
 
                 child: Container(
                   decoration: BoxDecoration(
+          //           image: DecorationImage(
+          //   image: AssetImage("../resources/nailphoto.jpg"),
+          //   fit: BoxFit.cover,
+          // ),
                     borderRadius: BorderRadius.circular(8),
                     gradient: const LinearGradient(
                       colors: [
@@ -302,7 +310,7 @@ class MainPageState extends State<MainPage> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
 
-    setInfoRead("false"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
+    setInfoRead("true"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
 
     var builder = FutureBuilder<String>(
       future: getInfoReadString(),
@@ -323,9 +331,9 @@ class MainPageState extends State<MainPage> {
               ),
             );
           }
-          if (snapshot.data == "true") {
+          if (snapshot.data == "false") {
             // TODO: INVERSE THIS (THIS IS FOR TESTING ONLY)
-            setInfoRead("true");
+            //setInfoRead("true");
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(context).push(
