@@ -195,10 +195,11 @@ class MainPageContent extends StatelessWidget {
         toolbarHeight: screenHeight * 0.09,
       ),
 
-      body: Container(
+      body: SafeArea(
+        child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("../resources/waves.png"),
+            image: AssetImage("resources/waves.png"),
             fit: BoxFit.cover,
           ),
           gradient: const LinearGradient(
@@ -256,8 +257,8 @@ class MainPageContent extends StatelessWidget {
               color: const Color.fromARGB(255, 237, 235, 235),
               //margin: EdgeInsets.all(16),
               child: SizedBox(
-                width: screenWidth * 0.7,
-                height: screenHeight * 0.4,
+                //width: screenWidth * 0.7,
+                //height: screenHeight * 0.4,
 
                 child: Container(
                   decoration: BoxDecoration(
@@ -272,7 +273,7 @@ class MainPageContent extends StatelessWidget {
                         Color.fromARGB(255, 61, 61, 61),
                       ],
                       begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      //end: Alignment.bottomCenter,
                     ),
                   ),
 
@@ -281,24 +282,22 @@ class MainPageContent extends StatelessWidget {
                       horizontal: screenWidth * 0.05,
                       vertical: screenHeight * 0.05,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Kliknij ikonę znaku zapytania, aby uzyskać więcej informacji o aplikacji.\n\nKliknij ikonę info, aby uzyskać więcej informacji o autorach i projekcie.',
-                          textAlign: TextAlign.center,
+                      //mainAxisSize: MainAxisSize.min,
+                      child: Text(
+                          //'Kliknij ikonę znaku zapytania, aby uzyskać więcej informacji o aplikacji.\n\nKliknij ikonę info, aby uzyskać więcej informacji o autorach i projekcie.',
+                          "todo: instrukcje tutaj",
+                          //textAlign: TextAlign.center,
                           style: getTextStyle(
                             Color.fromARGB(255, 255, 255, 255),
                           ),
                         ),
-                      ],
                     ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -310,48 +309,50 @@ class MainPageState extends State<MainPage> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
 
-    setInfoRead("true"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
+    return MainPageContent();
 
-    var builder = FutureBuilder<String>(
-      future: getInfoReadString(),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: Text(
-              'Ładowanie...',
-              style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
-            ),
-          );
-        } else {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'Błąd: ${snapshot.error}',
-                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
-              ),
-            );
-          }
-          if (snapshot.data == "false") {
-            // TODO: INVERSE THIS (THIS IS FOR TESTING ONLY)
-            //setInfoRead("true");
+    //setInfoRead("true"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
 
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder:
-                      (context, animation, secondaryAnimation) =>
-                          const InfoPage(),
-                  transitionsBuilder: getSlideTransition(),
-                ),
-              );
-            });
-          }
-          return MainPageContent();
-        }
-      },
-    );
+    // var builder = FutureBuilder<String>(
+    //   future: getInfoReadString(),
+    //   builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return Center(
+    //         child: Text(
+    //           'Ładowanie...',
+    //           style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+    //         ),
+    //       );
+    //     } else {
+    //       if (snapshot.hasError) {
+    //         return Center(
+    //           child: Text(
+    //             'Błąd: ${snapshot.error}',
+    //             style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+    //           ),
+    //         );
+    //       }
+    //       if (snapshot.data == "false") {
+    //         // TODO: INVERSE THIS (THIS IS FOR TESTING ONLY)
+    //         //setInfoRead("true");
+    //
+    //         WidgetsBinding.instance.addPostFrameCallback((_) {
+    //           Navigator.of(context).push(
+    //             PageRouteBuilder(
+    //               pageBuilder:
+    //                   (context, animation, secondaryAnimation) =>
+    //                       const InfoPage(),
+    //               transitionsBuilder: getSlideTransition(),
+    //             ),
+    //           );
+    //         });
+    //       }
+    //       return MainPageContent();
+    //     }
+    //   },
+    // );
 
-    return builder;
+    //return builder;
   }
 }
 
