@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/preanalysis/PreAnalyser.dart';
 import 'package:flutter_application_1/pages/MainPage.dart';
+import 'package:flutter_application_1/pages/PhotoPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
@@ -10,7 +12,11 @@ import 'package:path_provider/path_provider.dart';
 import '../api/ApiCaller.dart';
 
 class CameraPage extends StatelessWidget {
-  const CameraPage({super.key});
+  CameraPage({super.key});
+
+  bool _shouldProcessFrame = false;
+  CameraState? cameraState;
+  String imagePath = "";
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +25,50 @@ class CameraPage extends StatelessWidget {
       CameraAwesomeBuilder.awesome(
         saveConfig: SaveConfig.photo(),
 
-        topActionsBuilder: (state) =>
-            AwesomeTopActions(
-              padding: EdgeInsets.zero,
-              state: state,
-              children: [
-                Expanded(child: AwesomeFlashButton(state: state)),
-                Expanded(
-                  child: AwesomeAspectRatioButton(
-                    state: state as PhotoCameraState,
-                  ),
+        onImageForAnalysis: (AnalysisImage image) async {
+          if(!_shouldProcessFrame){
+            return;
+          }
+
+          _shouldProcessFrame = false;
+
+          PreAnalyser.getLabel(image).then((result) {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder:
+                    (context, animation, secondaryAnimation) => PhotoPage(imagePath, "Result: $result.a", result.b, result.c),
+                transitionsBuilder: getSlideTransition(),
+              ),
+            );
+          });
+
+          cameraState?.analysisController?.stop();
+        },
+
+        imageAnalysisConfig: AnalysisConfig(),
+
+        topActionsBuilder: (state) {
+          cameraState = state;
+
+          return AwesomeTopActions(
+            padding: EdgeInsets.zero,
+            state: state,
+            children: [
+              Expanded(child: AwesomeFlashButton(state: state)),
+              Expanded(
+                child: AwesomeAspectRatioButton(
+                  state: state as PhotoCameraState,
                 ),
-              ],
-            ),
+              ),
+            ],
+          );
+        },
 
           // middleContentBuilder: (state) {
           //         return Expanded(
-          //           child: AwesomeZoomSelector(
-          //             state: state as PhotoCameraState,
+          //           child: AwesomeMediaPreview(
+          //             mediaCapture: state.captureState,
+          //             onMediaTap: ,
           //           )
           //         );
           // },
@@ -51,11 +83,15 @@ class CameraPage extends StatelessWidget {
         // ),
       ),
 
-        onMediaTap: (mediaCapture)
+        onMediaCaptureEvent: (event) {
+          cameraState?.analysisController?.start();
+          _shouldProcessFrame = true;
+          cameraState?.analysisController?.stop();
 
-    {
+          imagePath = event.captureRequest.path!;
+        },
       //OpenFile.open(mediaCapture.filePath);
-    },),
+    ),
 
         Center(
       child: ImageIcon(
