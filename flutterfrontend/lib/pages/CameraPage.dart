@@ -36,7 +36,7 @@ class CameraPage extends StatelessWidget {
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder:
-                    (context, animation, secondaryAnimation) => PhotoPage(imagePath, "Result: $result.a", result.b, result.c),
+                    (context, animation, secondaryAnimation) => PhotoPage(imagePath, "Result: ${result.a}", result.b, result.c),
                 transitionsBuilder: getSlideTransition(),
               ),
             );

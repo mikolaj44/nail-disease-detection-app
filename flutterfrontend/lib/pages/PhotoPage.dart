@@ -19,7 +19,7 @@ class PhotoPage extends StatelessWidget {
         Image.file(File(imagePath)),
         CustomPaint(
         painter: RectPainter(rect),
-        child: SizedBox.expand(), // Center(child: Text(label))
+        child: Center(child: Text(label))
       ),
     ]
     );
