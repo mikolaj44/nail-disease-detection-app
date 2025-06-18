@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/preanalysis/PreAnalyser.dart';
 import 'package:flutter_application_1/pages/MainPage.dart';
@@ -14,6 +16,8 @@ import '../api/ApiCaller.dart';
 class CameraPage extends StatelessWidget {
   CameraPage({super.key});
 
+  static final Duration MAX_WAIT_TIME = const Duration(seconds: 5);
+
   bool _shouldProcessFrame = false;
   CameraState? cameraState;
   String imagePath = "";
@@ -25,25 +29,25 @@ class CameraPage extends StatelessWidget {
       CameraAwesomeBuilder.awesome(
         saveConfig: SaveConfig.photo(),
 
-        onImageForAnalysis: (AnalysisImage image) async {
-          if(!_shouldProcessFrame){
-            return;
-          }
-
-          _shouldProcessFrame = false;
-
-          PreAnalyser.getLabel(image).then((result) {
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder:
-                    (context, animation, secondaryAnimation) => PhotoPage(imagePath, "Result: ${result.a}", result.b, result.c),
-                transitionsBuilder: getSlideTransition(),
-              ),
-            );
-          });
-
-          cameraState?.analysisController?.stop();
-        },
+        // onImageForAnalysis: (AnalysisImage image) async {
+        //   if(!_shouldProcessFrame){
+        //     return;
+        //   }
+        //
+        //   _shouldProcessFrame = false;
+        //
+        //   PreAnalyser.getLabel(image).then((result) {
+        //     Navigator.of(context).push(
+        //       PageRouteBuilder(
+        //         pageBuilder:
+        //             (context, animation, secondaryAnimation) => PhotoPage(imagePath, "Result: ${result.a}", result.b, result.c),
+        //         transitionsBuilder: getSlideTransition(),
+        //       ),
+        //     );
+        //   });
+        //
+        //   cameraState?.analysisController?.stop();
+        // },
 
         imageAnalysisConfig: AnalysisConfig(),
 
@@ -83,12 +87,31 @@ class CameraPage extends StatelessWidget {
         // ),
       ),
 
-        onMediaCaptureEvent: (event) {
-          cameraState?.analysisController?.start();
-          _shouldProcessFrame = true;
-          cameraState?.analysisController?.stop();
+        onMediaCaptureEvent: (event) async {
+          String? path = event.captureRequest.path;
 
-          imagePath = event.captureRequest.path!;
+          if(path == null){
+            return;
+          }
+
+          final endTime = DateTime.now().add(MAX_WAIT_TIME);
+
+          while(!await File(path).exists()){
+            if (DateTime.now().isAfter(endTime)) {
+              throw Exception("Took too long waiting for file to exist: $path");
+            }
+            await Future.delayed(const Duration(milliseconds: 100));
+          }
+
+          PreAnalyser.getModifiedImage(path).then((result) {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder:
+                    (context, animation, secondaryAnimation) => PhotoPage(result),
+                transitionsBuilder: getSlideTransition(),
+              ),
+            );
+          });
         },
       //OpenFile.open(mediaCapture.filePath);
     ),

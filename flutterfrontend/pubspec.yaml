@@ -43,6 +43,9 @@ dependencies:
   google_mlkit_object_detection: ^0.15.0
   path_provider: ^2.1.5
   path: ^1.9.1
+  tflite_flutter: ^0.11.0
+  image: ^4.5.4
+  ultralytics_yolo: ^0.1.19
 
 dev_dependencies:
   flutter_test:
@@ -66,8 +69,10 @@ flutter:
     - resources/waves.png
     - resources/nailphoto.jpg
     - resources/nailoutline.png
-#    - resources/yolov7tiny.tflite
+
     - assets/models/
+    - assets/other/
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

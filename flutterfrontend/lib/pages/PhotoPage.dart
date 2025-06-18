@@ -1,28 +1,24 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/preanalysis/MLKitUtils.dart';
+import 'package:image/image.dart' as img;
+
 
 class PhotoPage extends StatelessWidget {
-  final String imagePath;
-  final String label;
-  final double confidence;
-  final Rect rect;
+  final img.Image image;
 
-  const PhotoPage(this.imagePath, this.label, this.confidence, this.rect, {super.key});
+  const PhotoPage(this.image, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.file(File(imagePath)),
-        CustomPaint(
-        painter: RectPainter(rect),
-        child: Center(child: Text(label))
-      ),
-    ]
-    );
+        Image.memory(Uint8List.fromList(img.encodePng(image)))
+        ]
+      );
   }
 }
 
