@@ -5,19 +5,15 @@ import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
 import 'package:flutter_application_1/controllers/preanalysis/YOLOResultInfo.dart';
 import 'package:flutter_application_1/pages/MainPage.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:screenshot/screenshot.dart';
 
 import 'PhotoPage.dart';
 
 class CameraPage extends StatelessWidget {
   CameraPage({super.key});
 
-  static final Duration MAX_WAIT_TIME = const Duration(seconds: 5);
-
   CameraState? cameraState;
-  ScreenshotController screenshotController = ScreenshotController();
 
-  bool captureWasHandled = false;
+  bool isShowingImage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +76,7 @@ class CameraPage extends StatelessWidget {
               ignoring: true,
               child: Stack(
                 children: [
-                  Screenshot(controller: screenshotController, child: YOLOPage()),
+                  YOLOPage(),
                   NailOutlineWidget(),
                   YOLOResultWidget()
                 ]
@@ -89,26 +85,17 @@ class CameraPage extends StatelessWidget {
         },
 
         onMediaCaptureEvent: (event) async {
-          if(captureWasHandled || !yoloAnalysis.resultIsValid()){
+          if(isShowingImage){ //|| !yoloAnalysis.resultIsValid()
             return;
           }
 
-          captureWasHandled = true;
-
-          Uint8List capturedImage = Uint8List(0);
-
-          await screenshotController.capture().then((Uint8List? image) {
-            if(image == null){
-              return;
-            }
-            capturedImage = image;
-          }).catchError((onError) {
-            print(onError);
-          });
+          Uint8List capturedImage = yoloAnalysis.getCurrentImageData();
 
           if(capturedImage.isEmpty){
             return;
           }
+
+          isShowingImage = true;
 
           Navigator.of(context).push(
             PageRouteBuilder(
@@ -117,7 +104,9 @@ class CameraPage extends StatelessWidget {
             ),
           );
 
-          captureWasHandled = false;
+          Future.delayed(Duration(milliseconds: 200), () {
+            isShowingImage = false;
+          });
         },
       ),
     ]);

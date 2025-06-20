@@ -97,10 +97,11 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
                   decoration: BoxDecoration(color: Colors.white,
                       borderRadius: BorderRadius.circular(16)),
                   padding: EdgeInsets.all(6.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: getResultWidgetList(analysis.bestTraits),
-                  ),
+                    child: analysis.currentResults.isNotEmpty ? Text(analysis.currentResults.first.boundingBox.toString(), style: getTextStyle(Colors.black),) : SizedBox(),
+                  // child: Column(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: getResultWidgetList(analysis.bestTraits),
+                  // ),
                 ),
               ),
             );
