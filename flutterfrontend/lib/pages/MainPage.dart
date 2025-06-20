@@ -182,9 +182,7 @@ class MainPageContent extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder:
-                      (context, animation, secondaryAnimation) =>
-                          const AuthorsPage(),
+                  pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
                   transitionsBuilder: getSlideTransition(),
                 ),
               );

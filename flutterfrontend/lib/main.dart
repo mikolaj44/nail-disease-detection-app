@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
-import 'package:flutter_application_1/pages/CameraPage.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
 import 'pages/MainPage.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  YOLOPageState.initModel();
+  yoloAnalysis.initModel();
 
-  runApp(const MyApp());
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Normal Portrait
+    DeviceOrientation.portraitDown, // Upside-Down Portrait
+  ]);
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => yoloAnalysis,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,11 +1,12 @@
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
+import 'package:flutter_application_1/controllers/preanalysis/YOLOResultInfo.dart';
 import 'package:flutter_application_1/pages/MainPage.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
+import 'package:screenshot/screenshot.dart';
 
-import '../api/ApiCaller.dart';
 import 'PhotoPage.dart';
 
 class CameraPage extends StatelessWidget {
@@ -13,9 +14,10 @@ class CameraPage extends StatelessWidget {
 
   static final Duration MAX_WAIT_TIME = const Duration(seconds: 5);
 
-  bool _shouldProcessFrame = false;
   CameraState? cameraState;
-  String imagePath = "";
+  ScreenshotController screenshotController = ScreenshotController();
+
+  bool captureWasHandled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +45,6 @@ class CameraPage extends StatelessWidget {
         //
         //   cameraState?.analysisController?.stop();
         // },
-
-        imageAnalysisConfig: AnalysisConfig(),
 
         topActionsBuilder: (state) {
           cameraState = state;
@@ -78,38 +78,45 @@ class CameraPage extends StatelessWidget {
         middleContentBuilder: (state){
           return IgnorePointer(
               ignoring: true,
-              child: YOLOPage()
+              child: Stack(
+                children: [
+                  Screenshot(controller: screenshotController, child: YOLOPage()),
+                  YOLOResultWidget()
+                ]
+              )
           );
         },
 
         onMediaCaptureEvent: (event) async {
-          if(!YOLOPageState.resultIsValid()){
+          if(captureWasHandled || !yoloAnalysis.resultIsValid()){
             return;
           }
 
-          String? path = event.captureRequest.path;
+          captureWasHandled = true;
 
-          print("path: $path");
+          Uint8List capturedImage = Uint8List(0);
 
-          if(path == null){
-            return;
-          }
-
-          final endTime = DateTime.now().add(MAX_WAIT_TIME);
-
-          while(!await File(path).exists()){
-            if (DateTime.now().isAfter(endTime)) {
-              throw Exception("Took too long waiting for file to exist: $path");
+          await screenshotController.capture().then((Uint8List? image) {
+            if(image == null){
+              return;
             }
-            await Future.delayed(const Duration(milliseconds: 100));
+            capturedImage = image;
+          }).catchError((onError) {
+            print(onError);
+          });
+
+          if(capturedImage.isEmpty){
+            return;
           }
 
           Navigator.of(context).push(
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(path),
+              pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(capturedImage),
               transitionsBuilder: getSlideTransition(),
             ),
           );
+
+          captureWasHandled = false;
         },
     ),
 

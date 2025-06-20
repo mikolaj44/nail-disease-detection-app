@@ -1,61 +1,97 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/MainPage.dart';
+import 'package:flutter_application_1/controllers/preanalysis/YOLOResultInfo.dart';
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
 
-import '../../pages/PhotoPage.dart';
-import '../../structures/pair.dart';
-import '../../structures/triple.dart';
-
-const bool DO_DEBUG_PRINT = false;
-const double MIN_THRESHOLD = 0.7;
-
+// Model-dependent
+const String MODEL_NAME = "yolov8n 40e 640 float16"; // Located in android/app/assets/ (todo: move it so it can be used by both IOS and Android)
 const int MODEL_IMAGE_WIDTH = 640;
+
+// Debug
+const bool DO_DEBUG_PRINT = false;
+
+// Nail detection info
+const double MIN_NAIL_THRESHOLD = 0.7;
+
+// Performance
+const double CONFIDENCE_THRESHOLD = 0.5;
+const double IOU_THRESHOLD = 0.4;
+const int NUM_ITEMS_THRESHOLD = 5;
+const int INFERENCE_FREQUENCY = 10;
+const int MAX_FPS = 15;
+const String CAMERA_RESOLUTION = "1080p";
+
+// Ex. start from 30% of image length from all borders
 const double CENTER_PERCENTAGE = 0.3;
 
-// https://github.com/ultralytics/yolo-flutter-app/blob/main/doc/usage.md#multi-instance-support
+// Minimum score for an image to be considered valid for further analysis
+final int MIN_VALID_SCORE = IS_NAIL.score + IS_IN_BOUNDS.score + IS_CORRECT_SIZE.score;
+
+final List<YOLOResultTrait> initialTraits = [IS_NAIL.copy(), IS_IN_BOUNDS.copy(), IS_CORRECT_SIZE.copy()];
+
+final YOLOAnalysis yoloAnalysis = YOLOAnalysis();
+
+class YOLOAnalysis with ChangeNotifier {
+  late YOLO yolo;
+  late YOLOViewController controller;
+
+  List<YOLOResult> currentResults = [];
+  List<YOLOResultTrait> bestTraits = [];
+
+  Rect detectionRect = Rect.fromLTRB(MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE), MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE));
+
+  void initModel() async {
+    controller = YOLOViewController();
+
+    await controller.setThresholds(
+      confidenceThreshold: CONFIDENCE_THRESHOLD,    // High confidence only
+      iouThreshold: IOU_THRESHOLD,                  // Fast NMS
+      numItemsThreshold: NUM_ITEMS_THRESHOLD,       // Minimal detections
+    );
+
+    final config = YOLOStreamingConfig.powerSaving(
+      inferenceFrequency: INFERENCE_FREQUENCY,    // 15 FPS inference
+      maxFPS: MAX_FPS,               // 10 FPS display
+    );
+
+    controller.setStreamingConfig(config);
+
+    bestTraits = initialTraits;
+
+    for(YOLOResultTrait trait in bestTraits){
+      trait.setPositive(false);
+    }
+  }
+
+  bool resultIsValid(){
+    int score = 0;
+
+    for(YOLOResultTrait trait in bestTraits){
+      score += trait.score;
+    }
+
+    return score >= MIN_VALID_SCORE;
+  }
+
+  void updateBestTraits() {
+    bestTraits = YOLOResultInfo.getBestYOLOResultTraits(initialTraits, currentResults, MIN_NAIL_THRESHOLD, detectionRect);
+    notifyListeners();
+  }
+}
+
 class YOLOPage extends StatefulWidget {
   @override
   YOLOPageState createState() => YOLOPageState();
 }
 
 class YOLOPageState extends State<YOLOPage> {
-  static late YOLO yolo;
-  static late YOLOViewController controller;
-
-  static List<YOLOResult> currentResults = [];
-
-  static late Rect detectionRect;
-
-  Triple<IconData, String, Color> resultInfo = Triple(Icons.abc, "", Colors.transparent);
-
   @override
   void initState() {
     super.initState();
-
-    detectionRect = Rect.fromLTRB(MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE), MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE));
   }
 
-  static void initModel() async {
-    controller = YOLOViewController();
-
-    await controller.setThresholds(
-      confidenceThreshold: 0.5,    // High confidence only
-      iouThreshold: 0.4,           // Fast NMS
-      numItemsThreshold: 5,        // Minimal detections
-    );
-
-    final config = YOLOStreamingConfig.powerSaving(
-      inferenceFrequency: 10,    // 5 FPS inference
-      maxFPS: 15,               // 10 FPS display
-    );
-
-    controller.setStreamingConfig(config);
-  }
-
+  // https://github.com/ultralytics/yolo-flutter-app/blob/main/doc/usage.md#real-time-camera-processing
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +99,15 @@ class YOLOPageState extends State<YOLOPage> {
         children: [
           // Camera view with YOLO processing
           YOLOView(
-            modelPath: "yolov8n 40e 640 float16",
+            modelPath: MODEL_NAME,
             task: YOLOTask.detect,
-            controller: controller,
-            cameraResolution: "1080p",
+            controller: yoloAnalysis.controller,
+            cameraResolution: CAMERA_RESOLUTION,
 
             onResult: (results) {
               setState(() {
-                currentResults = results;
-                resultInfo = getYOLOResultInfoPair(results);
+                yoloAnalysis.currentResults = results;
+                yoloAnalysis.updateBestTraits();
               });
             },
 
@@ -82,51 +118,8 @@ class YOLOPageState extends State<YOLOPage> {
               }
             },
           ),
-
-          // Overlay UI
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: screenHeight * 0.02),
-              child: Container(
-                decoration: BoxDecoration(color: resultInfo.c, borderRadius: BorderRadius.circular(16)),
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    if(resultInfo.a != Icons.abc)
-                      Icon(
-                          resultInfo.a,
-                          size: screenWidth / 5
-                      ),
-
-                    SizedBox(width: 10),
-                    Text(
-                      resultInfo.b,
-                      style: getTextStyle(Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            )
-            ),
         ],
       ),
     );
-  }
-
-  static Triple<IconData, String, Color> getYOLOResultInfoPair(List<YOLOResult> results){
-    for(YOLOResult result in results) {
-      print("main $detectionRect");
-      print("rect ${result.boundingBox}");
-
-      if (result.confidence >= MIN_THRESHOLD && detectionRect.contains(result.boundingBox.center)) {
-        return Triple(Icons.check_circle_rounded, "Wykryto paznokieć!", Colors.green);
-      }
-    }
-    return Triple(Icons.error_rounded, "Nie wykryto paznokcia.", Colors.red);
-  }
-
-  static bool resultIsValid(){
-    return getYOLOResultInfoPair(currentResults).c == Colors.green;
   }
 }
