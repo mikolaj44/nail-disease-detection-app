@@ -81,6 +81,7 @@ class CameraPage extends StatelessWidget {
               child: Stack(
                 children: [
                   Screenshot(controller: screenshotController, child: YOLOPage()),
+                  NailOutlineWidget(),
                   YOLOResultWidget()
                 ]
               )
@@ -118,13 +119,6 @@ class CameraPage extends StatelessWidget {
 
           captureWasHandled = false;
         },
-    ),
-
-        Center(
-      child: ImageIcon(
-      AssetImage("resources/nailoutline.png"),
-      size: screenWidth / 2.5,
-      )
       ),
     ]);
   }

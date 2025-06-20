@@ -3,6 +3,10 @@ import 'package:flutter_application_1/controllers/preanalysis/YOLOResultInfo.dar
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
+import 'package:provider/provider.dart';
+
+
+import '../../pages/MainPage.dart';
 
 // Model-dependent
 const String MODEL_NAME = "yolov8n 40e 640 float16"; // Located in android/app/assets/ (todo: move it so it can be used by both IOS and Android)
@@ -118,7 +122,36 @@ class YOLOPageState extends State<YOLOPage> {
               }
             },
           ),
-        ],
+        ]
+      ),
+    );
+  }
+}
+
+class NailOutlineWidget extends StatelessWidget{
+  const NailOutlineWidget({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Center(
+      child: Opacity(
+          opacity: 0.7,
+          child: Stack(
+              children: [
+                Center(
+                  child: ImageIcon(
+                    AssetImage("resources/nailoutline.png"),
+                    size: screenWidth / 2.5,
+                  ),
+                ),
+                Center(
+                  child: Icon(
+                    Icons.crop_square_rounded,
+                    size: screenWidth / 1.2,
+                  ),
+                ),
+              ]
+          )
       ),
     );
   }

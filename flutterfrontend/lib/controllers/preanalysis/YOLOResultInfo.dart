@@ -136,7 +136,8 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
                   children: [
                     Icon(
                         iconData,
-                        size: screenWidth / 7,
+                        size: screenWidth / 9,
+                        color: Colors.white,
                     ),
                     SizedBox(
                       width: 20,
