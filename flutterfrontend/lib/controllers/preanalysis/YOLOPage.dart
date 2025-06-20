@@ -11,7 +11,10 @@ import '../../pages/MainPage.dart';
 
 // Model-dependent
 const String MODEL_NAME = "yolov8n 40e 640 float16"; // Located in android/app/assets/ (todo: move it so it can be used by both IOS and Android)
-const int MODEL_IMAGE_WIDTH = 640;
+
+const int IMAGE_WIDTH = 640;
+const int IMAGE_HEIGHT = 480;
+
 
 // Debug
 const bool DO_DEBUG_PRINT = false;
@@ -50,7 +53,7 @@ class YOLOAnalysis with ChangeNotifier {
 
   Uint8List currentImage = Uint8List(0);
 
-  Rect detectionRect = Rect.fromLTRB(MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * CENTER_PERCENTAGE, MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE), MODEL_IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE));
+  Rect detectionRect = Rect.fromLTRB(IMAGE_WIDTH * CENTER_PERCENTAGE, IMAGE_HEIGHT * CENTER_PERCENTAGE, IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE), IMAGE_HEIGHT * (1.0 - CENTER_PERCENTAGE));
 
   void initModel() async {
     controller = YOLOViewController();

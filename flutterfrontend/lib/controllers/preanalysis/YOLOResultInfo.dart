@@ -34,6 +34,10 @@ class YOLOResultTrait {
 
 class YOLOResultInfo {
 
+  static Rect convertBoundingBox(Rect boundingBox){
+    return Rect.fromLTRB(boundingBox.left, boundingBox.top, IMAGE_WIDTH - boundingBox.right, IMAGE_HEIGHT - boundingBox.bottom);
+  }
+
   static List<YOLOResultTrait> getBestYOLOResultTraits(List<YOLOResultTrait> initialTraits, List<YOLOResult> results, double minThreshold, Rect detectionRect){
     List<YOLOResultTrait> bestTraits = initialTraits;
 
@@ -50,7 +54,7 @@ class YOLOResultInfo {
         currentTraits[0].setPositive(false);
       }
 
-      if(detectionRect.contains(result.boundingBox.center)){
+      if(detectionRect.contains(convertBoundingBox(result.boundingBox).center)){
         currentScore += IS_IN_BOUNDS.score;
       }
       else {
@@ -97,11 +101,11 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
                   decoration: BoxDecoration(color: Colors.white,
                       borderRadius: BorderRadius.circular(16)),
                   padding: EdgeInsets.all(6.0),
-                    child: analysis.currentResults.isNotEmpty ? Text(analysis.currentResults.first.boundingBox.toString(), style: getTextStyle(Colors.black),) : SizedBox(),
-                  // child: Column(
-                  //   mainAxisSize: MainAxisSize.min,
-                  //   children: getResultWidgetList(analysis.bestTraits),
-                  // ),
+                    //child: analysis.currentResults.isNotEmpty ? Text(analysis.currentResults.first.boundingBox.toString(), style: getTextStyle(Colors.black),) : SizedBox(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: getResultWidgetList(analysis.bestTraits),
+                  ),
                 ),
               ),
             );

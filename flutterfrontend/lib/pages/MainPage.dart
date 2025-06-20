@@ -1,8 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/CameraPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../api/ApiCaller.dart';
 
@@ -114,6 +116,145 @@ RouteTransitionsBuilder getSlideTransition() {
   };
 }
 
+final List<Widget> instructionSliders = [
+
+  Card(
+        elevation: 20,
+        child:
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: const LinearGradient(
+            colors: [
+              Color.fromARGB(255, 0, 0, 0),
+              Color.fromARGB(255, 61, 61, 61)
+            ],
+            begin: Alignment.topCenter,
+          ),
+        ),
+
+        width: screenWidth * 0.9,
+
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.05,
+              vertical: screenHeight * 0.05,
+),
+
+        child: Column(
+            children: [
+              Text(
+                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
+                //textAlign: TextAlign.center,
+                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
+              ),
+
+              // Container(
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage("resources/nailphoto.jpeg"),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+            ]
+        ),
+            ),
+      ),
+    ),
+
+  Card(
+    elevation: 20,
+    child:
+    Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        gradient: const LinearGradient(
+          colors: [
+            Color.fromARGB(255, 0, 0, 0),
+            Color.fromARGB(255, 61, 61, 61)
+          ],
+          begin: Alignment.topCenter,
+        ),
+      ),
+
+      width: screenWidth * 0.9,
+
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05,
+          vertical: screenHeight * 0.05,
+        ),
+
+        child: Column(
+            children: [
+              Text(
+                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
+                //textAlign: TextAlign.center,
+                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
+              ),
+
+              // Container(
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage("resources/nailphoto.jpeg"),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+            ]
+        ),
+      ),
+    ),
+  ),
+
+  Card(
+    elevation: 20,
+    child:
+    Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        gradient: const LinearGradient(
+          colors: [
+            Color.fromARGB(255, 0, 0, 0),
+            Color.fromARGB(255, 61, 61, 61)
+          ],
+          begin: Alignment.topCenter,
+        ),
+      ),
+
+      width: screenWidth * 0.9,
+
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05,
+          vertical: screenHeight * 0.05,
+        ),
+
+        child: Column(
+            children: [
+              Text(
+                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
+                //textAlign: TextAlign.center,
+                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
+              ),
+
+              // Container(
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage("resources/nailphoto.jpeg"),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+            ]
+        ),
+      ),
+    ),
+  ),
+
+];
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -121,17 +262,25 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
-class MainPageContent extends StatelessWidget {
-  const MainPageContent({super.key});
+class MainPageState extends State<MainPage> {
+  int activeCarouselPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         //title: const Text('Aplikacja do diagnozy paznokci'),
         backgroundColor:
-            Colors.white, //const Color.fromARGB(255, 237, 235, 235),
+        Colors.white, //const Color.fromARGB(255, 237, 235, 235),
 
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -162,6 +311,19 @@ class MainPageContent extends StatelessWidget {
 
         actions: [
           IconButton(
+            icon: const Icon(Icons.language_rounded),
+            color: Colors.black,
+            onPressed: () {
+              // Navigator.of(context).push(
+              //   PageRouteBuilder(
+              //     pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
+              //     transitionsBuilder: getSlideTransition(),
+              //   ),
+              // );
+            },
+          ),
+
+          IconButton(
             icon: const Icon(Icons.question_mark_rounded),
             color: Colors.black,
             onPressed: () {
@@ -169,7 +331,7 @@ class MainPageContent extends StatelessWidget {
                 PageRouteBuilder(
                   pageBuilder:
                       (context, animation, secondaryAnimation) =>
-                          const InfoPage(),
+                  const InfoPage(),
                   transitionsBuilder: getSlideTransition(),
                 ),
               );
@@ -195,162 +357,94 @@ class MainPageContent extends StatelessWidget {
 
       body: SafeArea(
         child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("resources/waves.png"),
-            fit: BoxFit.cover,
-          ),
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 225, 224, 224),
-            ],
-
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-
-          children: <Widget>[
-            SizedBox(height: screenHeight * 0.03),
-
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  customButton(
-                    context,
-                    'Wybierz zdjęcie',
-                    Icons.image_rounded,
-                    onPressedEvent: () async {
-                      getLocalFile();
-                    },
-                  ),
-
-                  SizedBox(width: screenHeight * 0.06),
-
-                  customButton(
-                    context,
-                    'Prześlij zdjęcie',
-                    Icons.camera_alt_rounded,
-                    onPressedEvent: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CameraPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("resources/waves.png"),
+              fit: BoxFit.cover,
             ),
+            gradient: const LinearGradient(
+              colors: [
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 225, 224, 224),
+              ],
 
-            SizedBox(height: screenHeight * 0.1),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
 
-            Card(
-              elevation: 20,
-              color: const Color.fromARGB(255, 237, 235, 235),
-              //margin: EdgeInsets.all(16),
-              child: SizedBox(
-                //width: screenWidth * 0.7,
-                //height: screenHeight * 0.4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
 
-                child: Container(
-                  decoration: BoxDecoration(
-          //           image: DecorationImage(
-          //   image: AssetImage("../resources/nailphoto.jpg"),
-          //   fit: BoxFit.cover,
-          // ),
-                    borderRadius: BorderRadius.circular(8),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 0, 0, 0),
-                        Color.fromARGB(255, 61, 61, 61),
-                      ],
-                      begin: Alignment.topCenter,
-                      //end: Alignment.bottomCenter,
+            children: <Widget>[
+              SizedBox(height: screenHeight * 0.03),
+
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    customButton(
+                      context,
+                      'Wybierz zdjęcie',
+                      Icons.image_rounded,
+                      onPressedEvent: () async {
+                        getLocalFile();
+                      },
                     ),
-                  ),
 
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.05,
+                    SizedBox(width: screenHeight * 0.06),
+
+                    customButton(
+                      context,
+                      'Prześlij zdjęcie',
+                      Icons.camera_alt_rounded,
+                      onPressedEvent: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CameraPage()),
+                        );
+                      },
                     ),
-                      //mainAxisSize: MainAxisSize.min,
-                      child: Text(
-                          //'Kliknij ikonę znaku zapytania, aby uzyskać więcej informacji o aplikacji.\n\nKliknij ikonę info, aby uzyskać więcej informacji o autorach i projekcie.',
-                          "todo: instrukcje tutaj",
-                          //textAlign: TextAlign.center,
-                          style: getTextStyle(
-                            Color.fromARGB(255, 255, 255, 255),
-                          ),
-                        ),
-                    ),
-                  ),
+                  ],
                 ),
               ),
-          ],
+
+              SizedBox(height: screenHeight * 0.1),
+
+              CarouselSlider(
+                options: CarouselOptions(
+                    height: screenHeight * 0.35,
+                    autoPlay: false,
+                    aspectRatio: 2.0,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        activeCarouselPageIndex = index;
+                      });
+                    }
+                ),
+                items: instructionSliders,
+              ),
+
+              SizedBox(height: screenHeight * 0.01),
+
+              AnimatedSmoothIndicator(
+                activeIndex: activeCarouselPageIndex,
+                count: 3,
+                effect: const WormEffect(
+                  dotHeight: 12,
+                  dotWidth: 12,
+                  dotColor: Colors.white54,
+                  activeDotColor: Colors.black
+                  //type: WormType.thinUnderground,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      ),
     );
-  }
-}
-
-class MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-
-    return MainPageContent();
-
-    //setInfoRead("true"); // TODO: REMOVE THIS (THIS IS FOR TESTING ONLY)
-
-    // var builder = FutureBuilder<String>(
-    //   future: getInfoReadString(),
-    //   builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Center(
-    //         child: Text(
-    //           'Ładowanie...',
-    //           style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
-    //         ),
-    //       );
-    //     } else {
-    //       if (snapshot.hasError) {
-    //         return Center(
-    //           child: Text(
-    //             'Błąd: ${snapshot.error}',
-    //             style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
-    //           ),
-    //         );
-    //       }
-    //       if (snapshot.data == "false") {
-    //         // TODO: INVERSE THIS (THIS IS FOR TESTING ONLY)
-    //         //setInfoRead("true");
-    //
-    //         WidgetsBinding.instance.addPostFrameCallback((_) {
-    //           Navigator.of(context).push(
-    //             PageRouteBuilder(
-    //               pageBuilder:
-    //                   (context, animation, secondaryAnimation) =>
-    //                       const InfoPage(),
-    //               transitionsBuilder: getSlideTransition(),
-    //             ),
-    //           );
-    //         });
-    //       }
-    //       return MainPageContent();
-    //     }
-    //   },
-    // );
-
-    //return builder;
   }
 }
 
