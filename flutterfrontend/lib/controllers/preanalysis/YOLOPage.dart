@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -7,7 +8,10 @@ import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
 import 'package:provider/provider.dart';
 
+import 'package:image/image.dart' as img;
+
 import '../../pages/MainPage.dart';
+import '../../utils/list_copy.dart';
 
 // Model-dependent
 const String MODEL_NAME = "yolov8n 40e 640 float16"; // Located in android/app/assets/ (todo: move it so it can be used by both IOS and Android)
@@ -15,12 +19,11 @@ const String MODEL_NAME = "yolov8n 40e 640 float16"; // Located in android/app/a
 const int IMAGE_WIDTH = 640;
 const int IMAGE_HEIGHT = 480;
 
-
 // Debug
 const bool DO_DEBUG_PRINT = false;
 
 // Nail detection info
-const double MIN_NAIL_THRESHOLD = 0.7;
+const double MIN_NAIL_THRESHOLD = 0.6;
 
 // Performance
 const double CONFIDENCE_THRESHOLD = 0.5;
@@ -37,10 +40,12 @@ const double CENTER_PERCENTAGE = 0.3;
 const double MIN_WIDTH_PERCENTAGE = 0.3;
 const double MAX_WIDTH_PERCENTAGE = 0.6;
 
+const int MIN_BRIGHTNESS = 80; // todo: test which value is okay
+
 // Minimum score for an image to be considered valid for further analysis
 final int MIN_VALID_SCORE = IS_NAIL.score + IS_IN_BOUNDS.score + IS_CORRECT_SIZE.score;
 
-final List<YOLOResultTrait> initialTraits = [IS_NAIL.copy(), IS_IN_BOUNDS.copy(), IS_CORRECT_SIZE.copy()];
+final List<YOLOResultTrait> initialTraits = [IS_NAIL, IS_LIT]; // IS_IN_BOUNDS.copy(), IS_CORRECT_SIZE.copy()
 
 final YOLOAnalysis yoloAnalysis = YOLOAnalysis();
 
@@ -51,9 +56,13 @@ class YOLOAnalysis with ChangeNotifier {
   List<YOLOResult> currentResults = [];
   List<YOLOResultTrait> bestTraits = [];
 
+  YOLOResult currentBestResult = YOLOResult(classIndex: 0, className: "", confidence: 0, boundingBox: Rect.zero, normalizedBox: Rect.zero);
+
   Uint8List currentImage = Uint8List(0);
 
   Rect detectionRect = Rect.fromLTRB(IMAGE_WIDTH * CENTER_PERCENTAGE, IMAGE_HEIGHT * CENTER_PERCENTAGE, IMAGE_WIDTH * (1.0 - CENTER_PERCENTAGE), IMAGE_HEIGHT * (1.0 - CENTER_PERCENTAGE));
+
+  bool viewHasLoaded = false;
 
   void initModel() async {
     controller = YOLOViewController();
@@ -64,31 +73,27 @@ class YOLOAnalysis with ChangeNotifier {
       numItemsThreshold: NUM_ITEMS_THRESHOLD,       // Minimal detections
     );
 
-    bestTraits = initialTraits;
+    bestTraits = listCopy(initialTraits);
 
     for(YOLOResultTrait trait in bestTraits){
       trait.setPositive(false);
     }
   }
 
-  bool resultIsValid(){
-    int score = 0;
-
-    for(YOLOResultTrait trait in bestTraits){
-      score += trait.score;
-    }
-
-    return score >= MIN_VALID_SCORE;
-  }
-
-  Uint8List getCurrentImageData(){
-    return currentImage;
-  }
-
-  void updateBestTraits() {
-    bestTraits = YOLOResultInfo.getBestYOLOResultTraits(initialTraits, currentResults, MIN_NAIL_THRESHOLD, detectionRect);
+  void setViewHasLoaded(bool hasLoaded) {
+    viewHasLoaded = hasLoaded;
     notifyListeners();
   }
+
+  // bool resultIsValid(){
+  //   int score = 0;
+  //
+  //   for(YOLOResultTrait trait in bestTraits){
+  //     score += trait.score;
+  //   }
+  //
+  //   return score >= MIN_VALID_SCORE;
+  // }
 }
 
 class YOLOPage extends StatefulWidget {
@@ -133,10 +138,11 @@ class YOLOPageState extends State<YOLOPage> {
 
             onStreamingData: (streamData) {
               setState(() {
-                print("streaming data");
+                print("view loaded in yolopage");
+                yoloAnalysis.setViewHasLoaded(true);
+
                 if (streamData.containsKey("detections") && streamData["detections"] != null) {
                   yoloAnalysis.currentResults = streamingResultsToYOLOResults(streamData);
-                  yoloAnalysis.updateBestTraits();
                 }
 
                 if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'pages/MainPage.dart';
 
@@ -20,6 +21,19 @@ void main() async {
       create: (context) => yoloAnalysis,
       child: const MyApp(),
     ),
+    // EasyLocalization(
+    //   supportedLocales: [
+    //     Locale('pl', 'PL'),
+    //     Locale('en', 'US'),
+    //   ],
+    //   path: 'assets/translations',
+    //   fallbackLocale: Locale('pl', 'PL'),
+    //
+    //   child: ChangeNotifierProvider(
+    //     create: (context) => yoloAnalysis,
+    //     child: const MyApp(),
+    //   ),
+    // )
   );
 }
 
@@ -32,6 +46,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Nail App',
       debugShowCheckedModeBanner: false,
+      // localizationsDelegates: context.localizationDelegates,
+      // supportedLocales: context.supportedLocales,
+      // locale: context.locale,
       home: MainPage(),
     );
   }
