@@ -1,15 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/CameraPage.dart';
+import 'package:flutter_application_1/view/camera/camera_page.dart';
+import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../api/ApiCaller.dart';
-
-double screenWidth = 0;
-double screenHeight = 0;
+import '../../utils/other/style/style_methods.dart';
 
 Future<void> setInfoRead(String value) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,17 +24,6 @@ Future<String> getInfoReadString() async {
   return "true";
 }
 
-TextStyle getTextStyle(Color color, {double fontSize = 0.025}) {
-  return GoogleFonts.getFont(
-    'DM Serif Text',
-    textStyle: TextStyle(
-      fontSize: screenHeight * fontSize,
-      color: color,
-      fontWeight: FontWeight.normal,
-    ),
-  );
-}
-
 Future<PlatformFile> getLocalFile() async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
@@ -52,22 +37,14 @@ Future<PlatformFile> getLocalFile() async {
   }
 }
 
-Material customButton(
-  BuildContext context,
-  String text,
-  IconData iconData, {
-  onPressedEvent = null,
-}) {
-  return Material(
-    elevation: 20,
-    borderRadius: BorderRadius.circular(10),
-
-    child: Column(
+Widget customButton(BuildContext context, String text, IconData iconData, {onPressedEvent, double size = 1, double iconSizeMult = 0.15}) {
+  return Column(
       children: [
         Container(
+          width: getWidth(context) * size,
+          height: getWidth(context) * size,
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.circle,
             gradient: const SweepGradient(
               colors: [
                 Color.fromARGB(255, 209, 178, 146),
@@ -80,180 +57,30 @@ Material customButton(
               //begin: Alignment.topRight,
               //end: Alignment.bottomLeft,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                spreadRadius: 1,
+                blurRadius: 50,
+                offset: Offset(0, 0),
+              ),
+            ],
+            border: Border.all(color: Colors.black, width: 2),
           ),
           child: IconButton(
             icon: Icon(
               iconData,
-              size: screenHeight * 0.15,
+              size: getHeight(context) * iconSizeMult,
               color: Color.fromARGB(255, 255, 255, 255),
             ),
             onPressed: onPressedEvent,
-
-            style: IconButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              fixedSize: Size(screenWidth * 0.4, screenHeight * 0.25),
-            ),
           ),
         ),
 
         //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
       ],
-    ),
   );
 }
-
-RouteTransitionsBuilder getSlideTransition() {
-  return (context, animation, secondaryAnimation, child) {
-    const begin = Offset(0.0, 1.0);
-    const end = Offset.zero;
-    final tween = Tween(begin: begin, end: end);
-    final offsetAnimation = animation.drive(tween);
-
-    return SlideTransition(position: offsetAnimation, child: child);
-  };
-}
-
-final List<Widget> instructionSliders = [
-
-  Card(
-        elevation: 20,
-        child:
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            gradient: const LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 0, 0),
-              Color.fromARGB(255, 61, 61, 61)
-            ],
-            begin: Alignment.topCenter,
-          ),
-        ),
-
-        width: screenWidth * 0.9,
-
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.05,
-              vertical: screenHeight * 0.05,
-),
-
-        child: Column(
-            children: [
-              Text(
-                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
-                //textAlign: TextAlign.center,
-                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
-              ),
-
-              // Container(
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       image: AssetImage("resources/nailphoto.jpeg"),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
-            ]
-        ),
-            ),
-      ),
-    ),
-
-  Card(
-    elevation: 20,
-    child:
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 0, 0, 0),
-            Color.fromARGB(255, 61, 61, 61)
-          ],
-          begin: Alignment.topCenter,
-        ),
-      ),
-
-      width: screenWidth * 0.9,
-
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.05,
-          vertical: screenHeight * 0.05,
-        ),
-
-        child: Column(
-            children: [
-              Text(
-                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
-                //textAlign: TextAlign.center,
-                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
-              ),
-
-              // Container(
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       image: AssetImage("resources/nailphoto.jpeg"),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
-            ]
-        ),
-      ),
-    ),
-  ),
-
-  Card(
-    elevation: 20,
-    child:
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 0, 0, 0),
-            Color.fromARGB(255, 61, 61, 61)
-          ],
-          begin: Alignment.topCenter,
-        ),
-      ),
-
-      width: screenWidth * 0.9,
-
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.05,
-          vertical: screenHeight * 0.05,
-        ),
-
-        child: Column(
-            children: [
-              Text(
-                "1. Zrób zdjęcie paznokcia lub wybierz istniejące z galerii za pomocą przycisków powyżej.",
-                //textAlign: TextAlign.center,
-                style: getTextStyle(Color.fromARGB(255, 255, 255, 255)),
-              ),
-
-              // Container(
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       image: AssetImage("resources/nailphoto.jpeg"),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
-            ]
-        ),
-      ),
-    ),
-  ),
-
-];
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -272,8 +99,6 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -304,7 +129,7 @@ class MainPageState extends State<MainPage> {
           style: GoogleFonts.getFont(
             'DM Serif Text',
             fontWeight: FontWeight.bold,
-            textStyle: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+            textStyle: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
           ),
           textAlign: TextAlign.left,
         ),
@@ -352,7 +177,7 @@ class MainPageState extends State<MainPage> {
           ),
         ],
 
-        toolbarHeight: screenHeight * 0.09,
+        toolbarHeight: getHeight(context) * 0.09,
       ),
 
       body: SafeArea(
@@ -378,71 +203,67 @@ class MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.start,
 
             children: <Widget>[
-              SizedBox(height: screenHeight * 0.03),
+              SizedBox(height: getHeight(context) * 0.03),
 
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              Align(
+                alignment: Alignment.center,
+                child: Column(
                   children: [
-                    customButton(
-                      context,
-                      'Wybierz zdjęcie',
-                      Icons.image_rounded,
-                      onPressedEvent: () async {
-                        getLocalFile();
-                      },
-                    ),
+                    SizedBox(height: getHeight(context) * 0.025),
 
-                    SizedBox(width: screenHeight * 0.06),
+                    Align(
+                      alignment: Alignment.center,
+                    child:
+                    Row(
+                      children: [
+                        SizedBox(width: getWidth(context) * 0.07),
 
-                    customButton(
-                      context,
-                      'Prześlij zdjęcie',
-                      Icons.camera_alt_rounded,
-                      onPressedEvent: () {
-                        Navigator.push(
+                        customButton(
                           context,
-                          MaterialPageRoute(builder: (context) => CameraPage()),
-                        );
-                      },
+                          'Wybierz zdjęcie',
+                          Icons.image_rounded,
+                          onPressedEvent: () async {
+                            getLocalFile();
+                          },
+                          size: 0.3,
+                          iconSizeMult: 0.1,
+                        ),
+
+                        SizedBox(width: getWidth(context) * 0.05),
+
+                        customButton(
+                          context,
+                          'Prześlij zdjęcie',
+                          Icons.camera_alt_rounded,
+                          onPressedEvent: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CameraPage()),
+                            );
+                          },
+                          size: 0.5,
+                          iconSizeMult: 0.15,
+                        ),
+                      ],
                     ),
+                    ),
+
+
+                    SizedBox(height: getHeight(context) * 0.025),
+
                   ],
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.1),
-
-              CarouselSlider(
-                options: CarouselOptions(
-                    height: screenHeight * 0.35,
-                    autoPlay: false,
-                    aspectRatio: 2.0,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        activeCarouselPageIndex = index;
-                      });
-                    }
-                ),
-                items: instructionSliders,
-              ),
-
-              SizedBox(height: screenHeight * 0.01),
-
-              AnimatedSmoothIndicator(
-                activeIndex: activeCarouselPageIndex,
-                count: 3,
-                effect: const WormEffect(
-                  dotHeight: 12,
-                  dotWidth: 12,
-                  dotColor: Colors.white54,
-                  activeDotColor: Colors.black
-                  //type: WormType.thinUnderground,
-                ),
-              ),
+              SizedBox(height: getHeight(context) * 0.1),
             ],
           ),
         ),
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        height: getHeight(context) * 0.15,
       ),
     );
   }
@@ -457,7 +278,7 @@ class InfoPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Ważne informacje',
-          style: getTextStyle(Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
+          style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -465,12 +286,12 @@ class InfoPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: screenHeight * 0.1),
+          SizedBox(height: getHeight(context) * 0.1),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+            padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 0.05),
             child: RichText(
               text: TextSpan(
-                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+                style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
                 children: [
                   TextSpan(
                     text: 'Nasza aplikacja',
@@ -518,7 +339,7 @@ class AuthorsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Informacje o autorach',
-          style: getTextStyle(Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
+          style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -526,12 +347,12 @@ class AuthorsPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: screenHeight * 0.1),
+          SizedBox(height: getHeight(context) * 0.1),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+            padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 0.05),
             child: RichText(
               text: TextSpan(
-                style: getTextStyle(Color.fromARGB(255, 0, 0, 0)),
+                style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
                 children: [
                   TextSpan(
                     text: 'Autorzy projektu:',

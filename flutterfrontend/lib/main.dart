@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
+import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/view/introduction/introduction_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-import 'pages/MainPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  yoloAnalysis.initModel();
+  PreAnalysisController.init();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // Normal Portrait
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
       // localizationsDelegates: context.localizationDelegates,
       // supportedLocales: context.supportedLocales,
       // locale: context.locale,
-      home: MainPage(),
+      home: IntroductionPage(),
     );
   }
 }

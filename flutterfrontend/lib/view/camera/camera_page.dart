@@ -1,14 +1,11 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controllers/preanalysis/YOLOPage.dart';
-import 'package:flutter_application_1/controllers/preanalysis/YOLOResultInfo.dart';
-import 'package:flutter_application_1/pages/MainPage.dart';
+import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
+import 'package:flutter_application_1/view/camera/yolo_page.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:provider/provider.dart';
-import 'package:image/image.dart' as img;
 
-import 'PhotoPage.dart';
+import '../../model/preanalysis/yolo_analysis.dart';
+import '../../utils/other/style/style_methods.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
@@ -20,7 +17,7 @@ class CameraPage extends StatefulWidget {
 class CameraPageState extends State<CameraPage> {
   CameraState? cameraState;
 
-  bool isShowingImage = false;
+  static bool isShowingImage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +36,6 @@ class CameraPageState extends State<CameraPage> {
                       state: state,
                       children: [
                         Expanded(child: AwesomeFlashButton(state: state)),
-                        // Expanded(
-                        //   child: AwesomeAspectRatioButton(
-                        //     state: state as PhotoCameraState,
-                        //   ),
-                        // ),
-                        //
                       ],
                     );
                   },
@@ -69,9 +60,6 @@ class CameraPageState extends State<CameraPage> {
                         left: AwesomeCameraSwitchButton(
                           state: state,
                         ),
-                        // right: AwesomeMediaPreview(
-                        //   state: state,
-                        // ),
                       );
                     }
                     else {
@@ -83,7 +71,7 @@ class CameraPageState extends State<CameraPage> {
                               borderRadius: BorderRadius.circular(8)
                           ),
                           child: DefaultTextStyle(
-                              style: getTextStyle(Colors.white),
+                              style: getTextStyle(context, Colors.white),
                               child: Text("Ładowanie widoku AI...")
                           ),
                         ),
@@ -92,31 +80,7 @@ class CameraPageState extends State<CameraPage> {
                   },
 
                   onMediaCaptureEvent: (event) async {
-                    if (isShowingImage) { //|| !yoloAnalysis.resultIsValid()
-                      return;
-                    }
-
-                    isShowingImage = true;
-
-                    Rect rect = yoloAnalysis.currentBestResult.boundingBox;
-
-                    img.Image croppedImage = img.copyCrop(
-                        img.decodeImage(yoloAnalysis.currentImage)!,
-                        x: 0, //rect.left.toInt(),
-                        y: 0, //rect.top.toInt(),
-                        width: 640,
-                        height: 480);
-
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(croppedImage),
-                        transitionsBuilder: getSlideTransition(),
-                      ),
-                    );
-
-                    Future.delayed(Duration(milliseconds: 200), () {
-                      isShowingImage = false;
-                    });
+                    PreAnalysisController.onMediaCaptureEvent(context, event);
                   },
                 ),
               ]);
