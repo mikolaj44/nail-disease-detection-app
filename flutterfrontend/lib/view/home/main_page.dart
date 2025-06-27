@@ -37,51 +37,6 @@ Future<PlatformFile> getLocalFile() async {
   }
 }
 
-Widget customButton(BuildContext context, String text, IconData iconData, {onPressedEvent, double size = 1, double iconSizeMult = 0.15}) {
-  return Column(
-      children: [
-        Container(
-          width: getWidth(context) * size,
-          height: getWidth(context) * size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: const SweepGradient(
-              colors: [
-                Color.fromARGB(255, 209, 178, 146),
-                Color.fromARGB(255, 220, 171, 175),
-                Color.fromARGB(255, 193, 173, 204),
-                //Color.fromARGB(255, 155, 176, 208),
-                Color.fromARGB(255, 209, 178, 146),
-              ],
-              //radius: 0.1,
-              //begin: Alignment.topRight,
-              //end: Alignment.bottomLeft,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                spreadRadius: 1,
-                blurRadius: 50,
-                offset: Offset(0, 0),
-              ),
-            ],
-            border: Border.all(color: Colors.black, width: 2),
-          ),
-          child: IconButton(
-            icon: Icon(
-              iconData,
-              size: getHeight(context) * iconSizeMult,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            onPressed: onPressedEvent,
-          ),
-        ),
-
-        //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
-      ],
-  );
-}
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -198,7 +153,9 @@ class MainPageState extends State<MainPage> {
             ),
           ),
 
-          child: Column(
+          child: Stack(
+            children: [
+          Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
 
@@ -255,15 +212,120 @@ class MainPageState extends State<MainPage> {
                 ),
               ),
 
-              SizedBox(height: getHeight(context) * 0.1),
+              //SizedBox(height: getHeight(context) * 0.1),
             ],
           ),
-        ),
-      ),
 
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        height: getHeight(context) * 0.15,
+              Positioned(
+                bottom: 0,
+                child:
+              Container(
+                color: Colors.transparent,
+                height: getHeight(context) * 0.1,
+                clipBehavior: Clip.none,
+
+                child: Padding(
+                  padding: EdgeInsets.zero,
+                  child:
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: getWidth(context) / 2,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(topLeft: Radius
+                                .circular(10),
+                                topRight: Radius.zero,
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.zero),
+                            gradient: const SweepGradient(
+                              colors: [
+                                Color.fromARGB(255, 209, 178, 146),
+                                Color.fromARGB(255, 220, 171, 175),
+                                Color.fromARGB(255, 193, 173, 204),
+                                //Color.fromARGB(255, 155, 176, 208),
+                                Color.fromARGB(255, 209, 178, 146),
+                              ],
+                              //radius: 0.1,
+                              //begin: Alignment.topRight,
+                              //end: Alignment.bottomLeft,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                spreadRadius: 1,
+                                blurRadius: 50,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child:
+                          FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                            IconButton(
+                                onPressed: () {},
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                    Icons.home
+                                )),
+                          )
+                      ),
+                      Container(
+                          width: getWidth(context) / 2,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(topLeft: Radius
+                                .zero,
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.zero,
+                                bottomRight: Radius.circular(10)),
+                            gradient: const SweepGradient(
+                              colors: [
+                                Color.fromARGB(255, 209, 178, 146),
+                                Color.fromARGB(255, 220, 171, 175),
+                                Color.fromARGB(255, 193, 173, 204),
+                                //Color.fromARGB(255, 155, 176, 208),
+                                Color.fromARGB(255, 209, 178, 146),
+                              ],
+                              //radius: 0.1,
+                              //begin: Alignment.topRight,
+                              //end: Alignment.bottomLeft,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                spreadRadius: 1,
+                                blurRadius: 50,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child:
+                          FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                            IconButton(
+                                onPressed: () {},
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                    Icons.settings
+                                )),
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ),
+            ]
+          ),
+        ),
       ),
     );
   }

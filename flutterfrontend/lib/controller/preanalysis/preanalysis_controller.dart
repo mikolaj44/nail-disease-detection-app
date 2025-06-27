@@ -2,14 +2,10 @@ import 'dart:typed_data' as td;
 import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as img;
 
-import 'dart:ui';
-import 'dart:ui';
-
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 
 import '../../model/preanalysis/yolo_analysis.dart';
-import '../../model/preanalysis/yolo_result_preprocessing.dart';
 import '../../model/preanalysis/yolo_result_preprocessing.dart';
 import '../../utils/other/style/style_methods.dart';
 import '../../view/camera/photo_page.dart';
