@@ -1,2 +1,0 @@
-C:/nailapp/flutterfrontend/android/app/.cxx/RelWithDebInfo/5m25574d/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/nailapp/flutterfrontend/android/app/.cxx/RelWithDebInfo/5m25574d/armeabi-v7a/CMakeFiles/rebuild_cache.dir
