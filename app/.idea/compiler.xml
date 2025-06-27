@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="android.google_mlkit_commons" target="22" />
+      <module name="android.google_mlkit_object_detection" target="22" />
+      <module name="android.tflite_flutter" target="22" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
