@@ -66,6 +66,8 @@ class YOLOResultPreProcessing {
 
     int bestScore = 0;
 
+    print("results length: ${yoloAnalysis.currentResults.length}");
+
     for(YOLOResult result in yoloAnalysis.currentResults) {
       List<YOLOResultTrait> currentTraits = listCopy(initialTraits);
       int currentScore = 0;

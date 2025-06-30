@@ -51,6 +51,8 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
       wasUpdated = true;
     }
 
+    print("updating");
+
     List<YOLOResultTrait> traits = yoloAnalysis.currentBestTraits;
 
     List<Widget> widgets = [];

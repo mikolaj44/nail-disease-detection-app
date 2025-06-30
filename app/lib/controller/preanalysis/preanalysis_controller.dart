@@ -53,6 +53,8 @@ class PreAnalysisController {
         width: 640,
         height: 480);
 
+    updateCurrentYOLOResult();
+
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(croppedImage),
@@ -60,7 +62,7 @@ class PreAnalysisController {
       ),
     );
 
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(Duration(milliseconds: 500), () {
       CameraPageState.isShowingImage = false;
     });
   }
