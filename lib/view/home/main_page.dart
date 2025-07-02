@@ -2,85 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:file_picker/file_picker.dart';
 
+import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';
-
-Future<void> setInfoRead(String value) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  await prefs.setString('read', value);
-}
-
-Future<String> getInfoReadString() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  String? result = prefs.getString("read");
-
-  if (result == null) {
-    return "false";
-  }
-  return "true";
-}
-
-Future<PlatformFile> getLocalFile() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['png', 'jpg', 'tiff', 'bmp'], // call api here
-  );
-
-  if (result != null) {
-    return Future.value(result.files.first);
-  } else {
-    return Future.value(null); // probably throw an exception
-  }
-}
-
-Widget customButton(BuildContext context, String text, IconData iconData, {onPressedEvent, double size = 1, double iconSizeMult = 0.15}) {
-  return Column(
-      children: [
-        Container(
-          width: getWidth(context) * size,
-          height: getWidth(context) * size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: const SweepGradient(
-              colors: [
-                Color.fromARGB(255, 209, 178, 146),
-                Color.fromARGB(255, 220, 171, 175),
-                Color.fromARGB(255, 193, 173, 204),
-                //Color.fromARGB(255, 155, 176, 208),
-                Color.fromARGB(255, 209, 178, 146),
-              ],
-              //radius: 0.1,
-              //begin: Alignment.topRight,
-              //end: Alignment.bottomLeft,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                spreadRadius: 1,
-                blurRadius: 50,
-                offset: Offset(0, 0),
-              ),
-            ],
-            border: Border.all(color: Colors.black, width: 2),
-          ),
-          child: IconButton(
-            icon: Icon(
-              iconData,
-              size: getHeight(context) * iconSizeMult,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            onPressed: onPressedEvent,
-          ),
-        ),
-
-        //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
-      ],
-  );
-}
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -99,7 +23,6 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -180,7 +103,7 @@ class MainPageState extends State<MainPage> {
         toolbarHeight: getHeight(context) * 0.09,
       ),
 
-      body: SafeArea(
+      body: Expanded(
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -198,73 +121,216 @@ class MainPageState extends State<MainPage> {
             ),
           ),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-
-            children: <Widget>[
-              SizedBox(height: getHeight(context) * 0.03),
-
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    SizedBox(height: getHeight(context) * 0.025),
-
-                    Align(
-                      alignment: Alignment.center,
-                    child:
-                    Row(
-                      children: [
-                        SizedBox(width: getWidth(context) * 0.07),
-
-                        customButton(
-                          context,
-                          'Wybierz zdjęcie',
-                          Icons.image_rounded,
-                          onPressedEvent: () async {
-                            getLocalFile();
-                          },
-                          size: 0.3,
-                          iconSizeMult: 0.1,
-                        ),
-
-                        SizedBox(width: getWidth(context) * 0.05),
-
-                        customButton(
-                          context,
-                          'Prześlij zdjęcie',
-                          Icons.camera_alt_rounded,
-                          onPressedEvent: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CameraPage()),
-                            );
-                          },
-                          size: 0.5,
-                          iconSizeMult: 0.15,
-                        ),
-                      ],
-                    ),
-                    ),
-
-
-                    SizedBox(height: getHeight(context) * 0.025),
-
-                  ],
-                ),
+          child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Card(
+          elevation: 20,
+          child:
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 0, 0, 0),
+                  Color.fromARGB(255, 61, 61, 61)
+                ],
+                begin: Alignment.topCenter,
               ),
+            ),
 
-              SizedBox(height: getHeight(context) * 0.1),
-            ],
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: getWidth(context) * 0.05,
+                    vertical: getHeight(context) * 0.1,
+                    // TODO: add some text
+                  ),
+                )
+            ),
+          )
+      ),
+      Align(
+        alignment: Alignment.bottomCenter,
+      child:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: <Widget>[
+                SizedBox(height: getHeight(context) * 0.03),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      SizedBox(height: getHeight(context) * 0.025),
+
+                      Align(
+                        alignment: Alignment.center,
+                        child:
+                        Row(
+                          children: [
+                            SizedBox(width: getWidth(context) * 0.07),
+
+                            customButton(
+                              context,
+                              'Wybierz zdjęcie',
+                              Icons.image_rounded,
+                              onPressedEvent: () async {
+                                StorageController.getLocalFile();
+                              },
+                              size: 0.3,
+                              iconSizeMult: 0.1,
+                            ),
+
+                            SizedBox(width: getWidth(context) * 0.05),
+
+                            customButton(
+                              context,
+                              'Prześlij zdjęcie',
+                              Icons.camera_alt_rounded,
+                              onPressedEvent: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CameraPage()),
+                                );
+                              },
+                              size: 0.5,
+                              iconSizeMult: 0.15,
+                            ),
+                          ],
+                        ),
+                      ),
+
+
+                      SizedBox(height: getHeight(context) * 0.025),
+
+                    ],
+                  ),
+                ),
+
+                //SizedBox(height: getHeight(context) * 0.1),
+              ],
+            ),
+
+              Container(
+                color: Colors.transparent,
+                height: getHeight(context) * 0.1,
+                clipBehavior: Clip.none,
+
+                child: Padding(
+                  padding: EdgeInsets.zero,
+                  child:
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: getWidth(context) / 2,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(topLeft: Radius
+                                .circular(10),
+                                topRight: Radius.zero,
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.zero),
+                            gradient: const SweepGradient(
+                              colors: [
+                                Color.fromARGB(255, 209, 178, 146),
+                                Color.fromARGB(255, 220, 171, 175),
+                                Color.fromARGB(255, 193, 173, 204),
+                                //Color.fromARGB(255, 155, 176, 208),
+                                Color.fromARGB(255, 209, 178, 146),
+                              ],
+                              //radius: 0.1,
+                              //begin: Alignment.topRight,
+                              //end: Alignment.bottomLeft,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                spreadRadius: 1,
+                                blurRadius: 50,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child:
+                          FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                            IconButton(
+                                onPressed: () {},
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                    Icons.home
+                                )),
+                          )
+                      ),
+                      Container(
+                          width: getWidth(context) / 2,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(topLeft: Radius
+                                .zero,
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.zero,
+                                bottomRight: Radius.circular(10)),
+                            gradient: const SweepGradient(
+                              colors: [
+                                Color.fromARGB(255, 209, 178, 146),
+                                Color.fromARGB(255, 220, 171, 175),
+                                Color.fromARGB(255, 193, 173, 204),
+                                //Color.fromARGB(255, 155, 176, 208),
+                                Color.fromARGB(255, 209, 178, 146),
+                              ],
+                              //radius: 0.1,
+                              //begin: Alignment.topRight,
+                              //end: Alignment.bottomLeft,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                spreadRadius: 1,
+                                blurRadius: 50,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child:
+                          FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                            IconButton(
+                                onPressed: () {},
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                    Icons.settings
+                                )),
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+          ]
+      ),
+      ),
+    ],
+              ),
+              ),
           ),
-        ),
-      ),
 
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        height: getHeight(context) * 0.15,
-      ),
     );
   }
 }

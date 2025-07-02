@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/storage/storage_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -9,15 +10,16 @@ import '../../utils/other/dimension_utils.dart';
 import '../home/main_page.dart';
 
 class IntroductionPage extends StatefulWidget {
-  int pageIndex = 0;
 
-  IntroductionPage({this.pageIndex = 0, super.key});
+  const IntroductionPage({super.key});
 
   @override
   IntroductionPageState createState() => IntroductionPageState();
 }
 
 class IntroductionPageState extends State<IntroductionPage> {
+  int pageIndex = 0;
+
   TextStyle getTextStyle(Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
     if(omitFontSize){
       return GoogleFonts.getFont(
@@ -40,53 +42,53 @@ class IntroductionPageState extends State<IntroductionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("resources/waves.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child:
-      Align(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            SizedBox(height: getHeight(context) * 0.06),
-
-            CarouselSlider(
-              options: CarouselOptions(
-                  height: getHeight(context) * 0.86,
-                  autoPlay: false,
-                  aspectRatio: 2.0,
-                  viewportFraction: 0.9,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      widget.pageIndex = index;
-                    });
-                  }
-              ),
-              items: getInstructionSliders(context),
-            ),
-
-            SizedBox(height: getHeight(context) * 0.02),
-
-            AnimatedSmoothIndicator(
-              activeIndex: widget.pageIndex,
-              count: 3,
-              effect: const WormEffect(
-                  dotHeight: 12,
-                  dotWidth: 12,
-                  dotColor: Color.fromARGB(255, 230, 230, 230),
-                  activeDotColor: Colors.black
-                //type: WormType.thinUnderground,
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("resources/waves.png"),
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        ),
-      ),
-    );
+            child:
+            Align(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  SizedBox(height: getHeight(context) * 0.06),
+
+                  CarouselSlider(
+                    options: CarouselOptions(
+                        height: getHeight(context) * 0.86,
+                        autoPlay: false,
+                        aspectRatio: 2.0,
+                        viewportFraction: 0.9,
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            pageIndex = index;
+                          });
+                        }
+                    ),
+                    items: getInstructionSliders(context),
+                  ),
+
+                  SizedBox(height: getHeight(context) * 0.02),
+
+                  AnimatedSmoothIndicator(
+                    activeIndex: pageIndex,
+                    count: 3,
+                    effect: const WormEffect(
+                        dotHeight: 12,
+                        dotWidth: 12,
+                        dotColor: Color.fromARGB(255, 230, 230, 230),
+                        activeDotColor: Colors.black
+                      //type: WormType.thinUnderground,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 
   List<Widget> getInstructionSliders(BuildContext context) {
