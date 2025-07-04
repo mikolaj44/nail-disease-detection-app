@@ -27,11 +27,10 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
   );
 }
 
-RouteTransitionsBuilder getSlideTransition() {
+RouteTransitionsBuilder getSlideTransition(Offset beginOffset) {
   return (context, animation, secondaryAnimation, child) {
-    const begin = Offset(0.0, 1.0);
     const end = Offset.zero;
-    final tween = Tween(begin: begin, end: end);
+    final tween = Tween(begin: beginOffset, end: end);
     final offsetAnimation = animation.drive(tween);
 
     return SlideTransition(position: offsetAnimation, child: child);

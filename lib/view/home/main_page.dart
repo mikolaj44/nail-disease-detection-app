@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
+import 'package:flutter_application_1/view/general/custom_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';
+import '../info/info_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -80,7 +82,7 @@ class MainPageState extends State<MainPage> {
                   pageBuilder:
                       (context, animation, secondaryAnimation) =>
                   const InfoPage(),
-                  transitionsBuilder: getSlideTransition(),
+                  transitionsBuilder: getSlideTransition(Offset(0, 1)),
                 ),
               );
             },
@@ -93,7 +95,7 @@ class MainPageState extends State<MainPage> {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
-                  transitionsBuilder: getSlideTransition(),
+                  transitionsBuilder: getSlideTransition(Offset(0, 1)),
                 ),
               );
             },
@@ -220,109 +222,7 @@ class MainPageState extends State<MainPage> {
               ],
             ),
 
-              Container(
-                color: Colors.transparent,
-                height: getHeight(context) * 0.1,
-                clipBehavior: Clip.none,
-
-                child: Padding(
-                  padding: EdgeInsets.zero,
-                  child:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: getWidth(context) / 2,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(topLeft: Radius
-                                .circular(10),
-                                topRight: Radius.zero,
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.zero),
-                            gradient: const SweepGradient(
-                              colors: [
-                                Color.fromARGB(255, 209, 178, 146),
-                                Color.fromARGB(255, 220, 171, 175),
-                                Color.fromARGB(255, 193, 173, 204),
-                                //Color.fromARGB(255, 155, 176, 208),
-                                Color.fromARGB(255, 209, 178, 146),
-                              ],
-                              //radius: 0.1,
-                              //begin: Alignment.topRight,
-                              //end: Alignment.bottomLeft,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black,
-                                spreadRadius: 1,
-                                blurRadius: 50,
-                                offset: Offset(0, 0),
-                              ),
-                            ],
-                            border: Border.all(color: Colors.black, width: 1),
-                          ),
-                          child:
-                          FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child:
-                            IconButton(
-                                onPressed: () {},
-                                padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(),
-                                icon: Icon(
-                                    Icons.home
-                                )),
-                          )
-                      ),
-                      Container(
-                          width: getWidth(context) / 2,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(topLeft: Radius
-                                .zero,
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.zero,
-                                bottomRight: Radius.circular(10)),
-                            gradient: const SweepGradient(
-                              colors: [
-                                Color.fromARGB(255, 209, 178, 146),
-                                Color.fromARGB(255, 220, 171, 175),
-                                Color.fromARGB(255, 193, 173, 204),
-                                //Color.fromARGB(255, 155, 176, 208),
-                                Color.fromARGB(255, 209, 178, 146),
-                              ],
-                              //radius: 0.1,
-                              //begin: Alignment.topRight,
-                              //end: Alignment.bottomLeft,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black,
-                                spreadRadius: 1,
-                                blurRadius: 50,
-                                offset: Offset(0, 0),
-                              ),
-                            ],
-                            border: Border.all(color: Colors.black, width: 1),
-                          ),
-                          child:
-                          FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child:
-                            IconButton(
-                                onPressed: () {},
-                                padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(),
-                                icon: Icon(
-                                    Icons.settings
-                                )),
-                          )
-                      ),
-                    ],
-                  ),
-                ),
-            ),
+            CustomNavigationBar()
           ]
       ),
       ),
@@ -331,67 +231,6 @@ class MainPageState extends State<MainPage> {
               ),
           ),
 
-    );
-  }
-}
-
-class InfoPage extends StatelessWidget {
-  const InfoPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Ważne informacje',
-          style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: getHeight(context) * 0.1),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 0.05),
-            child: RichText(
-              text: TextSpan(
-                style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
-                children: [
-                  TextSpan(
-                    text: 'Nasza aplikacja',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text:
-                        ' służy do wczesnego diagnozowania chorób paznokci. Udziela jedynie porad, które mogą być podstawą wizyty u dermatologa.',
-                  ),
-
-                  TextSpan(
-                    text: '\n\nZdjęcia, które zrobisz',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text:
-                        ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry. Obsługiwane formaty to PNG, JPEG, TIFF i BMP, a maksymalna wielkość zdjęcia to 5 MB.',
-                  ),
-
-                  TextSpan(
-                    text: '\n\nWięcej informacji',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text:
-                        ' uzyskasz na naszym Githubie: xyz.github.com - projekt realizowany w ramach koła naukowego "Praktyka".',
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

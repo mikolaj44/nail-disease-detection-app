@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         // localizationsDelegates: context.localizationDelegates,
         // supportedLocales: context.supportedLocales,
         // locale: context.locale,
-        home: IntroductionPage()
+        home: MainPage()
         // home: Builder(
         //   builder: (context) {
         //     if(!StorageController.getBool("introduction")) {
