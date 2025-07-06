@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/yolo_page.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +81,7 @@ class CameraPageState extends State<CameraPage> {
                   },
 
                   onMediaCaptureEvent: (event) async {
-                    PreAnalysisController.onMediaCaptureEvent(context, event);
+                    preAnalysisController.onMediaCaptureEvent(context, event);
                   },
                 ),
               ]);

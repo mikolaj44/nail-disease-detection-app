@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/general/custom_navigation_bar.dart';
@@ -50,7 +51,7 @@ class MainPageState extends State<MainPage> {
 
         //shape: Border(bottom: BorderSide(color: const Color.fromARGB(255, 255, 205, 205), width: 1)),
         title: Text(
-          'Diagnozer paznokci',
+          'Witaj!',
           style: GoogleFonts.getFont(
             'DM Serif Text',
             fontWeight: FontWeight.bold,
@@ -59,48 +60,48 @@ class MainPageState extends State<MainPage> {
           textAlign: TextAlign.left,
         ),
 
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language_rounded),
-            color: Colors.black,
-            onPressed: () {
-              // Navigator.of(context).push(
-              //   PageRouteBuilder(
-              //     pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
-              //     transitionsBuilder: getSlideTransition(),
-              //   ),
-              // );
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.question_mark_rounded),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder:
-                      (context, animation, secondaryAnimation) =>
-                  const InfoPage(),
-                  transitionsBuilder: getSlideTransition(Offset(0, 1)),
-                ),
-              );
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.people),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
-                  transitionsBuilder: getSlideTransition(Offset(0, 1)),
-                ),
-              );
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.language_rounded),
+        //     color: Colors.black,
+        //     onPressed: () {
+        //       // Navigator.of(context).push(
+        //       //   PageRouteBuilder(
+        //       //     pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
+        //       //     transitionsBuilder: getSlideTransition(),
+        //       //   ),
+        //       // );
+        //     },
+        //   ),
+        //
+        //   IconButton(
+        //     icon: const Icon(Icons.question_mark_rounded),
+        //     color: Colors.black,
+        //     onPressed: () {
+        //       Navigator.of(context).push(
+        //         PageRouteBuilder(
+        //           pageBuilder:
+        //               (context, animation, secondaryAnimation) =>
+        //           const InfoPage(),
+        //           transitionsBuilder: getSlideTransition(Offset(0, 1)),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        //
+        //   IconButton(
+        //     icon: const Icon(Icons.people),
+        //     color: Colors.black,
+        //     onPressed: () {
+        //       Navigator.of(context).push(
+        //         PageRouteBuilder(
+        //           pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
+        //           transitionsBuilder: getSlideTransition(Offset(0, 1)),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ],
 
         toolbarHeight: getHeight(context) * 0.09,
       ),
@@ -185,7 +186,7 @@ class MainPageState extends State<MainPage> {
                               'Wybierz zdjęcie',
                               Icons.image_rounded,
                               onPressedEvent: () async {
-                                StorageController.getLocalFile();
+                                storageController.getLocalFile();
                               },
                               size: 0.3,
                               iconSizeMult: 0.1,

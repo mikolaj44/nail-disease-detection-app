@@ -20,7 +20,7 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
   return GoogleFonts.getFont(
     'DM Serif Text',
     textStyle: TextStyle(
-      fontSize: MediaQuery.of(context).size.height * fontSize,
+      fontSize: getMinDimension(context) * fontSize,
       color: color,
       fontWeight: FontWeight.normal,
     ),

@@ -17,15 +17,15 @@ import '../../view/camera/photo_page.dart';
 final YOLOAnalysis yoloAnalysis = YOLOAnalysis();
 
 class PreAnalysisController {
-  static void init(){
-    yoloAnalysis.initModel();
+  void init(){
+    yoloAnalysis.init();
   }
 
-  static void updateCurrentYOLOResult(){
+  void updateCurrentYOLOResult(){
     YOLOResultPreProcessing.updateYOLOResultTraits();
   }
 
-  static void onStreamData(Map<String, dynamic> streamData){
+  void onStreamData(Map<String, dynamic> streamData){
     yoloAnalysis.setViewHasLoaded(true);
 
     if (streamData.containsKey("detections") && streamData["detections"] != null) {
@@ -37,7 +37,7 @@ class PreAnalysisController {
     }
   }
 
-  static Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
+  Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
     if (CameraPageState.isShowingImage) { //|| !yoloAnalysis.resultIsValid()
       return;
     }

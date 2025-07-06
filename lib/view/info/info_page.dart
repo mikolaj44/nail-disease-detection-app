@@ -24,7 +24,7 @@ class InfoPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(height: getHeight(context) * 0.1),
+          SizedBox(height: getHeight(context) * 0.05),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 0.05),
             child: RichText(
@@ -46,7 +46,7 @@ class InfoPage extends StatelessWidget {
                   ),
                   TextSpan(
                     text:
-                    ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry. Obsługiwane formaty to PNG, JPEG, TIFF i BMP, a maksymalna wielkość zdjęcia to 5 MB.',
+                    ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry.',
                   ),
 
                   TextSpan(

@@ -8,11 +8,19 @@ import 'package:flutter_application_1/view/introduction/introduction_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+final languages = ["Polski", "English"];
+//final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
+
+PreAnalysisController preAnalysisController = PreAnalysisController();
+StorageController storageController = StorageController();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  PreAnalysisController.init();
-  StorageController.init();
+  //await EasyLocalization.ensureInitialized();
+
+  preAnalysisController.init();
+  storageController.init();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // Normal Portrait
@@ -20,23 +28,20 @@ void main() async {
   ]);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => yoloAnalysis,
-      child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => yoloAnalysis),
+        ChangeNotifierProvider(create: (context) => storageController),
+      ],
+      child: const MyApp()
+      // child: EasyLocalization(
+      //   supportedLocales: locales,
+      //   path: 'assets/translations',
+      //   fallbackLocale:  locales.first,
+      //   child: const MyApp(),
+      // )
     ),
-    // EasyLocalization(
-    //   supportedLocales: [
-    //     Locale('pl', 'PL'),
-    //     Locale('en', 'US'),
-    //   ],
-    //   path: 'assets/translations',
-    //   fallbackLocale: Locale('pl', 'PL'),
-    //
-    //   child: ChangeNotifierProvider(
-    //     create: (context) => yoloAnalysis,
-    //     child: const MyApp(),
-    //   ),
-    // )
+
   );
 }
 
@@ -52,16 +57,15 @@ class MyApp extends StatelessWidget {
         // localizationsDelegates: context.localizationDelegates,
         // supportedLocales: context.supportedLocales,
         // locale: context.locale,
-        home: MainPage()
-        // home: Builder(
-        //   builder: (context) {
-        //     if(!StorageController.getBool("introduction")) {
-        //       StorageController.setBool("introduction", true);
-        //       return IntroductionPage();
-        //     }
-        //     return MainPage();
-        //   }
-        // )
+        home: Builder(
+          builder: (context) {
+            if(!storageController.getBool("introduction")) {
+              storageController.setBool("introduction", true);
+              return IntroductionPage();
+            }
+            return MainPage();
+          }
+        )
     );
   }
 }

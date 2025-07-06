@@ -7,6 +7,7 @@ import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';
 import '../../view/home/main_page.dart';
 import '../../view/info/info_page.dart';
+import "../../view/settings/settings_page.dart";
 
 enum ActivePage {
   SETTINGS_PAGE,
@@ -20,6 +21,8 @@ class PageSwitchingController {
   static void setActivePage(BuildContext context, ActivePage newPage){
     Widget? switchWidget;
     Offset? slideBeginOffset;
+    
+    // TODO: refactor this, probably a list of classes and use reflection, this method should probably just take an index of next page
 
     switch(newPage){
       case ActivePage.SETTINGS_PAGE:
@@ -33,7 +36,7 @@ class PageSwitchingController {
           default:
             return;
         }
-        switchWidget = InfoPage();
+        switchWidget = SettingsPage();
       case ActivePage.MAIN_PAGE:
         switch(activePage){
           case ActivePage.MAIN_PAGE:

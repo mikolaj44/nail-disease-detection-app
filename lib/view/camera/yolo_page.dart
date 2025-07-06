@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
@@ -38,7 +39,7 @@ class YOLOPageState extends State<YOLOPage> {
 
               onStreamingData: (streamData) {
                 setState(() {
-                  PreAnalysisController.onStreamData(streamData);
+                  preAnalysisController.onStreamData(streamData);
                 });
               },
 

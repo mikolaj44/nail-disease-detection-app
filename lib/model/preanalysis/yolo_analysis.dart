@@ -28,7 +28,7 @@ class YOLOAnalysis with ChangeNotifier {
 
   bool viewHasLoaded = false;
 
-  void initModel() async {
+  void init() async {
     yoloViewController = YOLOViewController();
 
     await yoloViewController.setThresholds(

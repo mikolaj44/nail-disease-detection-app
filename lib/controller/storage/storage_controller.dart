@@ -2,24 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 
-class StorageController {
-  static late SharedPreferences prefs;
+class StorageController with ChangeNotifier {
+  late SharedPreferences prefs;
 
-  static Future<void> init() async {
+  Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<void> setBool(String key, bool value) async {
+  Future<void> setBool(String key, bool value) async {
     await prefs.setBool(key, value);
+    notifyListeners();
   }
 
-  static bool getBool(String key){
+  bool getBool(String key){
     bool? result = prefs.getBool(key);
 
     return result ?? false;
   }
   
-  static Future<PlatformFile> getLocalFile() async {
+  Future<PlatformFile> getLocalFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg', 'tiff', 'bmp'], // call api here
