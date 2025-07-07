@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
@@ -52,7 +53,7 @@ class MainPageState extends State<MainPage> {
               Column(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      getTopBar(context, "Witaj!", alignLeft: true),
+      getTopBar(context, context.tr("welcome"), alignLeft: true),
 
       Card(
           elevation: 20,

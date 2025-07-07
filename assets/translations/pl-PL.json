@@ -1,3 +1,24 @@
 {
-  "test": ""
+  "welcome": "Witaj!",
+  "introduction": "Pokazuj wprowadzenie:",
+  "tutorial": "Pokazuj poradnik do zdjęć:",
+  "settings": "Ustawienia",
+  "language": "Język:",
+
+  "welcome_title": "Witamy w naszej aplikacji!",
+  "welcome_1": "Nasza aplikacja służy do analizy płytki paznokcia w celu wstępnego wykrycia chorób, które następnie można skonsultować z profesjonalistą.",
+  "welcome_2": "Całkowicie za darmo, bez logowania i w kilka chwil możesz otrzymać przydatną poradę.",
+  "welcome_3": "Przewiń w prawo, aby dowiedzieć się więcej!",
+
+  "privacy_policy_title": "Polityka prywatności",
+  "privacy_policy_1": "To nie żart! Nie zbieramy żadnych Twoich danych osobowych:"  ,
+  "privacy_policy_2": "- Nie jest wymagane połączenie z Internetem:",
+  "privacy_policy_3": "Analiza dokonywana jest lokalnie, za pomocą modeli szybkiego rozpoznawania obrazu.",
+  "privacy_policy_4": "- Nie jest wymagane logowanie, a Twoje dane nie są nigdzie zapisywane:",
+  "privacy_policy_5": "Jeśli masz wątpliwości, to kod całej aplikacji możesz znaleźć na naszym GitHubie, szczegółów szukaj w aplikacji",
+
+  "closing_remarks_title": "Końcowe uwagi",
+  "closing_remarks_1": "Pamiętaj, że uzyskana diagnoza jest jedynie wskazówką, prawdziwe wyniki uzyskasz u dermatologa - nasza aplikacja stanowi jedynie pomoc w wykryciu choroby, nie ponosimy odpowiedzialności za nieodpowiednie wyniki.",
+
+  "go_to_app_button": "Przejdź do aplikacji"
 }

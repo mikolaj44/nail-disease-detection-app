@@ -57,7 +57,7 @@ class SettingsPageState extends State<SettingsPage> {
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        getTopBar(context, "Ustawienia", alignLeft: false),
+                        getTopBar(context, context.tr("settings"), alignLeft: false),
                         Column(
                           children: [
                             //SizedBox(height: getHeight(context) * 0.1),
@@ -102,7 +102,7 @@ class SettingsPageState extends State<SettingsPage> {
                                               child: Align(
                                                 alignment: Alignment.center,
                                                 child: Text(
-                                                  "Język: ",
+                                                  context.tr("language"),
                                                   style: getTextStyle(
                                                     context,
                                                     Colors.black,
@@ -147,11 +147,11 @@ class SettingsPageState extends State<SettingsPage> {
                                                 ),
                                               ),
                                               child: DropdownMenu<String>(
-                                                initialSelection:
-                                                    languages.first,
-                                                onSelected: (String? value) {
-                                                  // TODO: not finding the locale for some reason, also add translations
-                                                  //context.setLocale(locales[languages.indexOf(value!)]);
+                                                initialSelection: storageController.getString("language"),
+                                                onSelected: (String? value) async {
+                                                  // TODO: add more translations
+                                                  context.setLocale(locales[languages.indexOf(value!)]);
+                                                  await storageController.setString("language", value);
                                                 },
                                                 dropdownMenuEntries:
                                                     menuEntries,
@@ -226,7 +226,7 @@ class SettingsPageState extends State<SettingsPage> {
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                "Pokazuj wprowadzenie: ",
+                                                context.tr("introduction"),
                                                 style: getTextStyle(
                                                   context,
                                                   Colors.black,
@@ -323,7 +323,7 @@ class SettingsPageState extends State<SettingsPage> {
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                "Pokazuj poradnik do zdjęć: ",
+                                                context.tr("tutorial"),
                                                 style: getTextStyle(
                                                   context,
                                                   Colors.black,

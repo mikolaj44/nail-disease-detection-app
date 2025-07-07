@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/storage/storage_controller.dart';
@@ -23,7 +24,9 @@ class IntroductionPageState extends State<IntroductionPage> {
 
   @override
   Widget build(BuildContext context) {
-          return Container(
+    return SafeArea(
+      child:
+          Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("resources/waves.png"),
@@ -69,7 +72,8 @@ class IntroductionPageState extends State<IntroductionPage> {
                 ],
               ),
             ),
-          );
+          ),
+    );
   }
 
   List<Widget> getInstructionSliders(BuildContext context) {
@@ -103,7 +107,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                       child: Align(
                         alignment: Alignment.topCenter,
                           child: AutoSizeText(
-                            "Witamy w naszej aplikacji!",
+                            context.tr("welcome_title"),
                             textAlign: TextAlign.left,
                             maxLines: 2,
                               wrapWords: false,
@@ -120,7 +124,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: AutoSizeText(
-                              "Nasza aplikacja służy do analizy płytki paznokcia w celu wstępnego wykrycia chorób, które następnie można skonsultować z profesjonalistą.",
+                              context.tr("welcome_1"),
                               textAlign: TextAlign.left,
                               //maxLines: 15,
                               wrapWords: false,
@@ -139,7 +143,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: AutoSizeText(
-                              "Całkowicie za darmo, bez logowania i w kilka chwil możesz otrzymać przydatną poradę.",
+                              context.tr("welcome_2"),
                               textAlign: TextAlign.left,
                               //maxLines: 5,
                               wrapWords: false,
@@ -156,7 +160,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                              "Przewiń dalej, aby dowiedzieć się więcej!",
+                              context.tr("welcome_3"),
                               textAlign: TextAlign.left,
                               //maxLines: 5,
                               wrapWords: false,
@@ -199,7 +203,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: AutoSizeText(
-                              "Polityka prywatności",
+                              context.tr("privacy_policy_title"),
                               textAlign: TextAlign.left,
                               minFontSize: 0,
                               wrapWords: false,
@@ -216,8 +220,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: AutoSizeText(
-                              "To nie żart! Nie zbieramy żadnych Twoich danych osobowych:",
-                              textAlign: TextAlign.left,
+                              context.tr("privacy_policy_1"),                              textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
                               style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
@@ -231,8 +234,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                              "- Nie jest wymagane połączenie z Internetem:",
-                              textAlign: TextAlign.left,
+                              context.tr("privacy_policy_2"),                              textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
                               style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
@@ -245,7 +247,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                              "Analiza dokonywana jest lokalnie, za pomocą modeli szybkiego rozpoznawania obrazu.",
+                              context.tr("privacy_policy_3"),
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
@@ -259,7 +261,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                              "- Nie jest wymagane logowanie, a Twoje dane nie są nigdzie zapisywane:",
+                              context.tr("privacy_policy_4"),
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
@@ -273,7 +275,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                              "Jeśli masz wątpliwości, to kod całej aplikacji możesz znaleźć na naszym GitHubie, szczegółów szukaj w aplikacji",
+                              context.tr("privacy_policy_5"),
                               textAlign: TextAlign.left,
                               minFontSize: 0,
                               style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
@@ -314,7 +316,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: AutoSizeText(
-                              "Końcowe uwagi",
+                              context.tr("closing_remarks_title"),
                               textAlign: TextAlign.center,
                               wrapWords: false,
                               minFontSize: 0,
@@ -329,7 +331,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: AutoSizeText(
-                              "Pamiętaj, że uzyskana diagnoza jest jedynie wskazówką, prawdziwe wyniki uzyskasz u dermatologa - nasza aplikacja stanowi jedynie pomoc w wykryciu choroby, nie ponosimy odpowiedzialności za nieodpowiednie wyniki.",
+                              context.tr("closing_remarks_1"),
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
@@ -383,7 +385,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: AutoSizeText(
-                                        "Przejdź do aplikacji",
+                                        context.tr("go_to_app_button"),
                                         textAlign: TextAlign.left,
                                         wrapWords: false,
                                         minFontSize: 0,

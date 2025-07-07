@@ -19,6 +19,17 @@ class StorageController with ChangeNotifier {
 
     return result ?? false;
   }
+
+  Future<void> setString(String key, String value) async {
+    await prefs.setString(key, value);
+    notifyListeners();
+  }
+
+  String getString(String key){
+    String? result = prefs.getString(key);
+
+    return result ?? "null";
+  }
   
   Future<PlatformFile> getLocalFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

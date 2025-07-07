@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 final languages = ["Polski", "English"];
-//final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
+final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
@@ -17,7 +17,7 @@ StorageController storageController = StorageController();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   preAnalysisController.init();
   storageController.init();
@@ -33,13 +33,12 @@ void main() async {
         ChangeNotifierProvider(create: (context) => yoloAnalysis),
         ChangeNotifierProvider(create: (context) => storageController),
       ],
-      child: const MyApp()
-      // child: EasyLocalization(
-      //   supportedLocales: locales,
-      //   path: 'assets/translations',
-      //   fallbackLocale:  locales.first,
-      //   child: const MyApp(),
-      // )
+      child: EasyLocalization(
+        supportedLocales: locales,
+        path: 'assets/translations',
+        fallbackLocale: locales[1],
+        child: MyApp(),
+      )
     ),
 
   );
@@ -52,15 +51,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if(!storageController.getBool("returning_user")){
       storageController.setBool("introduction", true);
-      storageController.setBool("returning_user", false);
+      storageController.setString("language", languages.first);
+
+      storageController.setBool("returning_user", true);
     }
+
+    context.setLocale(locales[languages.indexOf(storageController.getString("language"))]);
 
     return MaterialApp(
         title: 'Nail App',
         debugShowCheckedModeBanner: false,
-        // localizationsDelegates: context.localizationDelegates,
-        // supportedLocales: context.supportedLocales,
-        // locale: context.locale,
+
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
 
         home: Builder(
           builder: (context) {
@@ -71,7 +75,11 @@ class MyApp extends StatelessWidget {
           }
         )
 
-      //home: MainPage()
+        // home: Builder(
+        //   builder: (context) {
+        //     return MainPage();
+        //   },
+        // ),
     );
   }
 }
