@@ -46,7 +46,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                 height: getHeight(context) * 0.15,
                 child: Icon(
                   Icons.settings_accessibility_rounded,
-                  color: Colors.white60,
+                  color: Colors.white,
                   size: getMinDimension(context) / 10,
                 )
             ),
@@ -60,7 +60,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                 height: getHeight(context) * 0.15,
                 child: Icon(
                   Icons.home_rounded,
-                  color: Colors.white60,
+                  color: Colors.white,
                   size: getMinDimension(context) / 10,
                 )
             ),
@@ -74,7 +74,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                 height: getHeight(context) * 0.15,
                 child: Icon(
                   Icons.contact_support_rounded,
-                  color: Colors.white60,
+                  color: Colors.white,
                   size: getMinDimension(context) / 10,
                 )
             ),

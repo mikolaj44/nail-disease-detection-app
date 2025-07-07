@@ -48,24 +48,30 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if(!storageController.getBool("returning_user")){
+      storageController.setBool("introduction", true);
+      storageController.setBool("returning_user", false);
+    }
+
     return MaterialApp(
         title: 'Nail App',
         debugShowCheckedModeBanner: false,
         // localizationsDelegates: context.localizationDelegates,
         // supportedLocales: context.supportedLocales,
         // locale: context.locale,
+
         home: Builder(
           builder: (context) {
-            if(!storageController.getBool("introduction")) {
-              storageController.setBool("introduction", true);
+            if(storageController.getBool("introduction")) {
               return IntroductionPage();
             }
             return MainPage();
           }
         )
+
+      //home: MainPage()
     );
   }
 }

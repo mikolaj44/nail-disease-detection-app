@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
@@ -27,86 +28,7 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        //title: const Text('Aplikacja do diagnozy paznokci'),
-        backgroundColor:
-        Colors.white, //const Color.fromARGB(255, 237, 235, 235),
-
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 220, 194, 168),
-                //Color.fromARGB(255,222,177,181),
-                //Color.fromARGB(255,193,173,204),
-                Color.fromARGB(255, 155, 176, 208),
-              ],
-              //stops: [0.2, 0.3, 0.4, 0.6],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),
-
-        //shape: Border(bottom: BorderSide(color: const Color.fromARGB(255, 255, 205, 205), width: 1)),
-        title: Text(
-          'Witaj!',
-          style: GoogleFonts.getFont(
-            'DM Serif Text',
-            fontWeight: FontWeight.bold,
-            textStyle: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
-          ),
-          textAlign: TextAlign.left,
-        ),
-
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.language_rounded),
-        //     color: Colors.black,
-        //     onPressed: () {
-        //       // Navigator.of(context).push(
-        //       //   PageRouteBuilder(
-        //       //     pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
-        //       //     transitionsBuilder: getSlideTransition(),
-        //       //   ),
-        //       // );
-        //     },
-        //   ),
-        //
-        //   IconButton(
-        //     icon: const Icon(Icons.question_mark_rounded),
-        //     color: Colors.black,
-        //     onPressed: () {
-        //       Navigator.of(context).push(
-        //         PageRouteBuilder(
-        //           pageBuilder:
-        //               (context, animation, secondaryAnimation) =>
-        //           const InfoPage(),
-        //           transitionsBuilder: getSlideTransition(Offset(0, 1)),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        //
-        //   IconButton(
-        //     icon: const Icon(Icons.people),
-        //     color: Colors.black,
-        //     onPressed: () {
-        //       Navigator.of(context).push(
-        //         PageRouteBuilder(
-        //           pageBuilder: (context, animation, secondaryAnimation) => const AuthorsPage(),
-        //           transitionsBuilder: getSlideTransition(Offset(0, 1)),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ],
-
-        toolbarHeight: getHeight(context) * 0.09,
-      ),
-
-      body: Expanded(
+      body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -125,9 +47,13 @@ class MainPageState extends State<MainPage> {
           ),
 
           child:
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Stack(
     children: [
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      getTopBar(context, "Witaj!", alignLeft: true),
+
       Card(
           elevation: 20,
           child:
@@ -155,12 +81,7 @@ class MainPageState extends State<MainPage> {
             ),
           )
       ),
-      Align(
-        alignment: Alignment.bottomCenter,
-      child:
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -212,9 +133,7 @@ class MainPageState extends State<MainPage> {
                         ),
                       ),
 
-
                       SizedBox(height: getHeight(context) * 0.025),
-
                     ],
                   ),
                 ),
@@ -222,12 +141,14 @@ class MainPageState extends State<MainPage> {
                 //SizedBox(height: getHeight(context) * 0.1),
               ],
             ),
-
-            CustomNavigationBar()
-          ]
-      ),
-      ),
     ],
+              ),
+
+      Positioned(
+          bottom: 0,
+          child: CustomNavigationBar()
+      ),
+        ]
               ),
               ),
           ),

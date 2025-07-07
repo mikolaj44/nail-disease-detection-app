@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../utils/other/dimension_utils.dart';
+import '../../utils/other/style/style_methods.dart';
 import '../home/main_page.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -19,26 +20,6 @@ class IntroductionPage extends StatefulWidget {
 
 class IntroductionPageState extends State<IntroductionPage> {
   int pageIndex = 0;
-
-  TextStyle getTextStyle(Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
-    if(omitFontSize){
-      return GoogleFonts.getFont(
-        'DM Serif Text',
-        textStyle: TextStyle(
-          color: color,
-          fontWeight: FontWeight.normal,
-        ),
-      );
-    }
-    return GoogleFonts.getFont(
-      'DM Serif Text',
-      textStyle: TextStyle(
-        fontSize: fontSize,
-        color: color,
-        fontWeight: FontWeight.normal,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +108,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                             maxLines: 2,
                               wrapWords: false,
                               minFontSize: 0,
-                            style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 0.3)
+                            style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 0.3)
                           ),
                       ),
                     ),
@@ -144,7 +125,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               //maxLines: 15,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(
+                              style: getTextStyle(context,
                                   Color.fromARGB(255, 255, 255, 255),
                                   fontSize: getMinDimension(context) * 60)
                           ),
@@ -163,7 +144,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               //maxLines: 5,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         )
                     ),
@@ -180,7 +161,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               //maxLines: 5,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         )
                     ),
@@ -223,7 +204,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               minFontSize: 0,
                               wrapWords: false,
                               maxLines: 2,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 0.3)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 0.3)
                           ),
                         ),
                       ),
@@ -239,7 +220,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -254,7 +235,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -268,7 +249,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -282,7 +263,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -295,7 +276,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               "Jeśli masz wątpliwości, to kod całej aplikacji możesz znaleźć na naszym GitHubie, szczegółów szukaj w aplikacji",
                               textAlign: TextAlign.left,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -338,7 +319,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               wrapWords: false,
                               minFontSize: 0,
                               maxLines: 2,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -352,7 +333,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                               textAlign: TextAlign.left,
                               wrapWords: false,
                               minFontSize: 0,
-                              style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
+                              style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: getMinDimension(context) * 60)
                           ),
                         ),
                       ),
@@ -406,7 +387,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                                         textAlign: TextAlign.left,
                                         wrapWords: false,
                                         minFontSize: 0,
-                                        style: getTextStyle(Color.fromARGB(255, 255, 255, 255), fontSize: 10000)
+                                        style: getTextStyle(context, Color.fromARGB(255, 255, 255, 255), fontSize: 10000)
                                     ),
                                   ),
                                 ),

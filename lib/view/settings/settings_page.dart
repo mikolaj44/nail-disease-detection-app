@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -23,128 +24,375 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
-    languages.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
+    languages.map<MenuEntry>(
+      (String name) => MenuEntry(
+          value: name,
+          label: name,
+        ),
+    ),
   );
 
   @override
   Widget build(BuildContext context) {
     return Consumer<StorageController>(
-        builder: (context, analysis, child)
-    {
-      return Scaffold(
-        // appBar: AppBar(
-        //   title: Text(
-        //     'Ważne informacje',
-        //     style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0), fontSize: 0.03),
-        //   ),
-        //   backgroundColor: Colors.white,
-        //   centerTitle: true,
-        // ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-                children: [
-                  SizedBox(height: getHeight(context) * 0.1),
-
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Język: ", style: getTextStyle(context, Colors.black)),
-
-                        SizedBox(height: getWidth(context) * 0.1),
-
-                        DropdownMenu<String>(
-                            initialSelection: languages.first,
-                            onSelected: (String? value) {
-                              // TODO: not finding the locale for some reason, also add translations
-                              //context.setLocale(locales[languages.indexOf(value!)]);
-                            },
-                            dropdownMenuEntries: menuEntries,
-                            textStyle: getTextStyle(context, Colors.black)
-                        ),
-                      ]
+      builder: (context, analysis, child) {
+        return Scaffold(
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("resources/waves.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
 
-                  SizedBox(height: getHeight(context) * 0.05),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: SingleChildScrollView(
+                    //child: ConstrainedBox(
+        //           constraints: BoxConstraints(
+        // maxHeight: getHeight(context),
+        // minHeight: getHeight(context)
+        // ),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(getMinDimension(context) * 0.1),
-                          child:
-
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: getHeight(context) * 0.1,
-                                  child:
-                                  Align(
-                                    alignment: Alignment.center, child:
-                                  Text("Pokazuj wprowadzenie: ", style: getTextStyle(context, Colors.black, fontSize: 0.015),
-                                  ),),),
-                                SizedBox(
-                                  height: getHeight(context) * 0.1,
-                                  child:
-                                  Align(
-                                    alignment: Alignment.center, child:
-                                  Text("Pokazuj poradnik do zdjęć: ", style: getTextStyle(context, Colors.black, fontSize: 0.015),
-                                  ),),),
-                              ]
-                          ),),
-
-                        Padding(
-                          padding: EdgeInsets.all(getMinDimension(context) * 0.1),
-                          child:
-
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                    height: getHeight(context) * 0.1,
-                                    child: Switch(
-                                      value: storageController.getBool(
-                                          "introduction"),
-                                      onChanged: (bool value) {
-                                        //setState(() async {
-                                        storageController.setBool(
-                                            "introduction",
-                                            !storageController.getBool(
-                                                "introduction"));
-                                        //});
-                                      },
-                                      activeTrackColor: Colors.black,
-                                      hoverColor: Colors.black,
+                        getTopBar(context, "Ustawienia", alignLeft: false),
+                        Column(
+                          children: [
+                            //SizedBox(height: getHeight(context) * 0.1),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                getMinDimension(context) * 0.05,
+                              ),
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.black),
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(255, 155, 176, 208),
+                                        Color.fromARGB(255, 193, 173, 204),
+                                        Color.fromARGB(255, 222, 177, 181),
+                                        Color.fromARGB(255, 220, 194, 168),
+                                      ],
+                                      //stops: [0.2, 0.3, 0.4, 0.6],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
                                     ),
                                   ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                      getMinDimension(context) * 0.05,
+                                    ),
+                                    child: SizedBox(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              height: getHeight(context) * 0.1,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "Język: ",
+                                                  style: getTextStyle(
+                                                    context,
+                                                    Colors.black,
+                                                    fontSize: 0.045,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
 
-                                  SizedBox(
-                                      height: getHeight(context) * 0.1,
-                                      child: Switch(
-                                        value: storageController.getBool(
-                                            "tutorial"),
-                                        onChanged: (bool value) {
-                                          //setState(() async {
-                                          storageController.setBool(
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color.fromARGB(
+                                                      255,
+                                                      155,
+                                                      176,
+                                                      208,
+                                                    ),
+                                                    Color.fromARGB(
+                                                      255,
+                                                      193,
+                                                      173,
+                                                      204,
+                                                    ),
+                                                    Color.fromARGB(
+                                                      255,
+                                                      222,
+                                                      177,
+                                                      181,
+                                                    ),
+                                                    Color.fromARGB(
+                                                      255,
+                                                      220,
+                                                      194,
+                                                      168,
+                                                    ),
+                                                  ],
+                                                  //stops: [0.2, 0.3, 0.4, 0.6],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ),
+                                              ),
+                                              child: DropdownMenu<String>(
+                                                initialSelection:
+                                                    languages.first,
+                                                onSelected: (String? value) {
+                                                  // TODO: not finding the locale for some reason, also add translations
+                                                  //context.setLocale(locales[languages.indexOf(value!)]);
+                                                },
+                                                dropdownMenuEntries:
+                                                    menuEntries,
+                                                textStyle: getTextStyle(
+                                                  context,
+                                                  Colors.black,
+                                                ),
+                                                inputDecorationTheme:
+                                                    InputDecorationTheme(
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                  color:
+                                                                      Colors
+                                                                          .black,
+                                                                ),
+                                                          ),
+                                                    ),
+                                                enableSearch: false,
+                                                enableFilter: false,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            //SizedBox(height: getHeight(context) * 0.05),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                getMinDimension(context) * 0.05,
+                              ),
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.black),
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(255, 155, 176, 208),
+                                        Color.fromARGB(255, 193, 173, 204),
+                                        Color.fromARGB(255, 222, 177, 181),
+                                        Color.fromARGB(255, 220, 194, 168),
+                                      ],
+                                      //stops: [0.2, 0.3, 0.4, 0.6],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                      getMinDimension(context) * 0.05,
+                                    ),
+
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            height: getHeight(context) * 0.1,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Pokazuj wprowadzenie: ",
+                                                style: getTextStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  fontSize: 0.045,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          Switch(
+                                            value: storageController.getBool(
+                                              "introduction",
+                                            ),
+                                            onChanged: (bool value) {
+                                              //setState(() async {
+                                              storageController.setBool(
+                                                "introduction",
+                                                !storageController.getBool(
+                                                  "introduction",
+                                                ),
+                                              );
+                                              //});
+                                            },
+
+                                            activeTrackColor: Color.fromARGB(
+                                              255,
+                                              155,
+                                              176,
+                                              208,
+                                            ),
+                                            //focusColor: Color.fromARGB(20, 0, 0, 0),
+                                            trackOutlineColor:
+                                                MaterialStateProperty.resolveWith(
+                                                  (
+                                                    final Set<MaterialState>
+                                                    states,
+                                                  ) {
+                                                    if (states.contains(
+                                                      MaterialState.selected,
+                                                    )) {
+                                                      return null;
+                                                    }
+
+                                                    return Colors.black;
+                                                  },
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: EdgeInsets.all(
+                                getMinDimension(context) * 0.05,
+                              ),
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.black),
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(255, 155, 176, 208),
+                                        Color.fromARGB(255, 193, 173, 204),
+                                        Color.fromARGB(255, 222, 177, 181),
+                                        Color.fromARGB(255, 220, 194, 168),
+                                      ],
+                                      //stops: [0.2, 0.3, 0.4, 0.6],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                      getMinDimension(context) * 0.05,
+                                    ),
+
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            height: getHeight(context) * 0.1,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Pokazuj poradnik do zdjęć: ",
+                                                style: getTextStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  fontSize: 0.045,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          Switch(
+                                            value: storageController.getBool(
                                               "tutorial",
-                                              !storageController.getBool(
-                                                  "tutorial"));
-                                          //});
-                                        },
-                                        activeTrackColor: Colors.black,
-                                        hoverColor: Colors.black,
-                                      )),
-                                ]),),
-                      ])
-                ]
-            ),
+                                            ),
+                                            onChanged: (bool value) {
+                                              //setState(() async {
+                                              storageController.setBool(
+                                                "tutorial",
+                                                !storageController.getBool(
+                                                  "tutorial",
+                                                ),
+                                              );
+                                              //});
+                                            },
+                                            activeTrackColor: Color.fromARGB(
+                                              255,
+                                              155,
+                                              176,
+                                              208,
+                                            ),
+                                            // trackColor: Color.fromARGB(255, 155, 176, 208),
+                                            trackOutlineColor:
+                                                MaterialStateProperty.resolveWith(
+                                                  (
+                                                    final Set<MaterialState>
+                                                    states,
+                                                  ) {
+                                                    if (states.contains(
+                                                      MaterialState.selected,
+                                                    )) {
+                                                      return null;
+                                                    }
 
-            CustomNavigationBar()
-          ],
-        ),
-      );
-    });
+                                                    return Colors.black;
+                                                  },
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: getHeight(context) * 0.15, // TODO: probably make a height property of the custom navigation bar
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(bottom: 0, child: CustomNavigationBar()),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
