@@ -9,8 +9,9 @@ class PageSwitchingController with ChangeNotifier {
   List<Widget> pages = [];
   int activePageIndex = 1;
   Offset transitionOffset = Offset(1,0);
+  final CustomNavigationBar customNavigationBar;
 
-  PageSwitchingController({required CustomNavigationBar customNavigationBar}){
+  PageSwitchingController({required this.customNavigationBar}){
     for(CustomNavigationBarButton button in customNavigationBar.buttons){
       pages.add(button.switchWidget);
     }
@@ -26,6 +27,15 @@ class PageSwitchingController with ChangeNotifier {
     transitionOffset = Offset(sign(index - activePageIndex).toDouble(), 0);
 
     activePageIndex = index;
+
+    for (int i = 0; i < pages.length; i++) {
+      if (i == index) {
+        customNavigationBar.buttons[i] = CustomNavigationBarButton(switchWidget: customNavigationBar.buttons[i].switchWidget, iconData: customNavigationBar.buttons[i].iconData, iconColor: Colors.white);
+      }
+      else {
+        customNavigationBar.buttons[i] = CustomNavigationBarButton(switchWidget: customNavigationBar.buttons[i].switchWidget, iconData: customNavigationBar.buttons[i].iconData, iconColor: Colors.white60);
+      }
+    }
 
     notifyListeners();
   }

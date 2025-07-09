@@ -10,10 +10,6 @@ Created as part of the "Practice" student research group
 
 Buttons in main menu need to be scaled properly to fit
 
-The navigation bar needs to be refactored (list of classes and taking an integer index as a parameter to switch), slide animations are needed
-
-An indicator for the currently active page on the navigation bar would be useful
-
 Fix the focus problem on camera view
 
 Add image cropping
@@ -31,3 +27,5 @@ The button on the introduction page has a weird graphical bug on mobile that's n
 Settings menu (design and functionality)
 
 English translation
+
+Refactored the navigation bar, it also shows which page is active. The slide animation still needs to be added

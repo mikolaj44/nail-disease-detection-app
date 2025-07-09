@@ -20,7 +20,7 @@ final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
 
-List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded), CustomNavigationBarButton(switchWidget: AuthorsPage(), iconData: Icons.contact_support_rounded)];
+List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: AuthorsPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
 CustomNavigationBar customNavigationBar = CustomNavigationBar(buttons: buttons);
 
 PageSwitchingController pageSwitchingController = PageSwitchingController(customNavigationBar: customNavigationBar);

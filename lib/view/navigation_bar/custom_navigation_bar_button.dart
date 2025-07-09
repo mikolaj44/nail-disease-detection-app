@@ -7,30 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../controller/page_switching/page_switching_controller.dart';
 import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';
+import 'custom_navigation_bar.dart';
 
-class CustomNavigationBarButton extends StatefulWidget{
-  final Color iconColor = Colors.white60;
+class CustomNavigationBarButton extends StatelessWidget{
+  final Color iconColor;
   final IconData iconData;
   final Widget switchWidget;
 
-  const CustomNavigationBarButton({required this.switchWidget, required this.iconData, super.key});
-
-  @override
-  State<CustomNavigationBarButton> createState() => CustomNavigationBarButtonState();
-}
-
-class CustomNavigationBarButtonState extends State<CustomNavigationBarButton> {
-  late Color iconColor;
-  late IconData iconData;
-  late Widget switchWidget;
-
-  @override
-  void initState() {
-    super.initState();
-    iconColor = widget.iconColor;
-    iconData = widget.iconData;
-    switchWidget = widget.switchWidget;
-  }
+  const CustomNavigationBarButton({required this.switchWidget, required this.iconData, required this.iconColor, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +24,7 @@ class CustomNavigationBarButtonState extends State<CustomNavigationBarButton> {
       onTap: () => pageSwitchingController.setActivePage(context: context, switchWidget: switchWidget),
       child: SizedBox(
           width: getWidth(context) / 3,
-          height: getHeight(context) * 0.15,
+          height: getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE,
           child: Icon(
             iconData,
             color: iconColor,
