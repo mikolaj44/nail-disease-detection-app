@@ -8,62 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-Widget getTopBar(BuildContext context, String text, {bool alignLeft = true}){
-  return Container(
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black)),
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 155, 176, 208),
-            Color.fromARGB(255, 193, 173, 204),
-            Color.fromARGB(255, 222, 177, 181),
-            Color.fromARGB(255, 220, 194, 168),
-          ],
-          //stops: [0.2, 0.3, 0.4, 0.6],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-      ),
-      child:
-      Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(
-                  getMinDimension(context) * 0.05),
-              child:
-              SizedBox(
-                height: getHeight(context) * 0.06,
-                child: Align(
-                  alignment: alignLeft ? Alignment.centerLeft : Alignment.center,
-                  child:
-                  AutoSizeText(
-                      text,
-                      textAlign: TextAlign.left,
-                      maxLines: 2,
-                      wrapWords: false,
-                      minFontSize: 0,
-                      style: getTextStyle(
-                          context, Colors.black,
-                          fontSize: getMinDimension(
-                              context) * 0.5
-                      )
-                  ),
-                ),
-              ),
-            ),
-            // Positioned(
-            //   bottom: 0,
-            //   child:
-            //   Divider(
-            //       color: Colors.black,
-            //       thickness: 2
-            //   ),
-            // )
-          ]
-      )
-  );
-}
-
 TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
   if(omitFontSize){
     return GoogleFonts.getFont(

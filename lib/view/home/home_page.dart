@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';
 import '../info/info_page.dart';
+import '../top_bar/custom_top_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,8 +51,7 @@ class HomePageState extends State<HomePage> {
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              getTopBar(context, context.tr("welcome"), alignLeft: true),
-
+              CustomTopBar(text: context.tr("welcome"), color: Colors.black, alignLeft: true),
               Card(
                   elevation: 20,
                   child:

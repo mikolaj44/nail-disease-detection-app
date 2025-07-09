@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_application_1/view/top_bar/custom_top_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
@@ -55,7 +56,7 @@ class SettingsPageState extends State<SettingsPage> {
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        getTopBar(context, context.tr("settings"), alignLeft: false),
+                        CustomTopBar(text: context.tr("settings"), color: Colors.black, alignLeft: false),
                         Column(
                           children: [
                             //SizedBox(height: getHeight(context) * 0.1),

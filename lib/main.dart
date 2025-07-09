@@ -4,7 +4,7 @@ import 'package:flutter_application_1/controller/page_switching/page_switching_c
 import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controller/storage/storage_controller.dart';
-import 'package:flutter_application_1/view/authors/authors_page.dart';
+import 'package:flutter_application_1/view/info/info_page.dart';
 import 'package:flutter_application_1/view/main/main_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar_button.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
@@ -20,7 +20,7 @@ final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
 
-List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: AuthorsPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
+List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: InfoPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
 CustomNavigationBar customNavigationBar = CustomNavigationBar(buttons: buttons);
 
 PageSwitchingController pageSwitchingController = PageSwitchingController(customNavigationBar: customNavigationBar);
