@@ -1,76 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/view/camera/camera_page.dart';
-import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../controller/storage/storage_controller.dart';
+import '../../utils/other/simple_methods.dart';
 import '../../utils/other/style/style_methods.dart';
-import '../../view/home/main_page.dart';
-import '../../view/info/info_page.dart';
-import "../../view/settings/settings_page.dart";
+import '../../view/navigation_bar/custom_navigation_bar_button.dart';
+import '../../view/navigation_bar/custom_navigation_bar.dart';
 
-enum ActivePage {
-  SETTINGS_PAGE,
-  MAIN_PAGE,
-  INFO_PAGE
-}
+class PageSwitchingController with ChangeNotifier {
+  List<Widget> pages = [];
+  int activePageIndex = 1;
+  Offset transitionOffset = Offset(1,0);
 
-class PageSwitchingController {
-  static ActivePage activePage = ActivePage.MAIN_PAGE;
-
-  static void setActivePage(BuildContext context, ActivePage newPage){
-    Widget? switchWidget;
-    Offset? slideBeginOffset;
-    
-    // TODO: refactor this, probably a list of classes and use reflection, this method should probably just take an index of next page
-
-    switch(newPage){
-      case ActivePage.SETTINGS_PAGE:
-        switch(activePage){
-          case ActivePage.SETTINGS_PAGE:
-            return;
-          case ActivePage.INFO_PAGE:
-            slideBeginOffset = Offset(1, 0);
-          case ActivePage.MAIN_PAGE:
-            slideBeginOffset = Offset(-1, 0);
-          default:
-            return;
-        }
-        switchWidget = SettingsPage();
-      case ActivePage.MAIN_PAGE:
-        switch(activePage){
-          case ActivePage.MAIN_PAGE:
-            return;
-          case ActivePage.INFO_PAGE:
-            slideBeginOffset = Offset(1, 0);
-          case ActivePage.SETTINGS_PAGE:
-            slideBeginOffset = Offset(-1, 0);
-          default:
-            return;
-        }
-        switchWidget = MainPage();
-      case ActivePage.INFO_PAGE:
-        switch(activePage){
-          case ActivePage.INFO_PAGE:
-            return;
-          case ActivePage.MAIN_PAGE:
-            slideBeginOffset = Offset(1, 0);
-          case ActivePage.SETTINGS_PAGE:
-            slideBeginOffset = Offset(-1, 0);
-          default:
-            return;
-        }
-        switchWidget = InfoPage();
-      default:
-        return;
+  PageSwitchingController({required CustomNavigationBar customNavigationBar}){
+    for(CustomNavigationBarButton button in customNavigationBar.buttons){
+      pages.add(button.switchWidget);
     }
+  }
 
-    activePage = newPage;
+  Widget getActivePage(){
+    return pages[activePageIndex];
+  }
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => switchWidget!),
-      (Route<dynamic> route) => false,
-    );
+  void setActivePage({required BuildContext context, required Widget switchWidget}){
+    int index = pages.indexOf(switchWidget);
+
+    transitionOffset = Offset(sign(index - activePageIndex).toDouble(), 0);
+
+    activePageIndex = index;
+
+    notifyListeners();
   }
 }

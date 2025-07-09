@@ -84,15 +84,15 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
   );
 }
 
-RouteTransitionsBuilder getSlideTransition(Offset beginOffset) {
-  return (context, animation, secondaryAnimation, child) {
-    const end = Offset.zero;
-    final tween = Tween(begin: beginOffset, end: end);
-    final offsetAnimation = animation.drive(tween);
-
-    return SlideTransition(position: offsetAnimation, child: child);
-  };
-}
+// RouteTransitionsBuilder getSlideTransition(Offset beginOffset) {
+//   return (context, animation, secondaryAnimation, child) {
+//     const end = Offset.zero;
+//     final tween = Tween(begin: beginOffset, end: end);
+//     final offsetAnimation = animation.drive(tween);
+//
+//     return SlideTransition(position: offsetAnimation, child: child);
+//   };
+// }
 
 Widget customButton(BuildContext context, String text, IconData iconData, {onPressedEvent, double size = 1, double iconSizeMult = 0.15}) {
   return Column(

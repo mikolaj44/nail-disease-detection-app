@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:flutter_application_1/view/general/custom_navigation_bar.dart';
+import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
@@ -62,8 +63,6 @@ class InfoPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-
-          CustomNavigationBar()
         ],
       ),
     );

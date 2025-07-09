@@ -5,13 +5,13 @@ import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:flutter_application_1/view/general/custom_navigation_bar.dart';
+import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
 import '../../main.dart';
 import '../../utils/other/style/style_methods.dart';
-import '../home/main_page.dart';
+import '../home/home_page.dart';
 
 typedef MenuEntry = DropdownMenuEntry<String>;
 
@@ -38,9 +38,7 @@ class SettingsPageState extends State<SettingsPage> {
       builder: (context, analysis, child) {
         return Scaffold(
           body: SafeArea(
-            child: Stack(
-              children: [
-                Container(
+                child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("resources/waves.png"),
@@ -387,9 +385,6 @@ class SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                Positioned(bottom: 0, child: CustomNavigationBar()),
-              ],
-            ),
           ),
         );
       },

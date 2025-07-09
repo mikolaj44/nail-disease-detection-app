@@ -58,7 +58,7 @@ class PreAnalysisController {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(croppedImage),
-        transitionsBuilder: getSlideTransition(Offset(0, 1)),
+        //transitionsBuilder: getSlideTransition(Offset(0, 1)),
       ),
     );
 

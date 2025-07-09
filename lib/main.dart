@@ -1,10 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/page_switching/page_switching_controller.dart';
 import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controller/storage/storage_controller.dart';
-import 'package:flutter_application_1/view/home/main_page.dart';
+import 'package:flutter_application_1/view/authors/authors_page.dart';
+import 'package:flutter_application_1/view/main/main_page.dart';
+import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar_button.dart';
+import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
+import 'package:flutter_application_1/view/home/home_page.dart';
 import 'package:flutter_application_1/view/introduction/introduction_page.dart';
+import 'package:flutter_application_1/view/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -13,6 +19,11 @@ final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
+
+List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded), CustomNavigationBarButton(switchWidget: AuthorsPage(), iconData: Icons.contact_support_rounded)];
+CustomNavigationBar customNavigationBar = CustomNavigationBar(buttons: buttons);
+
+PageSwitchingController pageSwitchingController = PageSwitchingController(customNavigationBar: customNavigationBar);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +43,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => yoloAnalysis),
         ChangeNotifierProvider(create: (context) => storageController),
+        ChangeNotifierProvider(create: (context) => pageSwitchingController)
       ],
       child: EasyLocalization(
         supportedLocales: locales,
@@ -66,20 +78,20 @@ class MyApp extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
 
-        home: Builder(
-          builder: (context) {
-            if(storageController.getBool("introduction")) {
-              return IntroductionPage();
-            }
-            return MainPage();
-          }
-        )
-
         // home: Builder(
         //   builder: (context) {
+        //     if(storageController.getBool("introduction")) {
+        //       return IntroductionPage();
+        //     }
         //     return MainPage();
-        //   },
-        // ),
+        //   }
+        // )
+
+        home: Builder(
+          builder: (context) {
+            return MainPage();
+          },
+        ),
     );
   }
 }
