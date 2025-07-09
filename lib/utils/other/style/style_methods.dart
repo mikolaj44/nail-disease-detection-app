@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +14,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
   if(omitFontSize){
     return GoogleFonts.getFont(
-      'DM Serif Text',
+      googleFontName,
       textStyle: TextStyle(
         color: color,
         fontWeight: FontWeight.normal,
@@ -19,7 +22,7 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
     );
   }
   return GoogleFonts.getFont(
-    'DM Serif Text',
+    googleFontName,
     textStyle: TextStyle(
       fontSize: getMinDimension(context) * fontSize,
       color: color,
@@ -38,47 +41,42 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
 //   };
 // }
 
-Widget customButton(BuildContext context, String text, IconData iconData, {onPressedEvent, double size = 1, double iconSizeMult = 0.15}) {
-  return Column(
-    children: [
-      Container(
-        width: getWidth(context) * size,
-        height: getWidth(context) * size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: const SweepGradient(
-            colors: [
-              Color.fromARGB(255, 209, 178, 146),
-              Color.fromARGB(255, 220, 171, 175),
-              Color.fromARGB(255, 193, 173, 204),
-              //Color.fromARGB(255, 155, 176, 208),
-              Color.fromARGB(255, 209, 178, 146),
-            ],
-            //radius: 0.1,
-            //begin: Alignment.topRight,
-            //end: Alignment.bottomLeft,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              spreadRadius: 1,
-              blurRadius: 50,
-              offset: Offset(0, 0),
-            ),
-          ],
-          border: Border.all(color: Colors.black, width: 2),
-        ),
-        child: IconButton(
-          icon: Icon(
-            iconData,
-            size: getHeight(context) * iconSizeMult,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          onPressed: onPressedEvent,
-        ),
+Widget getCustomRoundButton(BuildContext context, String text, IconData iconData, {required onPressedEvent, required double width, required double height}) {
+  return Container(
+    width: min(width, height),
+    height: min(width, height),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: const SweepGradient(
+        colors: [
+          Color.fromARGB(255, 209, 178, 146),
+          Color.fromARGB(255, 220, 171, 175),
+          Color.fromARGB(255, 193, 173, 204),
+          //Color.fromARGB(255, 155, 176, 208),
+          Color.fromARGB(255, 209, 178, 146),
+        ],
       ),
-
-      //Text(text, style: TextStyle(fontWeight: FontWeight.normal)),
-    ],
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black,
+          spreadRadius: 1,
+          blurRadius: 50,
+        ),
+      ],
+      border: Border.all(color: Colors.black, width: 2),
+    ),
+    child: IconButton(
+      iconSize: min(width, height) * 0.5,
+      icon: Icon(
+        iconData,
+        size: min(width, height) * 0.5,
+        color: Color.fromARGB(255, 255, 255, 255),
+      ),
+      onPressed: onPressedEvent,
+      style: IconButton.styleFrom(
+        shape: CircleBorder(),
+        splashFactory: InkRipple.splashFactory,
+      ),
+    ),
   );
 }

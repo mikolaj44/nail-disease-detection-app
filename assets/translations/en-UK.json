@@ -21,5 +21,7 @@
   "closing_remarks_title": "Closing remarks",
   "closing_remarks_1": "Remember, that the provided diagnosis serves only a guideline, you will get real results from a dermatologist - our app is only supposed to help to detect the disease, we do not carry any responsibility for wrong results",
 
-  "go_to_app_button": "Go to app"
+  "go_to_app_button": "Go to app",
+
+  "home_page": "Take a picture (recommended) or pick it from the gallery. You will get more info about the app in the section on the right."
 }

@@ -11,7 +11,7 @@ import '../../utils/other/style/style_methods.dart';
 import 'custom_navigation_bar_button.dart';
 
 class CustomNavigationBar extends StatelessWidget {
-  static final double HEIGHT_PERCENTAGE = 0.15;
+  static final double HEIGHT_PERCENTAGE = 0.12;
 
   final List<CustomNavigationBarButton> buttons;
 
@@ -25,8 +25,7 @@ class CustomNavigationBar extends StatelessWidget {
               children: [
                 Container(
                   width: getWidth(context),
-                  height: getHeight(context) *
-                      CustomNavigationBar.HEIGHT_PERCENTAGE,
+                  height: getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [

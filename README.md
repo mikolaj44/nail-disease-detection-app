@@ -8,8 +8,6 @@ Created as part of the "Practice" student research group
 
 ## What still needs to be done (randomly-ish ordered):
 
-Buttons in main menu need to be scaled properly to fit
-
 Fix the focus problem on camera view
 
 Add image cropping
@@ -29,3 +27,5 @@ Settings menu (design and functionality)
 English translation
 
 Refactored the navigation bar, it also shows which page is active. The slide animation still needs to be added
+
+Added proper main menu scaling

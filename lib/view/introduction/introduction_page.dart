@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../../utils/other/dimension_utils.dart';
 import '../../utils/other/style/style_methods.dart';
 import '../home/home_page.dart';
+import '../main/main_page.dart';
 
 class IntroductionPage extends StatefulWidget {
 
@@ -47,6 +48,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                         aspectRatio: 2.0,
                         viewportFraction: 0.9,
                         enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
                         onPageChanged: (index, reason) {
                           setState(() {
                             pageIndex = index;
@@ -366,7 +368,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     Navigator.of(context).pushAndRemoveUntil(
                                       PageRouteBuilder(
                                         pageBuilder: (context, animation,
-                                            secondaryAnimation) => const HomePage(),
+                                            secondaryAnimation) => const MainPage(),
                                         //transitionsBuilder: getSlideTransition(),
                                       ),
                                           (Route<dynamic> route) => false,

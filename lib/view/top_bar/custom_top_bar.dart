@@ -6,6 +6,7 @@ import '../../utils/other/dimension_utils.dart';
 import '../../utils/other/style/style_methods.dart';
 
 class CustomTopBar extends StatelessWidget {
+  static final double HEIGHT_PERCENTAGE = 0.11;
 
   final String text;
   final Color color;
@@ -34,8 +35,7 @@ class CustomTopBar extends StatelessWidget {
         Stack(
             children: [
               Padding(
-                padding: EdgeInsets.all(
-                    getMinDimension(context) * 0.05),
+                padding: EdgeInsets.all(getMinDimension(context) * 0.05),
                 child:
                 SizedBox(
                   height: getHeight(context) * 0.06,
@@ -51,8 +51,7 @@ class CustomTopBar extends StatelessWidget {
                         minFontSize: 0,
                         style: getTextStyle(
                             context, Colors.black,
-                            fontSize: getMinDimension(
-                                context) * 0.5
+                            fontSize: getMinDimension(context) * 0.5
                         )
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
@@ -22,50 +23,27 @@ class InfoPage extends StatelessWidget {
           children: [
             CustomTopBar(text: context.tr("info"), color: Colors.black, alignLeft: false),
             Container(
-              height: getHeight(context),
               width: getWidth(context),
+              height: getHeight(context) - CustomNavigationBar.HEIGHT_PERCENTAGE * getHeight(context) - CustomTopBar.HEIGHT_PERCENTAGE * getHeight(context),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("resources/waves.png"),
                   fit: BoxFit.cover,
                 ),
               ),
-            child: RichText(
-                  text: TextSpan(
-                    style: getTextStyle(context, Color.fromARGB(255, 0, 0, 0)),
-                    children: [
-                      // TextSpan(
-                      //   text: 'Nasza aplikacja',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // TextSpan(
-                      //   text:
-                      //   ' służy do wczesnego diagnozowania chorób paznokci. Udziela jedynie porad, które mogą być podstawą wizyty u dermatologa.',
-                      // ),
-                      //
-                      // TextSpan(
-                      //   text: '\n\nZdjęcia, które zrobisz',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // TextSpan(
-                      //   text:
-                      //   ', nie będą przechowywane w żadnej bazie danych - kod jest dostępny publicznie. Pamiętaj, żeby były dobrze oświetlone i zrobione od góry.',
-                      // ),
-                      //
-                      // TextSpan(
-                      //   text: '\n\nWięcej informacji',
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // TextSpan(
-                      //   text:
-                      //   ' uzyskasz na naszym Githubie: xyz.github.com - projekt realizowany w ramach koła naukowego "Praktyka".',
-                      // ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
+              // child: AutoSizeText(
+              //   "info text will be here",
+              //   textAlign: TextAlign.center,
+              //   maxLines: 4,
+              //   wrapWords: false,
+              //   minFontSize: 0,
+              //   style: getTextStyle(
+              //       context, Colors.black,
+              //       fontSize: getMinDimension(context) * 0.001
+              //   )
+              // ),
+            ),
+            ]
         ),
       )
     );

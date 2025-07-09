@@ -14,6 +14,7 @@ import 'package:flutter_application_1/view/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+final String googleFontName = "Outfit";
 final languages = ["Polski", "English"];
 final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 
@@ -78,20 +79,14 @@ class MyApp extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
 
-        // home: Builder(
-        //   builder: (context) {
-        //     if(storageController.getBool("introduction")) {
-        //       return IntroductionPage();
-        //     }
-        //     return MainPage();
-        //   }
-        // )
-
         home: Builder(
           builder: (context) {
+            // if(storageController.getBool("introduction")) {
+            //   return IntroductionPage();
+            // }
             return MainPage();
-          },
-        ),
+          }
+        )
     );
   }
 }
