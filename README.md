@@ -18,8 +18,6 @@ Find the right brightness value
 
 Add the image-taking tutorial page
 
-The button on the introduction page has a weird graphical bug on mobile that's not visible on the web
-
 ## What has been done (since our last meeting)
 
 Settings menu (design and functionality)
@@ -29,3 +27,5 @@ English translation
 Refactored the navigation bar, it also shows which page is active. The slide animation still needs to be added
 
 Added proper main menu scaling
+
+Fixed centering and the button graphical bug on introduction page

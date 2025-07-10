@@ -21,7 +21,7 @@ final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
 
-List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: InfoPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
+List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white), CustomNavigationBarButton(switchWidget: InfoPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
 CustomNavigationBar customNavigationBar = CustomNavigationBar(buttons: buttons);
 
 PageSwitchingController pageSwitchingController = PageSwitchingController(customNavigationBar: customNavigationBar);
@@ -81,9 +81,9 @@ class MyApp extends StatelessWidget {
 
         home: Builder(
           builder: (context) {
-            // if(storageController.getBool("introduction")) {
-            //   return IntroductionPage();
-            // }
+            if(storageController.getBool("introduction")) {
+              return IntroductionPage();
+            }
             return MainPage();
           }
         )

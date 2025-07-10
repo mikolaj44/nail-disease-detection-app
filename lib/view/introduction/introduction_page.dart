@@ -38,12 +38,11 @@ class IntroductionPageState extends State<IntroductionPage> {
             Align(
               alignment: Alignment.center,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: getHeight(context) * 0.06),
-
                   CarouselSlider(
                     options: CarouselOptions(
-                        height: getHeight(context) * 0.86,
+                        height: getHeight(context) * 0.8,
                         autoPlay: false,
                         aspectRatio: 2.0,
                         viewportFraction: 0.9,
@@ -343,7 +342,6 @@ class IntroductionPageState extends State<IntroductionPage> {
                       ),
                       Divider(thickness: 2),
 
-
                         Align(
                             alignment: Alignment.center,
                             child: Container(
@@ -356,7 +354,6 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     Color.fromARGB(255, 61, 61, 61)
                                   ],
                                   begin: Alignment.bottomCenter,
-                                  tileMode: TileMode.mirror,
                                 ),
                               ),
 
@@ -376,7 +373,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                                   },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                  foregroundColor: Colors.grey,
+                                  foregroundColor: Colors.transparent,
                                 ),
 
                                 child: Padding(
