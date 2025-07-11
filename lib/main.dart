@@ -14,9 +14,12 @@ import 'package:flutter_application_1/view/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-final String googleFontName = "Outfit";
-final languages = ["Polski", "English"];
-final locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
+final String GOOGLE_FONT_NAME = "Outfit";
+
+final ALLOWED_FILE_EXTENSIONS = ['png', 'jpg', 'tiff', 'bmp'];
+
+final LANGUAGES = ["Polski", "English"];
+final LOCALES = [Locale('pl', 'PL'), Locale('en', 'UK')];
 
 PreAnalysisController preAnalysisController = PreAnalysisController();
 StorageController storageController = StorageController();
@@ -31,8 +34,8 @@ void main() async {
 
   await EasyLocalization.ensureInitialized();
 
-  preAnalysisController.init();
-  storageController.init();
+  await preAnalysisController.init();
+  await storageController.init();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // Normal Portrait
@@ -47,9 +50,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => pageSwitchingController)
       ],
       child: EasyLocalization(
-        supportedLocales: locales,
+        supportedLocales: LOCALES,
         path: 'assets/translations',
-        fallbackLocale: locales[1],
+        fallbackLocale: LOCALES[1],
         child: MyApp(),
       )
     ),
@@ -64,12 +67,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if(!storageController.getBool("returning_user")){
       storageController.setBool("introduction", true);
-      storageController.setString("language", languages.first);
+      storageController.setString("language", LANGUAGES.first);
 
       storageController.setBool("returning_user", true);
     }
 
-    context.setLocale(locales[languages.indexOf(storageController.getString("language"))]);
+    context.setLocale(LOCALES[LANGUAGES.indexOf(storageController.getString("language"))]);
 
     return MaterialApp(
         title: 'Nail App',

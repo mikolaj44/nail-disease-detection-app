@@ -30,17 +30,4 @@ class StorageController with ChangeNotifier {
 
     return result ?? "null";
   }
-  
-  Future<PlatformFile> getLocalFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'tiff', 'bmp'], // call api here
-    );
-
-    if (result != null) {
-      return Future.value(result.files.first);
-    } else {
-      return Future.value(null); // probably throw an exception
-    }
-  }
 }

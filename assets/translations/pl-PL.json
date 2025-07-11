@@ -31,5 +31,7 @@
   "brightness_negative": "Zbyt ciemne zdjęcie",
 
   "detection_positive": "Wykryto paznokieć",
-  "detection_negative": "Nie wykryto paznokcia"
+  "detection_negative": "Nie wykryto paznokcia",
+
+  "yolo_loading": "Twoje zdjęcie jest analizowane, proszę czekaj..."
 }

@@ -10,15 +10,16 @@ import 'package:flutter/material.dart';
 
 class PhotoPage extends StatelessWidget {
   final img.Image image;
+  final double angle;
 
-  const PhotoPage(this.image, {super.key});
+  const PhotoPage({super.key, required this.image, required this.angle});
 
   @override
   Widget build(BuildContext context) {
       return Stack(
         children: [
           Transform.rotate(
-              angle: math.pi / 2,
+              angle: angle,
               child: Image.memory(
                 Uint8List.fromList(img.encodePng(image)),
                 fit: BoxFit.contain,

@@ -31,5 +31,7 @@
   "brightness_negative": "Photo is too dark",
 
   "detection_positive": "Nail detected",
-  "detection_negative": "Nail not detected"
+  "detection_negative": "Nail not detected",
+
+  "yolo_loading": "Your image is being analysed, please wait..."
 }

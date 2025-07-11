@@ -25,7 +25,7 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
-    languages.map<MenuEntry>(
+    LANGUAGES.map<MenuEntry>(
       (String name) => MenuEntry(
           value: name,
           label: name,
@@ -149,7 +149,7 @@ class SettingsPageState extends State<SettingsPage> {
                                                 initialSelection: storageController.getString("language"),
                                                 onSelected: (String? value) async {
                                                   // TODO: add more translations
-                                                  context.setLocale(locales[languages.indexOf(value!)]);
+                                                  context.setLocale(LOCALES[LANGUAGES.indexOf(value!)]);
                                                   await storageController.setString("language", value);
                                                 },
                                                 dropdownMenuEntries:

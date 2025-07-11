@@ -14,7 +14,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
   if(omitFontSize){
     return GoogleFonts.getFont(
-      googleFontName,
+      GOOGLE_FONT_NAME,
       textStyle: TextStyle(
         color: color,
         fontWeight: FontWeight.normal,
@@ -22,7 +22,7 @@ TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.0
     );
   }
   return GoogleFonts.getFont(
-    googleFontName,
+    GOOGLE_FONT_NAME,
     textStyle: TextStyle(
       fontSize: getMinDimension(context) * fontSize,
       color: color,

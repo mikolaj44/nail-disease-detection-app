@@ -5,6 +5,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
+import 'package:flutter_application_1/view/loading/yolo_loading_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
@@ -98,9 +99,21 @@ class HomePageState extends State<HomePage> {
                         context,
                         'Wybierz zdjęcie',
                         Icons.image_rounded,
+
                         onPressedEvent: () async {
-                          storageController.getLocalFile();
+                          await preAnalysisController.getImageFromGallery();
+
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => YOLOLoadingPage(),
+                            ),
+                          );
+
+                          await Future.delayed(const Duration(milliseconds: 100));
+
+                          await preAnalysisController.preprocessImageFromGallery(context);
                         },
+
                         width: getWidth(context) * 0.25,
                         height: getHeight(context) - getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE - getHeight(context) * CustomTopBar.HEIGHT_PERCENTAGE - getHeight(context) * 0.6,
                       ),
