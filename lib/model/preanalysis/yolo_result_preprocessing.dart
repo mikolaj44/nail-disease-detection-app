@@ -57,11 +57,14 @@ class YOLOResultPreProcessing {
     if(yoloAnalysis.currentResults.isEmpty){
       YOLOResultTrait isNail = initialTraits[0].copy();
       isNail.isPositive = false;
+
       yoloAnalysis.currentBestTraits = [isNail];
+      yoloAnalysis.currentBestResult = null;
       return;
     }
 
     List<YOLOResultTrait> bestTraits = listCopy(initialTraits);
+    YOLOResult? bestResult;
 
     for(YOLOResultTrait trait in bestTraits){
       trait.isPositive = false;
@@ -94,9 +97,11 @@ class YOLOResultPreProcessing {
       if(currentScore > bestScore) {
         bestTraits = currentTraits;
         bestScore = currentScore;
+        bestResult = result;
       }
     }
 
     yoloAnalysis.currentBestTraits = listCopy(bestTraits);
+    yoloAnalysis.currentBestResult = bestResult;
   }
 }

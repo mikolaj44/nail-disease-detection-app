@@ -20,7 +20,7 @@ class YOLOAnalysis with ChangeNotifier {
   List<YOLOResult> currentResults = [];
   List<YOLOResultTrait> currentBestTraits = [];
 
-  YOLOResult currentBestResult = YOLOResult(classIndex: 0, className: "", confidence: 0, boundingBox: Rect.zero, normalizedBox: Rect.zero);
+  YOLOResult? currentBestResult;
 
   Uint8List currentImage = Uint8List(0);
 

@@ -7,6 +7,7 @@ import 'dart:ui';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
+import 'package:ultralytics_yolo/ultralytics_yolo.dart';
 
 import '../../model/preanalysis/yolo_analysis.dart';
 import '../../model/preanalysis/yolo_result_preprocessing.dart';
@@ -44,15 +45,27 @@ class PreAnalysisController {
 
     CameraPageState.isShowingImage = true;
 
-    Rect rect = yoloAnalysis.currentBestResult.boundingBox;
+    YOLOResult? bestResult = yoloAnalysis.currentBestResult;
 
     img.Image croppedImage = img.copyCrop(
         img.decodeImage(yoloAnalysis.currentImage)!,
-        x: 0, //rect.left.toInt(),
-        y: 0, //rect.top.toInt(),
+        x: 0,
+        y: 0,
         width: 640,
         height: 480
     );
+
+    // if(bestResult != null) {
+    //   Rect rect = yoloAnalysis.currentBestResult!.boundingBox;
+    //
+    //   croppedImage = img.copyCrop(
+    //       img.decodeImage(yoloAnalysis.currentImage)!,
+    //       x: rect.center.dx.toInt() - 50,
+    //       y: rect.center.dy.toInt() - 50,
+    //       width: rect.center.dx.toInt() + 50,
+    //       height: rect.center.dy.toInt() + 50,
+    //   );
+    // }
 
     updateCurrentYOLOResult();
 

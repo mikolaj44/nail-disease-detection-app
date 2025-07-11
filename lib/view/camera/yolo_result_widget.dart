@@ -38,7 +38,7 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
           padding: EdgeInsets.all(6.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: getResultWidgetList(context),
+            children: getResultWidgetList(context)
           ),
         ),
       ),

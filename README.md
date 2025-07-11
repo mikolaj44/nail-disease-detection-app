@@ -8,8 +8,6 @@ Created as part of the "Practice" student research group
 
 ## What still needs to be done (randomly-ish ordered):
 
-Fix the focus problem on camera view
-
 Add image cropping
 
 Add image from phone gallery support
