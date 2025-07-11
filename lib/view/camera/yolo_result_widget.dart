@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -29,29 +31,24 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
       child: Padding(
         padding: EdgeInsets.only(bottom: getHeight(context) * 0.02),
         child: Container(
-          width: getWidth(context) * 0.7,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16)
           ),
           padding: EdgeInsets.all(6.0),
-          //child: analysis.currentResults.isNotEmpty ? Text(analysis.currentResults.first.boundingBox.toString(), style: getTextStyle(Colors.black),) : SizedBox(),
-          //child: Text("${getImageBrightness(yoloAnalysis.currentImage, skip: 15)}")
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: getResultWidgetList(),
+            children: getResultWidgetList(context),
           ),
         ),
       ),
     );
   }
 
-  List<Widget> getResultWidgetList(){
+  List<Widget> getResultWidgetList(BuildContext context){
     if(!wasUpdated) {
       wasUpdated = true;
     }
-
-    print("updating");
 
     List<YOLOResultTrait> traits = yoloAnalysis.currentBestTraits;
 
@@ -62,10 +59,9 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
     IconData iconData;
 
     for(YOLOResultTrait trait in traits) {
-      text = trait.getMessage();
+      text = context.tr(trait.getMessage());
 
       if(trait.isPositive) {
-        print("green");
         color = Colors.green;
         iconData = Icons.check_circle_rounded;
       }
@@ -80,22 +76,34 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
                   color: color,
                   borderRadius: BorderRadius.circular(8)
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    iconData,
-                    size: getWidth(context) / 9,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  DefaultTextStyle(
-                      style: getTextStyle(context, Colors.white, fontSize: 0.016),
-                      child: Text(text)
+              child: SizedBox(
+                  child: Row(
+                    children: [
+                      Icon(
+                        iconData,
+                        size: getWidth(context) / 9,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      SizedBox(
+                          width: getWidth(context) * 0.5,
+                          child:
+                          AutoSizeText(
+                              text,
+                              maxLines: 1,
+                              wrapWords: false,
+                              minFontSize: 0,
+                              style: getTextStyle(
+                                  context, Colors.white,
+                                  fontSize: 50
+                              )
+                          ),
+                      )
+                    ],
                   )
-                ],
-              )
+              ),
           )
       );
     }

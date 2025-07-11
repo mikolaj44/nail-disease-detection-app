@@ -23,5 +23,13 @@
 
   "go_to_app_button": "Przejdź do aplikacji",
 
-  "home_page": "Zrób zdjęcie (rekomendowane) lub wybierz z galerii. Więcej informacji o aplikacji uzyskasz w sekcji po prawej."
+  "home_page": "Zrób zdjęcie (rekomendowane) lub wybierz z galerii. Więcej informacji o aplikacji uzyskasz w sekcji po prawej.",
+
+  "ai_loading": "Ładowanie widoku AI...",
+
+  "brightness_positive": "Odpowiednie oświetlenie",
+  "brightness_negative": "Zbyt ciemne zdjęcie",
+
+  "detection_positive": "Wykryto paznokieć",
+  "detection_negative": "Nie wykryto paznokcia"
 }

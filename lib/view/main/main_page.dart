@@ -23,16 +23,6 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-
-  // Navigator.pushAndRemoveUntil(
-  // context,
-  // PageRouteBuilder(
-  // pageBuilder: (context, animation, secondaryAnimation) => switchWidget,
-  // transitionsBuilder: getSlideTransition(slideBeginOffset),
-  // ),
-  // (Route<dynamic> route) => false,
-  // );
-
   @override
   Widget build(BuildContext context) {
     return Consumer<PageSwitchingController>(

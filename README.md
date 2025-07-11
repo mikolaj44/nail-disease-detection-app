@@ -14,18 +14,20 @@ Add image cropping
 
 Add image from phone gallery support
 
-Find the right brightness value
-
 Add the image-taking tutorial page
 
 ## What has been done (since our last meeting)
 
 Settings menu (design and functionality)
 
-English translation
+Full English translation
 
-Refactored the navigation bar, it also shows which page is active. The slide animation still needs to be added
+Refactored the navigation bar, it now also shows which page is active. The slide animation still needs to be added
 
 Added proper main menu scaling
 
 Fixed centering and the button graphical bug on introduction page
+
+Adjusted the brightness value
+
+Removed the camera switch button (for now)

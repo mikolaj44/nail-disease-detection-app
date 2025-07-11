@@ -38,7 +38,7 @@ class PreAnalysisController {
   }
 
   Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
-    if (CameraPageState.isShowingImage) { //|| !yoloAnalysis.resultIsValid()
+    if (CameraPageState.isShowingImage) {
       return;
     }
 
@@ -51,7 +51,8 @@ class PreAnalysisController {
         x: 0, //rect.left.toInt(),
         y: 0, //rect.top.toInt(),
         width: 640,
-        height: 480);
+        height: 480
+    );
 
     updateCurrentYOLOResult();
 

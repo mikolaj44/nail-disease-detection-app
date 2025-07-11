@@ -9,7 +9,7 @@ const int IMAGE_HEIGHT = 480;
 
 // Nail detection info
 const double MIN_NAIL_THRESHOLD = 0.6;
-const int MIN_BRIGHTNESS = 80; // todo: test which value is okay
+const double MIN_BRIGHTNESS = 0.1;
 
 // Performance
 const double CONFIDENCE_THRESHOLD = 0.5;

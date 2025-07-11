@@ -21,7 +21,7 @@ double getImageBrightness(td.Uint8List imageData, {int skip = 1}){
     int r = pixels[i];
     int g = pixels[i + 1];
     int b = pixels[i + 2];
-    colorSum += (r + g + b) / 3.0;
+    colorSum += (r + g + b) / (3.0 * 255);
     //colorSum += r * 0.2126 + g * 0.7152 + b * 0.0722;
   }
 

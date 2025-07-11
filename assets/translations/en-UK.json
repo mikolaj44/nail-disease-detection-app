@@ -23,5 +23,13 @@
 
   "go_to_app_button": "Go to app",
 
-  "home_page": "Take a picture (recommended) or pick it from the gallery. You will get more info about the app in the section on the right."
+  "home_page": "Take a picture (recommended) or pick it from the gallery. You will get more info about the app in the section on the right.",
+
+  "ai_loading": "Loading AI view...",
+
+  "brightness_positive": "Photo is well lit",
+  "brightness_negative": "Photo is too dark",
+
+  "detection_positive": "Nail detected",
+  "detection_negative": "Nail not detected"
 }

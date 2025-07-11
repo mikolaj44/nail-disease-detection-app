@@ -57,14 +57,6 @@ class CustomTopBar extends StatelessWidget {
                   ),
                 ),
               ),
-              // Positioned(
-              //   bottom: 0,
-              //   child:
-              //   Divider(
-              //       color: Colors.black,
-              //       thickness: 2
-              //   ),
-              // )
             ]
         )
     );

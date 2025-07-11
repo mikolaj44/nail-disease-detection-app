@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_application_1/utils/other/list_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:ultralytics_yolo/yolo.dart';
@@ -9,10 +10,11 @@ import '../../utils/interfaces/copyable.dart';
 import '../../utils/other/image_methods.dart';
 import '../../model/preanalysis/yolo_constants.dart';
 
-final YOLOResultTrait IS_NAIL = YOLOResultTrait("Wykryto paznokieć", "Nie wykryto paznokcia", 10);
-final YOLOResultTrait IS_IN_BOUNDS = YOLOResultTrait("Paznokieć w centrum", "Paznokieć nie w centrum", 1);
-final YOLOResultTrait IS_CORRECT_SIZE = YOLOResultTrait("Odpowiedni rozmiar obszaru", "Zły rozmiar obszaru", 1);
-final YOLOResultTrait IS_LIT = YOLOResultTrait("Odpowiednie oświetlenie", "Zbyt ciemne zdjęcie", 1);
+final YOLOResultTrait IS_NAIL = YOLOResultTrait("detection_positive", "detection_negative", 10);
+final YOLOResultTrait IS_LIT = YOLOResultTrait("brightness_positive", "brightness_negative", 1);
+
+//final YOLOResultTrait IS_IN_BOUNDS = YOLOResultTrait("Paznokieć w centrum", "Paznokieć nie w centrum", 1);
+//final YOLOResultTrait IS_CORRECT_SIZE = YOLOResultTrait("Odpowiedni rozmiar obszaru", "Zły rozmiar obszaru", 1);
 
 class YOLOResultTrait implements Copyable<YOLOResultTrait> {
   final String _positiveMessage;
@@ -36,8 +38,7 @@ class YOLOResultTrait implements Copyable<YOLOResultTrait> {
 
   @override
   YOLOResultTrait copy() {
-    YOLOResultTrait trait = YOLOResultTrait(
-        _positiveMessage, _negativeMessage, score);
+    YOLOResultTrait trait = YOLOResultTrait(_positiveMessage, _negativeMessage, score);
     trait.setPositive(isPositive);
     return trait;
   }
@@ -52,44 +53,36 @@ class YOLOResultTrait implements Copyable<YOLOResultTrait> {
 }
 
 class YOLOResultPreProcessing {
-  static Rect _convertBoundingBox(Rect boundingBox) {
-    return Rect.fromLTRB(boundingBox.left, boundingBox.top, IMAGE_WIDTH - boundingBox.right, IMAGE_HEIGHT - boundingBox.bottom);
-  }
-
   static void updateYOLOResultTraits(){
+    if(yoloAnalysis.currentResults.isEmpty){
+      YOLOResultTrait isNail = initialTraits[0].copy();
+      isNail.isPositive = false;
+      yoloAnalysis.currentBestTraits = [isNail];
+      return;
+    }
+
     List<YOLOResultTrait> bestTraits = listCopy(initialTraits);
-    //YOLOResult bestResult = yoloAnalysis.currentBestResult;
 
     for(YOLOResultTrait trait in bestTraits){
       trait.isPositive = false;
     }
 
-    int bestScore = 0;
-
-    print("results length: ${yoloAnalysis.currentResults.length}");
+    int bestScore = -1;
 
     for(YOLOResult result in yoloAnalysis.currentResults) {
       List<YOLOResultTrait> currentTraits = listCopy(initialTraits);
       int currentScore = 0;
 
+      for(YOLOResultTrait trait in currentTraits){
+        trait.isPositive = true;
+      }
+
       if (result.confidence >= MIN_NAIL_THRESHOLD) {
-        // print("curr: ${currentTraits[0].isPositive}");
-        print("initial: ${initialTraits[0].isPositive}");
         currentScore += IS_NAIL.score;
       }
       else {
         currentTraits[0].setPositive(false);
       }
-
-      //print("image: ${yoloAnalysis.currentImage}");
-      //print("brightness: ${getImageBrightness(yoloAnalysis.currentImage)}");
-
-      // if(yoloAnalysis.detectionRect.contains(convertBoundingBox(result.boundingBox).center)){
-      //   currentScore += IS_IN_BOUNDS.score;
-      // }
-      // else {
-      //   currentTraits[1].setPositive(false);
-      // }
 
       if(getImageBrightness(yoloAnalysis.currentImage) > MIN_BRIGHTNESS) {
         currentScore += IS_LIT.score;
@@ -98,21 +91,12 @@ class YOLOResultPreProcessing {
         currentTraits[1].setPositive(false);
       }
 
-      // TODO: check if the detection region isn't too small or too big
-      // currentTraits[2].setPositive(true);
-      // currentScore += IS_CORRECT_SIZE.score;
-
       if(currentScore > bestScore) {
         bestTraits = currentTraits;
         bestScore = currentScore;
-        //bestResult = result;
       }
     }
 
     yoloAnalysis.currentBestTraits = listCopy(bestTraits);
-
-    // print("curr positive: ${bestTraits[0].isPositive}");
-    // print("positive: ${yoloAnalysis.currentBestTraits[0].isPositive}");
-    //yoloAnalysis.currentBestResult = bestResult;
   }
 }

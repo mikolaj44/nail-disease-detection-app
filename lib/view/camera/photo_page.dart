@@ -31,18 +31,4 @@ class PhotoPage extends StatelessWidget {
         ]
       );
     }
-
-    // return Stack(
-    //   children: [
-    //     Transform.rotate(
-    //         angle: math.pi / 2,
-    //         child: Image.memory(imageData)
-    //     ),
-    //     Align(
-    //       alignment: Alignment.bottomCenter,
-    //       child: Text("Pomyślnie wykonano zdjęcie paznokcia.", style: getTextStyle(Colors.black))
-    //     )
-    //   ]
-    // );
-  //}
 }

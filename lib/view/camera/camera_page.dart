@@ -1,6 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/camera/yolo_page.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:provider/provider.dart';
@@ -60,23 +63,37 @@ class CameraPageState extends State<CameraPage> {
                         state: state,
                         left: AwesomeCameraSwitchButton(
                           state: state,
+                          scale: 0,
+                          onSwitchTap: (state) {},
                         ),
+                        right: AwesomeCameraPreview(
+                            state: state,
+                            interfaceBuilder: (state, preview) {return SizedBox();},
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                        )
                       );
                     }
                     else {
-                      return Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Container(
+                      return Container(
+                          width: getWidth(context) * 0.5,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                               color: Colors.green,
                               borderRadius: BorderRadius.circular(8)
                           ),
-                          child: DefaultTextStyle(
-                              style: getTextStyle(context, Colors.white),
-                              child: Text("Ładowanie widoku AI...")
+                          child: AutoSizeText(
+                              context.tr("ai_loading"),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              wrapWords: false,
+                              minFontSize: 0,
+                              style: getTextStyle(
+                                  context, Colors.white,
+                                  fontSize: getMinDimension(context) * 500
+                              )
                           ),
-                        ),
-                      );
+                        );
                     }
                   },
 

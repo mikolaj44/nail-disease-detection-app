@@ -50,8 +50,6 @@ class YOLOPageState extends State<YOLOPage> {
                   //yoloAnalysis.currentResults = results;
                 });
               }
-
-            //key: const ValueKey('yolo_view'),
           ),
         ]
       ),
