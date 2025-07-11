@@ -47,13 +47,7 @@ class CameraPageState extends State<CameraPage> {
                   middleContentBuilder: (state) {
                     return IgnorePointer(
                         ignoring: true,
-                        child: Stack(
-                            children: [
-                              YOLOPage(),
-                              //NailOutlineWidget(),
-                              //YOLOResultWidget()
-                            ]
-                        )
+                        child: YOLOPage()
                     );
                   },
 
@@ -66,22 +60,18 @@ class CameraPageState extends State<CameraPage> {
                           scale: 0,
                           onSwitchTap: (state) {},
                         ),
-                        right: AwesomeCameraPreview(
-                            state: state,
-                            interfaceBuilder: (state, preview) {return SizedBox();},
-                            padding: EdgeInsets.zero,
-                            alignment: Alignment.center,
-                        )
                       );
                     }
                     else {
                       return Container(
+                        width: getWidth(context),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: SizedBox(
                           width: getWidth(context) * 0.5,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(8)
-                          ),
                           child: AutoSizeText(
                               context.tr("ai_loading"),
                               textAlign: TextAlign.center,
@@ -93,7 +83,8 @@ class CameraPageState extends State<CameraPage> {
                                   fontSize: getMinDimension(context) * 500
                               )
                           ),
-                        );
+                        ),
+                      );
                     }
                   },
 
@@ -101,7 +92,8 @@ class CameraPageState extends State<CameraPage> {
                     preAnalysisController.onMediaCaptureEvent(context, event);
                   },
                 ),
-              ]);
+              ]
+          );
         });
   }
 }

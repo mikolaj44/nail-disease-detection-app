@@ -53,6 +53,7 @@ dependencies:
   easy_localization: ^3.0.7+1
   auto_size_text: ^3.0.0
   math_utils: ^1.0.3
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,7 @@ flutter:
     - assets/models/
     - assets/other/
     - assets/translations/
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
