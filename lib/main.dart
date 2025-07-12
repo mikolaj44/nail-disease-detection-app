@@ -47,7 +47,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => yoloAnalysis),
         ChangeNotifierProvider(create: (context) => storageController),
-        ChangeNotifierProvider(create: (context) => pageSwitchingController)
+        ChangeNotifierProvider(create: (context) => pageSwitchingController),
       ],
       child: EasyLocalization(
         supportedLocales: LOCALES,

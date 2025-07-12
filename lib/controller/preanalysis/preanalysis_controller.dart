@@ -21,13 +21,15 @@ import '../../view/camera/photo_page.dart';
 
 final YOLOAnalysis yoloAnalysis = YOLOAnalysis();
 
-class PreAnalysisController with ChangeNotifier{
+class PreAnalysisController {
   td.Uint8List? imageBytes;
 
+  // Initializes the model
   Future<void> init() async {
     yoloAnalysis.init();
   }
 
+  // Updates the current results
   void onStreamData(Map<String, dynamic> streamData){
     yoloAnalysis.setViewHasLoaded(true);
 
@@ -40,7 +42,62 @@ class PreAnalysisController with ChangeNotifier{
     }
   }
 
-  void showBestImage(BuildContext context, {double angle = 0, bool replace = false}) {
+  // When image is taken
+  Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
+    if (CameraPageState.isShowingImage) {
+      return;
+    }
+
+    CameraPageState.isShowingImage = true;
+
+    YOLOResultPreProcessing.updateYOLOResultTraits();
+
+    _showBestImage(context);
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      CameraPageState.isShowingImage = false;
+    });
+  }
+
+  Future<void> onImageFromGallery(BuildContext context) async {
+    await _preprocessImageFromGallery(context);
+
+    _showBestImage(context);
+  }
+
+  Future<bool> getImageFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ALLOWED_FILE_EXTENSIONS,
+    );
+
+    if(result == null || result.files.isEmpty || result.files.first.path == null){
+      return false;
+    }
+
+    File file = File(result.files.first.path!);
+
+    imageBytes = await file.readAsBytes();
+
+    return true;
+  }
+
+  Future<void> _preprocessImageFromGallery(BuildContext context) async {
+    final results = await yoloAnalysis.yolo.predict(imageBytes!);
+
+    if(results.containsKey("boxes")) {
+      yoloAnalysis.currentResults = YOLOAnalysis.resultsToYOLOResults(results, isFromStream: false);
+    }
+    else {
+      yoloAnalysis.currentResults = [];
+    }
+
+    yoloAnalysis.currentImage = results["annotatedImage"] as td.Uint8List; // bytes
+
+    YOLOResultPreProcessing.updateYOLOResultTraits();
+  }
+
+  void _showBestImage(BuildContext context, {double angle = 0}) {
     YOLOResult? bestResult = yoloAnalysis.currentBestResult;
 
     img.Image croppedImage = img.decodeImage(yoloAnalysis.currentImage)!;
@@ -65,72 +122,10 @@ class PreAnalysisController with ChangeNotifier{
     //   );
     // }
 
-    if(replace){
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(image: croppedImage, angle: angle),
-          //transitionsBuilder: getSlideTransition(Offset(0, 1)),
-        ),
-      );
-    }
-    else {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(image: croppedImage, angle: angle),
-        ),
-      );
-    }
-  }
-
-  Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
-    if (CameraPageState.isShowingImage) {
-      return;
-    }
-
-    CameraPageState.isShowingImage = true;
-
-    YOLOResultPreProcessing.updateYOLOResultTraits();
-
-    showBestImage(context);
-
-    Future.delayed(Duration(milliseconds: 500), () {
-      CameraPageState.isShowingImage = false;
-    });
-  }
-
-  Future<void> getImageFromGallery() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ALLOWED_FILE_EXTENSIONS,
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(image: croppedImage, angle: angle),
+      ),
     );
-
-    if(result == null || result.files.isEmpty || result.files.first.path == null){
-      return;
-    }
-
-    File file = File(result.files.first.path!);
-
-    imageBytes = await file.readAsBytes();
-
-    notifyListeners();
-  }
-
-  Future<void> preprocessImageFromGallery(BuildContext context) async {
-    final results = await yoloAnalysis.yolo.predict(imageBytes!);
-
-    if(results.containsKey("boxes")) {
-      yoloAnalysis.currentResults = YOLOAnalysis.resultsToYOLOResults(results, isFromStream: false);
-    }
-    else {
-      yoloAnalysis.currentResults = [];
-    }
-
-    yoloAnalysis.currentImage = results["annotatedImage"] as td.Uint8List; // bytes
-
-    YOLOResultPreProcessing.updateYOLOResultTraits();
-
-    showBestImage(context, replace: true);
-
-    imageBytes = null;
   }
 }

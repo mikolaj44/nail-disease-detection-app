@@ -78,28 +78,33 @@ class YOLOResultWidgetState extends State<YOLOResultWidget> {
               ),
               child: SizedBox(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         iconData,
-                        size: getWidth(context) / 9,
+                        size: getWidth(context) * 0.1,
                         color: Colors.white,
                       ),
                       SizedBox(
                         width: 20,
                       ),
                       SizedBox(
-                          width: getWidth(context) * 0.5,
-                          child:
-                          AutoSizeText(
-                              text,
-                              maxLines: 1,
-                              wrapWords: false,
-                              minFontSize: 0,
-                              style: getTextStyle(
-                                  context, Colors.white,
-                                  fontSize: 50
-                              )
-                          ),
+                          width: getWidth(context) * 0.4,
+                          height: getWidth(context) * 0.1,
+                          child: Center(
+                            child: AutoSizeText(
+                                text,
+                                maxLines: 1,
+                                wrapWords: false,
+                                textAlign: TextAlign.center,
+                                minFontSize: 0,
+                                style: getTextStyle(
+                                    context, Colors.white,
+                                    fontSize: 500
+                                )
+                            ),
+                          )
                       )
                     ],
                   )
