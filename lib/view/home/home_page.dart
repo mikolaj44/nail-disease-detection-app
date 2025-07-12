@@ -5,6 +5,7 @@ import 'package:flutter_application_1/controller/preanalysis/preanalysis_control
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
+import 'package:flutter_application_1/view/introduction/camera_tutorial_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter_application_1/view/loading/yolo_loading_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -135,7 +136,16 @@ class HomePageState extends State<HomePage> {
                           onPressedEvent: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CameraPage()),
+                              MaterialPageRoute(builder: (context) =>
+                                Builder(
+                                  builder: (context) {
+                                    if(storageController.shouldDisplayTutorial()) {
+                                      return CameraTutorialPage();
+                                    }
+                                    return CameraPage();
+                                  }
+                                ),
+                              )
                             );
                           },
                           width: getWidth(context) * 0.6,

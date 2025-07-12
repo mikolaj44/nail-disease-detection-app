@@ -65,14 +65,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(!storageController.getBool("returning_user")){
-      storageController.setBool("introduction", true);
-      storageController.setString("language", LANGUAGES.first);
+    String language = storageController.getLanguage();
 
-      storageController.setBool("returning_user", true);
-    }
-
-    context.setLocale(LOCALES[LANGUAGES.indexOf(storageController.getString("language"))]);
+    context.setLocale(LOCALES[LANGUAGES.indexOf(language)]);
 
     return MaterialApp(
         title: 'Nail App',
@@ -83,12 +78,12 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
 
         home: Builder(
-          builder: (context) {
-            if(storageController.getBool("introduction")) {
-              return IntroductionPage();
+            builder: (context) {
+              if(storageController.shouldDisplayIntroduction()) {
+                return IntroductionPage();
+              }
+              return MainPage();
             }
-            return MainPage();
-          }
         )
     );
   }

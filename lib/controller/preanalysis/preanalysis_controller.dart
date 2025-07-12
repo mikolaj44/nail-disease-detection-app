@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data' as td;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,7 +53,7 @@ class PreAnalysisController {
 
     YOLOResultPreProcessing.updateYOLOResultTraits();
 
-    _showBestImage(context);
+    _showBestImage(context, angle: pi / 2);
 
     Future.delayed(Duration(milliseconds: 500), () {
       CameraPageState.isShowingImage = false;

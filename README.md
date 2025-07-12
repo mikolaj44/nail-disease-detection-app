@@ -8,11 +8,11 @@ Created as part of the "Practice" student research group
 
 ## What still needs to be done (randomly-ish ordered):
 
-Add image cropping
+Image cropping and calculating the brightness for the cropped image, not the full one as it is right now
 
-Add image from phone gallery support
+Make analysis of images from gallery faster
 
-Add the image-taking tutorial page
+Experiment with a different model (maybe yolo v11n and a bigger dataset, like 10000 images)
 
 ## What has been done (since our last meeting)
 
@@ -29,3 +29,5 @@ Fixed centering and the button graphical bug on introduction page
 Adjusted the brightness value
 
 Removed the camera switch button (for now)
+
+Simple camera tutorial page, tutorial/introduction pages now get shown only if the user hasn't seen them before
