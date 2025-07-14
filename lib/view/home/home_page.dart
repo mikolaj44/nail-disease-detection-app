@@ -61,6 +61,7 @@ class HomePageState extends State<HomePage> {
                       height: getHeight(context) * 0.25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.white),
                         gradient: const LinearGradient(
                           colors: [
                             Color.fromARGB(255, 0, 0, 0),

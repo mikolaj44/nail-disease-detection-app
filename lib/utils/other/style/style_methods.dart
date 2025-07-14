@@ -12,22 +12,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
-  if(omitFontSize){
-    return GoogleFonts.getFont(
-      GOOGLE_FONT_NAME,
-      textStyle: TextStyle(
-        color: color,
-        fontWeight: FontWeight.normal,
-      ),
-    );
-  }
-  return GoogleFonts.getFont(
-    GOOGLE_FONT_NAME,
-    textStyle: TextStyle(
-      fontSize: getMinDimension(context) * fontSize,
+  return GoogleFonts.domine(
       color: color,
-      fontWeight: FontWeight.normal,
-    ),
+      fontSize: omitFontSize ? 14.0 : getMinDimension(context) * fontSize,
+      fontWeight: FontWeight.w700
   );
 }
 
@@ -58,12 +46,12 @@ Widget getCustomRoundButton(BuildContext context, String text, IconData iconData
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black,
-          spreadRadius: 1,
-          blurRadius: 50,
+          color: Colors.white,
+          spreadRadius: 0.1,
+          blurRadius: 10,
         ),
       ],
-      border: Border.all(color: Colors.black, width: 2),
+      border: Border.all(color: Colors.white, width: 2),
     ),
     child: IconButton(
       iconSize: min(width, height) * 0.5,

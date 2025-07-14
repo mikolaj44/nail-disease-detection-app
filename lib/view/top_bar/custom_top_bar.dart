@@ -40,8 +40,7 @@ class CustomTopBar extends StatelessWidget {
                 SizedBox(
                   height: getHeight(context) * 0.06,
                   child: Align(
-                    alignment: alignLeft ? Alignment.centerLeft : Alignment
-                        .center,
+                    alignment: alignLeft ? Alignment.centerLeft : Alignment.center,
                     child:
                     AutoSizeText(
                         text,

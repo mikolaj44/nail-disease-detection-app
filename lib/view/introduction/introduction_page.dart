@@ -85,6 +85,7 @@ class IntroductionPageState extends State<IntroductionPage> {
           Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.white),
                 gradient: const LinearGradient(
                   colors: [
                     Color.fromARGB(255, 0, 0, 0),
@@ -183,6 +184,7 @@ class IntroductionPageState extends State<IntroductionPage> {
           Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.white),
                 gradient: const LinearGradient(
                   colors: [
                     Color.fromARGB(255, 0, 0, 0),
@@ -296,6 +298,7 @@ class IntroductionPageState extends State<IntroductionPage> {
           Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.white),
                 gradient: const LinearGradient(
                   colors: [
                     Color.fromARGB(255, 0, 0, 0),
@@ -372,8 +375,13 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     );
                                   },
                                 style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: BorderSide(
+                                        color: Colors.white),
+                                  ),
                                   foregroundColor: Colors.transparent,
+
                                 ),
 
                                 child: Padding(

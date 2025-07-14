@@ -47,6 +47,7 @@ dependencies:
   easy_localization: ^3.0.7+1
   auto_size_text: ^3.0.0
   flutter_native_splash: ^2.4.6
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

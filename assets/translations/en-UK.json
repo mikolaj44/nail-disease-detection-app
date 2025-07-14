@@ -39,6 +39,8 @@
   "tutorial_1": "Make sure that your nail is in focus, is well lit and the image is taken from above. You will see a rectangle with a percentage value (certainty), we require it to be above 60% to be marked as detected after taking the picture.",
   "tutorial_2": "Even if there are any problems displayed after taking your image you can still analyse it.",
 
-  "go_to_camera_button": "Proceed to camera view"
+  "go_to_camera_button": "Proceed to camera view",
+
+  "info_1": "Full app code: "
 }
 

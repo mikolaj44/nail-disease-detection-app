@@ -13,8 +13,9 @@ import 'package:flutter_application_1/view/introduction/introduction_page.dart';
 import 'package:flutter_application_1/view/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-final String GOOGLE_FONT_NAME = "Outfit";
+final String REPOSITORY_URL = "https://github.com/mikolaj44/nail-disease-detection-app";
 
 final ALLOWED_FILE_EXTENSIONS = ['png', 'jpg', 'tiff', 'bmp'];
 

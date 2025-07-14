@@ -148,7 +148,6 @@ class SettingsPageState extends State<SettingsPage> {
                                               child: DropdownMenu<String>(
                                                 initialSelection: storageController.getString("language"),
                                                 onSelected: (String? value) async {
-                                                  // TODO: add more translations
                                                   context.setLocale(LOCALES[LANGUAGES.indexOf(value!)]);
                                                   await storageController.setString("language", value);
                                                 },
@@ -380,7 +379,7 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
 
                         SizedBox(
-                          height: getHeight(context) * 0.15, // TODO: probably make a height property of the custom navigation bar
+                          height: getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE,
                         ),
                       ],
                     ),
