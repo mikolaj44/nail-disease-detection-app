@@ -10,7 +10,7 @@ Created as part of the "Practice" student research group
 
 Image cropping and calculating the brightness for the cropped image, not the full one as it is right now
 
-Make analysis of images from gallery faster
+Make analysis of images from gallery faster (resize before analysing)
 
 Experiment with a different model (maybe yolo v11n and a bigger dataset, like 10000 images)
 
@@ -31,3 +31,5 @@ Adjusted the brightness value
 Removed the camera switch button (for now)
 
 Simple camera tutorial page, tutorial/introduction pages now get shown only if the user hasn't seen them before
+
+Simple info page (only links to this repo for now)
