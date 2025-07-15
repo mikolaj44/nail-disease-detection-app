@@ -9,7 +9,6 @@ import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/home/home_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
 import '../../utils/other/style/style_methods.dart';

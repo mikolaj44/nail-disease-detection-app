@@ -1,9 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/storage/storage_controller.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -22,7 +20,7 @@ class YOLOLoadingPage extends StatelessWidget {
       Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("resources/waves.png"),
+            image: AssetImage("assets/images/waves.png"),
             fit: BoxFit.cover,
           ),
         ),

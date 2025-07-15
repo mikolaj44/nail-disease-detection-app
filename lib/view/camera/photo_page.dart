@@ -21,7 +21,7 @@ class PhotoPage extends StatelessWidget {
       Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("resources/waves.png"),
+            image: AssetImage("assets/images/waves.png"),
             fit: BoxFit.cover,
           ),
         ),

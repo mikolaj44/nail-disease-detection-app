@@ -8,7 +8,6 @@ import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/introduction/camera_tutorial_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter_application_1/view/loading/yolo_loading_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/storage/storage_controller.dart';
@@ -40,7 +39,7 @@ class HomePageState extends State<HomePage> {
             Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("resources/waves.png"),
+                image: AssetImage("assets/images/waves.png"),
                 fit: BoxFit.cover,
               ),
             ),

@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/storage/storage_controller.dart';
 import '../../main.dart';
@@ -42,7 +41,7 @@ class SettingsPageState extends State<SettingsPage> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("resources/waves.png"),
+                      image: AssetImage("assets/images/waves.png"),
                       fit: BoxFit.cover,
                     ),
                   ),

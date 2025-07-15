@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 TextStyle getTextStyle(BuildContext context, Color color, {double fontSize = 0.025, bool omitFontSize = false}) {
-  return GoogleFonts.domine(
+  return TextStyle(
+      fontFamily: "Domine",
       color: color,
       fontSize: omitFontSize ? 14.0 : getMinDimension(context) * fontSize,
       fontWeight: FontWeight.w700
