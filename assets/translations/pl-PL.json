@@ -36,7 +36,7 @@
   "yolo_loading": "Twoje zdjęcie jest analizowane, proszę czekać...",
 
   "tutorial_title": "Jak robić zdjęcia",
-  "tutorial_1": "Upewnij się, że zdjęcie paznokcia jest ostre, dobrze oświetlone i wykonane z góry. Zobaczysz prostokąt z procentem wartości pewności wykrycia, wymagamy żeby wynosił ponad 60%, aby zdjęcie zostało oznaczone jako wykryte po jego zrobieniu.",
+  "tutorial_1": "Upewnij się, że zdjęcie paznokcia jest ostre, dobrze oświetlone i wykonane z góry. Zobaczysz prostokąt z procentem wartości pewności wykrycia, wymagamy żeby wynosił ponad 70%, aby zdjęcie zostało oznaczone jako wykryte po jego zrobieniu.",
   "tutorial_2": "Nawet jeśli wyświetlają się problemy z Twoim zdjęciem po jego zrobieniu, możesz nadal je przeanalizować.",
 
   "go_to_camera_button": "Przejdź do widoku kamery",

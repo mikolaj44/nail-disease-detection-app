@@ -1,18 +1,18 @@
+# NOTE: Work in progress, detecting diseases is not yet implemented
+
 # App designed for preliminary detection of nail diseases
 
 Created as part of the "Practice" student research group
 
-## Used technologies and AI models:
-- Flutter
-- YOLOv8 Nano model
+When it comes to detecting the nails, we use a YOLOv12n model trained on this dataset by Molka: https://universe.roboflow.com/molka-dztlf/nail_detection-rmp3o, it consists of 9302 images, 70% were used for training, 15% for validation and 15% for testing. 50 epochs were run for now. The model was converted to tflite and we use the float32 version (around 10.4 MB in size).
 
-## What still needs to be done (randomly-ish ordered):
+## What still needs to be done:
 
 Image cropping and calculating the brightness for the cropped image, not the full one as it is right now
 
-Make analysis of images from gallery faster (resize before analysing)
+Faster analysis of images from gallery - scale them down before analysing
 
-Experiment with a different model (maybe yolo v11n and a bigger dataset, like 10000 images)
+Experimentation with some performance tweaks to the preanalysis model
 
 ## What has been done (since our last meeting)
 
@@ -32,4 +32,4 @@ Removed the camera switch button (for now)
 
 Simple camera tutorial page, tutorial/introduction pages now get shown only if the user hasn't seen them before
 
-Simple info page (only links to this repo for now)
+Switched from the YOLOv8n model for preanalysis to a YOLOv12n model trained on a dataset 3 times the size, it stopped labeling objects like keyboard keys as nails and is much more certain (although a bit slower)

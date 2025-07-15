@@ -16,6 +16,7 @@ import '../../utils/other/list_copy.dart';
 class YOLOAnalysis with ChangeNotifier {
   late YOLO yolo;
   late YOLOViewController yoloViewController;
+  late YOLOStreamingConfig yoloStreamingConfig;
 
   List<YOLOResult> currentResults = [];
   Uint8List currentImage = Uint8List(0);
@@ -27,6 +28,13 @@ class YOLOAnalysis with ChangeNotifier {
 
   void init() async {
     yoloViewController = YOLOViewController();
+
+    yoloStreamingConfig = YOLOStreamingConfig.custom(
+      inferenceFrequency: INFERENCE_FREQUENCY,
+      maxFPS: MAX_FPS,
+      includeOriginalImage: true,
+      includeDetections: true,
+    );
 
     await yoloViewController.setThresholds(
       confidenceThreshold: CONFIDENCE_THRESHOLD,

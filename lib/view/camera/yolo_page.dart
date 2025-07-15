@@ -29,26 +29,17 @@ class YOLOPageState extends State<YOLOPage> {
                 task: YOLOTask.detect,
                 controller: yoloAnalysis.yoloViewController,
                 cameraResolution: CAMERA_RESOLUTION,
+                streamingConfig: yoloAnalysis.yoloStreamingConfig,
 
-                streamingConfig: YOLOStreamingConfig.custom(
-                  inferenceFrequency: INFERENCE_FREQUENCY, // 15 FPS inference
-                  maxFPS: MAX_FPS, // 10 FPS display
-                  includeOriginalImage: true,
-                  includeDetections: true,
-                ),
-
-              onStreamingData: (streamData) {
-                setState(() {
-                  preAnalysisController.onStreamData(streamData);
-                });
-              },
+                onStreamingData: (streamData) {
+                  setState(() {
+                    preAnalysisController.onStreamData(streamData);
+                  });
+                },
 
               // This doesn't actually run if onStreamingData is provided, but removing onResult breaks the output
               onResult: (results) {
-                setState(() {
-                  // TODO: I commented this out without testing
-                  //yoloAnalysis.currentResults = results;
-                });
+                setState(() {});
               }
           ),
         ]
