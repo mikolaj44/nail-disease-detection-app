@@ -8,6 +8,10 @@ When it comes to detecting the nails, we use a YOLOv12n model trained on this da
 
 ## What still needs to be done: (most to least important)
 
+Being able to go to the image analysis screen (see below) after taking an image - blocking that ability when more than 1 nail is detected (maybe do this based on trait weights)
+
+Setup for the image analysis screen and some parameters to determine if a nail is healthy or not (like 70% certainty etc.)
+
 Image cropping and calculating the brightness for the cropped image, not the full one as it is right now
 
 Faster analysis of images from gallery - scale them down before analysing
