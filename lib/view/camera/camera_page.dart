@@ -39,7 +39,50 @@ class CameraPageState extends State<CameraPage> {
                       padding: EdgeInsets.zero,
                       state: state,
                       children: [
-                        Expanded(child: AwesomeFlashButton(state: state)),
+                        Expanded(
+                            child:
+                            AwesomeFlashButton(
+                                state: state,
+                                iconBuilder: ((flashMode) {
+                                  final IconData icon;
+                                  switch (flashMode) {
+                                    case FlashMode.none:
+                                      icon = Icons.flash_off;
+                                      break;
+                                    case FlashMode.on:
+                                      icon = Icons.flashlight_on;
+                                      break;
+                                    case FlashMode.auto:
+                                      icon = Icons.flash_off;
+                                      break;
+                                    case FlashMode.always:
+                                      icon = Icons.flashlight_on;
+                                      break;
+                                  }
+                                  return AwesomeCircleWidget.icon(
+                                    icon: icon,
+                                  );
+                                }),
+                                onFlashTap: (sensorConfig, flashMode) {
+                                  final FlashMode newFlashMode;
+                                  switch (flashMode) {
+                                    case FlashMode.none:
+                                      newFlashMode = FlashMode.always;
+                                      break;
+                                    case FlashMode.on:
+                                      newFlashMode = FlashMode.none;
+                                      break;
+                                    case FlashMode.auto:
+                                      newFlashMode = FlashMode.always;
+                                      break;
+                                    case FlashMode.always:
+                                      newFlashMode = FlashMode.none;
+                                      break;
+                                  }
+                                  sensorConfig.setFlashMode(newFlashMode);
+                                }
+                            )
+                        ),
                       ],
                     );
                   },
@@ -60,6 +103,7 @@ class CameraPageState extends State<CameraPage> {
                           scale: 0,
                           onSwitchTap: (state) {},
                         ),
+                        right: SizedBox(),
                       );
                     }
                     else {
