@@ -5,6 +5,7 @@ import 'package:flutter_application_1/controller/preanalysis/preanalysis_control
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
 import 'package:flutter_application_1/utils/other/dimension_utils.dart';
+import 'package:flutter_application_1/view/info_popup/info_popup.dart';
 import 'package:flutter_application_1/view/introduction/camera_tutorial_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter_application_1/view/loading/yolo_loading_page.dart';
@@ -134,18 +135,19 @@ class HomePageState extends State<HomePage> {
                           'Prześlij zdjęcie',
                           Icons.camera_alt_rounded,
                           onPressedEvent: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>
-                                Builder(
-                                  builder: (context) {
-                                    if(storageController.shouldDisplayTutorial()) {
-                                      return CameraTutorialPage();
-                                    }
-                                    return CameraPage();
-                                  }
-                                ),
-                              )
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                opaque: false,
+                                pageBuilder: (context, animation, builder) =>
+                                    Builder(
+                                        builder: (context) {
+                                          // return NoDetectionsPopup(transparentBackground: false, widthPercentage: 0.6, heightPercentage: 0.7);
+                                          // if(storageController.shouldDisplayTutorial()) {
+                                          //   return CameraTutorialPage();
+                                          return CameraPage();
+                                        }
+                                    ),
+                              ),
                             );
                           },
                           width: getWidth(context) * 0.6,
