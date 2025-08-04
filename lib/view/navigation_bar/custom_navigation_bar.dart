@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/view/camera/camera_page.dart';
-import 'package:flutter_application_1/utils/other/dimension_utils.dart';
+import 'package:flutter_application_1/utils/dimension_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/page_switching/page_switching_controller.dart';
-import '../../controller/storage/storage_controller.dart';
-import '../../utils/other/style/style_methods.dart';
+
 import 'custom_navigation_bar_button.dart';
 
 class CustomNavigationBar extends StatelessWidget {

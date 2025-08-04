@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/other/simple_methods.dart';
-import '../../utils/other/style/style_methods.dart';
+import '../../utils/simple_methods.dart';
 import '../../view/navigation_bar/custom_navigation_bar_button.dart';
 import '../../view/navigation_bar/custom_navigation_bar.dart';
 

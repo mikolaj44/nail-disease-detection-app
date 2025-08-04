@@ -1,17 +1,15 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:collection';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_application_1/view/top_bar/custom_top_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/view/camera/camera_page.dart';
-import 'package:flutter_application_1/utils/other/dimension_utils.dart';
+import 'package:flutter_application_1/utils/dimension_utils.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 
 import '../../controller/storage/storage_controller.dart';
 import '../../main.dart';
-import '../../utils/other/style/style_methods.dart';
-import '../home/home_page.dart';
+import '../../utils/style_methods.dart';
 
 typedef MenuEntry = DropdownMenuEntry<String>;
 

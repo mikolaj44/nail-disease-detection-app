@@ -1,17 +1,12 @@
-import 'dart:io';
 import 'dart:typed_data';
+import 'dart:typed_data' as td;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/preanalysis/yolo_constants.dart';
-import 'package:flutter_application_1/model/preanalysis/yolo_result_preprocessing.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_helpers.dart';
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
-import 'package:provider/provider.dart';
-
-import 'package:image/image.dart' as img;
-
-import '../../utils/other/list_copy.dart';
 
 class YOLOAnalysis with ChangeNotifier {
   late YOLO yolo;
@@ -20,9 +15,7 @@ class YOLOAnalysis with ChangeNotifier {
 
   List<YOLOResult> currentResults = [];
   Uint8List currentImage = Uint8List(0);
-
-  List<YOLOResultTrait> currentBestTraits = [];
-  YOLOResult? currentBestResult;
+  Uint8List currentAnnotatedImage = Uint8List(0);
 
   bool viewHasLoaded = false;
 
@@ -48,54 +41,43 @@ class YOLOAnalysis with ChangeNotifier {
     );
 
     await yolo.loadModel();
+  }
 
-    currentBestTraits = listCopy(initialTraits);
+  // Updates the current results and image from stream data (live view)
+  void onStreamData(Map<String, dynamic> streamData){
+    setViewToLoaded();
 
-    for(YOLOResultTrait trait in currentBestTraits){
-      trait.setPositive(false);
+    if (streamData.containsKey("detections") && streamData["detections"] != null) {
+      currentResults = YOLOHelpers.resultsToYOLOResults(streamData, isFromStream: true);
+    }
+    else {
+      currentResults = [];
+    }
+
+    if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {
+      currentImage = streamData["originalImage"] as td.Uint8List;
     }
   }
 
-  void setViewHasLoaded(bool hasLoaded) {
-    viewHasLoaded = hasLoaded;
-    notifyListeners();
-  }
+  // Updates the current results and image from image data (sending a photo from gallery)
+  Future<void> onImageFromGallery(td.Uint8List imageBytes) async {
+    final results = await yolo.predict(imageBytes);
 
-  static List<YOLOResult> resultsToYOLOResults(Map<String, dynamic> results, {required bool isFromStream}){
-    List<YOLOResult> yoloResults = [];
-
-    String resultContainerName = isFromStream ? "detections" : "boxes";
-
-    for(Map<Object?, Object?> result in results[resultContainerName]){
-      //print("yolo result: ${result}");
-      if(isFromStream) {
-        yoloResults.add(YOLOResult.fromMap(result));
-      }
-      else{
-        yoloResults.add(yoloResultFromSingleImageResult(result));
-      }
+    if(results.containsKey("boxes")) {
+      currentResults = YOLOHelpers.resultsToYOLOResults(results, isFromStream: false);
+    }
+    else {
+      currentResults = [];
     }
 
-    return yoloResults;
+    currentAnnotatedImage = results["annotatedImage"] as td.Uint8List;
+    currentImage = imageBytes;
   }
 
-  static YOLOResult yoloResultFromSingleImageResult(Map<dynamic, dynamic> map) {
-    final className = map['class'] as String;
-    final confidence = (map['confidence'] as num).toDouble();
-
-    final boundingBox = Rect.fromLTRB(
-      (map['x1'] as num).toDouble(),
-      (map['y1'] as num).toDouble(),
-      (map['x2'] as num).toDouble(),
-      (map['y2'] as num).toDouble(),
-    );
-
-    return YOLOResult(
-      classIndex: 0,
-      className: className,
-      confidence: confidence,
-      boundingBox: boundingBox,
-      normalizedBox: Rect.zero
-    );
+  void setViewToLoaded() {
+    if(!viewHasLoaded){
+      notifyListeners();
+    }
+    viewHasLoaded = true;
   }
 }

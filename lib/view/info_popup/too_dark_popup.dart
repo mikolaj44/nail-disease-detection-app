@@ -1,7 +1,7 @@
 part of 'info_popup.dart';
 
-class NoDetectionsPopup extends InfoPopup {
-  const NoDetectionsPopup({super.key, required super.transparentBackground, required super.widthPercentage, required super.heightPercentage});
+class TooDarkPopup extends InfoPopup {
+  const TooDarkPopup({super.key, required super.transparentBackground, required super.widthPercentage, required super.heightPercentage});
 
   @override
   List<Widget> _getContentItems(BuildContext context){
@@ -11,7 +11,7 @@ class NoDetectionsPopup extends InfoPopup {
         child: Align(
           alignment: Alignment.center,
           child: AutoSizeText(
-              "Nie wykryto paznokcia.",
+              "Zdjęcie jest zbyt ciemne.",
               textAlign: TextAlign.center,
               wrapWords: false,
               minFontSize: 0,
@@ -37,7 +37,6 @@ class NoDetectionsPopup extends InfoPopup {
             children: [
               InfoButton(translationEntry: "Wróć do ekranu głównego", pageToGo: HomePage(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
               InfoButton(translationEntry: "Zrób zdjęcie ponownie", pageToGo: CameraPage(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
-              // Zaznacz obszar
             ],
           ),
         ],

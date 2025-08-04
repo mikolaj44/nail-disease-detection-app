@@ -1,12 +1,9 @@
 import 'dart:typed_data';
 
-import 'dart:math' as math;
-import 'package:image/image.dart' as img;
-
-import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:flutter_application_1/view/camera/yolo_result_widget.dart';
-
+import 'package:flutter_application_1/utils/dimension_utils.dart';
 import 'package:flutter/material.dart';
+
+import 'package:image/image.dart' as img;
 
 class PhotoPage extends StatelessWidget {
   final img.Image image;
@@ -66,7 +63,7 @@ class PhotoPage extends StatelessWidget {
                                   ),
                                 ),
 
-                                YOLOResultWidget()
+                                // YOLOResultWidget()
                               ]
                           )
                         ),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:ultralytics_yolo/yolo.dart';
-import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
 
-import '../../controller/preanalysis/preanalysis_controller.dart';
+import '../../controller/image_analysis/image_analysis_controller.dart';
 import '../../model/preanalysis/yolo_constants.dart';
 
 class YOLOPage extends StatefulWidget {
@@ -33,7 +31,7 @@ class YOLOPageState extends State<YOLOPage> {
 
                 onStreamingData: (streamData) {
                   setState(() {
-                    preAnalysisController.onStreamData(streamData);
+                    yoloAnalysis.onStreamData(streamData);
                   });
                 },
 

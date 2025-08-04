@@ -1,19 +1,16 @@
 library;
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/storage/storage_controller.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import '../../utils/other/dimension_utils.dart';
-import '../../utils/other/style/style_methods.dart';
+import '../../utils/dimension_utils.dart';
+import '../../utils/style_methods.dart';
 import '../home/home_page.dart';
-import '../main/main_page.dart';
 
 part "no_detections_popup.dart";
+part "multiple_detections_popup.dart";
+part "too_dark_popup.dart";
 
 abstract class InfoPopup extends StatelessWidget {
   final bool transparentBackground;

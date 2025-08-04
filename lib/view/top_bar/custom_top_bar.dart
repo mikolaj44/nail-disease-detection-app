@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/other/dimension_utils.dart';
-import '../../utils/other/style/style_methods.dart';
+import '../../utils/dimension_utils.dart';
+import '../../utils/style_methods.dart';
 
 class CustomTopBar extends StatelessWidget {
   static final double HEIGHT_PERCENTAGE = 0.11;

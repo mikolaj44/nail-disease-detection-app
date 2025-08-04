@@ -1,12 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/other/dimension_utils.dart';
-import '../../utils/other/style/style_methods.dart';
+import '../../utils/dimension_utils.dart';
+import '../../utils/style_methods.dart';
 import '../camera/camera_page.dart';
-import '../main/main_page.dart';
 
 class CameraTutorialPage extends StatelessWidget {
   const CameraTutorialPage({super.key});

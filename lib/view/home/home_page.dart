@@ -1,19 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/preanalysis/preanalysis_controller.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/camera/camera_page.dart';
-import 'package:flutter_application_1/utils/other/dimension_utils.dart';
-import 'package:flutter_application_1/view/info_popup/info_popup.dart';
+import 'package:flutter_application_1/utils/dimension_utils.dart';
 import 'package:flutter_application_1/view/introduction/camera_tutorial_page.dart';
 import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter_application_1/view/loading/yolo_loading_page.dart';
-import 'package:provider/provider.dart';
 
-import '../../controller/storage/storage_controller.dart';
-import '../../utils/other/style/style_methods.dart';
-import '../info/info_page.dart';
+import '../../utils/style_methods.dart';
 import '../top_bar/custom_top_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -107,21 +102,23 @@ class HomePageState extends State<HomePage> {
                           Icons.image_rounded,
 
                           onPressedEvent: () async {
-                            bool result = await preAnalysisController.getImageFromGallery();
+                            await imageAnalysisController.onGalleryChosen(context);
 
-                            if(!result) {
-                              return;
-                            }
-
-                            setState(() {
-                              showingProgress = true;
-                            });
-
-                            await Future.delayed(Duration(milliseconds: 100), () async {preAnalysisController.onImageFromGallery(context);});
-
-                            setState(() {
-                              showingProgress = false;
-                            });
+                            // bool result = await preAnalysisController.getImageFromGallery();
+                            //
+                            // if(!result) {
+                            //   return;
+                            // }
+                            //
+                            // setState(() {
+                            //   showingProgress = true;
+                            // });
+                            //
+                            // await Future.delayed(Duration(milliseconds: 100), () async {preAnalysisController.onImageFromGallery(context);});
+                            //
+                            // setState(() {
+                            //   showingProgress = false;
+                            // });
                           },
 
                           width: getWidth(context) * 0.25,
@@ -142,8 +139,9 @@ class HomePageState extends State<HomePage> {
                                     Builder(
                                         builder: (context) {
                                           // return NoDetectionsPopup(transparentBackground: false, widthPercentage: 0.6, heightPercentage: 0.7);
-                                          // if(storageController.shouldDisplayTutorial()) {
-                                          //   return CameraTutorialPage();
+                                          if(storageController.shouldDisplayTutorial()) {
+                                            return CameraTutorialPage();
+                                          }
                                           return CameraPage();
                                         }
                                     ),
