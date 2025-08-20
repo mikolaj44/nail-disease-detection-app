@@ -36,8 +36,8 @@ class StorageController with ChangeNotifier {
   String getLanguage() {
     if(!storageController.getBool("language_set")){
       storageController.setBool("language_set", true);
-      storageController.setString("language", LANGUAGES.first);
-      return LANGUAGES.first;
+      storageController.setString("language", languages.first);
+      return languages.first;
     }
 
     return storageController.getString("language");

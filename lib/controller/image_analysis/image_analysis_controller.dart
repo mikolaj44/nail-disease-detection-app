@@ -1,60 +1,79 @@
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_model.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_result_verification.dart';
+import 'package:flutter_application_1/view/page/camera/photo_page.dart';
+import 'package:flutter_application_1/view/info_popup/info_popup.dart';
+
 import 'dart:io';
 import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_application_1/main.dart';
-import 'package:camerawesome/camerawesome_plugin.dart';
 
 import 'package:image/image.dart' as img;
 import 'dart:typed_data' as td;
 
-import '../../model/preanalysis/yolo_analysis.dart';
-import '../../model/preanalysis/yolo_result_verification.dart';
-import '../../view/camera/camera_page.dart';
-import '../../view/camera/photo_page.dart';
-import '../../view/info_popup/info_popup.dart';
+class ImageAnalysisController with ChangeNotifier {
+  late td.Uint8List _imageBytes;
 
-final YOLOAnalysis yoloAnalysis = YOLOAnalysis();
+  bool _isLoadingImage = false;
+  bool _isShowingImage = false;
 
-class ImageAnalysisController {
-  late td.Uint8List imageBytes;
+  final YOLOModel _detectionModel;
+  final YOLOModel _classificationModel;
+
+  ImageAnalysisController({required detectionModel, required classificationModel}) : _detectionModel = detectionModel, _classificationModel = classificationModel;
 
   Future<void> init() async {
-    yoloAnalysis.init();
+    await _detectionModel.init();
+    await _classificationModel.init();
   }
 
-  Future<void> onMediaCaptureEvent(BuildContext context, MediaCapture event) async {
-    if (CameraPageState.isShowingImage) {
+  Future<void> onMediaCaptureEvent(BuildContext context) async {
+    if (isShowingImage) {
       return;
     }
 
-    CameraPageState.isShowingImage = true;
+    _isShowingImage = true;
 
-    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: yoloAnalysis.currentResults, detectionImage: yoloAnalysis.currentImage), true);
+    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), true);
 
     Future.delayed(Duration(milliseconds: 500), () {
-      CameraPageState.isShowingImage = false;
+      _isShowingImage = false;
     });
   }
 
   Future<bool> onGalleryChosen(BuildContext context) async {
+    _setLoadingImage(true);
+
     bool result = await _getImageFromGallery();
 
     if(!result){
+      _setLoadingImage(false);
       return false;
     }
 
-    await yoloAnalysis.onImageFromGallery(imageBytes);
+    await _detectionModel.onImageFromGallery(imageBytes);
 
-    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: yoloAnalysis.currentResults, detectionImage: yoloAnalysis.currentImage), false);
+    _setLoadingImage(false);
+
+    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), false);
 
     return true;
+  }
+
+  td.Uint8List get imageBytes => _imageBytes;
+  bool get isLoadingImage => _isLoadingImage;
+  bool get isShowingImage => _isShowingImage;
+
+  void _setLoadingImage(bool isLoading) {
+    _isLoadingImage = isLoading;
+    notifyListeners();
   }
 
   Future<bool> _getImageFromGallery() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ALLOWED_FILE_EXTENSIONS,
+      allowedExtensions: allowedFileExtensions,
     );
 
     if(result == null || result.files.isEmpty || result.files.first.path == null){
@@ -63,21 +82,26 @@ class ImageAnalysisController {
 
     File file = File(result.files.first.path!);
 
-    imageBytes = await file.readAsBytes();
+    _imageBytes = await file.readAsBytes();
 
     return true;
   }
 
   void _showImage(BuildContext context, {double angle = 0}) {
-    img.Image croppedImage = img.decodeImage(yoloAnalysis.currentImage)!;
+    img.Image croppedImage = img.decodeImage(_detectionModel.currentImage)!;
 
-    // img.Image croppedImage = img.copyCrop(
-    //     img.decodeImage(yoloAnalysis.currentImage)!,
-    //     x: 0,
-    //     y: 0,
-    //     width: 640,
-    //     height: 480
-    // );
+    print("wdth: ${croppedImage.width} ${croppedImage.height}");
+
+    croppedImage = img.copyCrop(
+        img.decodeImage(_detectionModel.currentImage)!,
+        x: 0,
+        y: 0,
+        width: 640,
+        height: 480
+    );
+
+    print("wdth: ${croppedImage.width} ${croppedImage.height}");
+
 
     // if(bestResult != null) {
     //   Rect rect = yoloAnalysis.currentBestResult!.boundingBox;
@@ -100,7 +124,7 @@ class ImageAnalysisController {
 
   void _showNextScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) {
     print("results:");
-    print(yoloAnalysis.currentResults);
+    print(_detectionModel.currentResults);
 
     if(issue == ImageDetectionIssue.noIssues){
       _showImage(context, angle: isFromStream ? pi / 2 : 0);

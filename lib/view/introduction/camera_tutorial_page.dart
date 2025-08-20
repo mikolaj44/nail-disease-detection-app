@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/dimension_utils.dart';
 import '../../utils/style_methods.dart';
-import '../camera/camera_page.dart';
+import '../page/camera/camera_page.dart';
 
 class CameraTutorialPage extends StatelessWidget {
   const CameraTutorialPage({super.key});

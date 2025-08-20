@@ -1,27 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/dimension_utils.dart';
-import 'package:provider/provider.dart';
-
-import '../../controller/page_switching/page_switching_controller.dart';
-
 import 'custom_navigation_bar_button.dart';
+import 'package:flutter_application_1/utils/dimension_utils.dart';
+
+import 'package:flutter/material.dart';
 
 class CustomNavigationBar extends StatelessWidget {
-  static final double HEIGHT_PERCENTAGE = 0.12;
+  final double heightPercentage;
 
   final List<CustomNavigationBarButton> buttons;
 
-  const CustomNavigationBar({super.key, required this.buttons});
+  const CustomNavigationBar({super.key, required this.buttons, required this.heightPercentage});
 
   @override
-  Widget build(BuildContext context){
-    return Consumer<PageSwitchingController>(
-        builder: (context, analysis, child) {
+  Widget build(BuildContext context) {
           return Stack(
               children: [
                 Container(
                   width: getWidth(context),
-                  height: getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE,
+                  height: getHeight(context) * heightPercentage,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [
@@ -42,6 +37,5 @@ class CustomNavigationBar extends StatelessWidget {
                 )
               ]
           );
-        });
   }
 }

@@ -35,8 +35,8 @@ class NoDetectionsPopup extends InfoPopup {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              InfoButton(translationEntry: "Wróć do ekranu głównego", pageToGo: HomePage(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
-              InfoButton(translationEntry: "Zrób zdjęcie ponownie", pageToGo: CameraPage(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
+              InfoButton(translationEntry: "Wróć do ekranu głównego", doesPushWidget: false, pageToGo: SizedBox(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
+              InfoButton(translationEntry: "Zrób zdjęcie ponownie", doesPushWidget: true, pageToGo: CameraPage(), widthPercentage: widthPercentage * 0.4, heightPercentage: heightPercentage * 0.3),
               // Zaznacz obszar
             ],
           ),

@@ -1,32 +1,63 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/page_switching/page_switching_controller.dart';
 import 'package:flutter_application_1/controller/image_analysis/image_analysis_controller.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_application_1/controller/storage/storage_controller.dart';
-import 'package:flutter_application_1/view/info/info_page.dart';
-import 'package:flutter_application_1/view/main/main_page.dart';
-import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar_button.dart';
-import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
-import 'package:flutter_application_1/view/home/home_page.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_model.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_model_setup.dart';
+import 'package:flutter_application_1/view/page/main_page.dart';
 import 'package:flutter_application_1/view/introduction/introduction_page.dart';
-import 'package:flutter_application_1/view/settings/settings_page.dart';
+
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-final String REPOSITORY_URL = "https://github.com/mikolaj44/nail-disease-detection-app";
+// Nail detection parameters
+final double minBrightness = 0.07;
+final double confidenceThreshold = 0.7;
 
-final List<String> ALLOWED_FILE_EXTENSIONS = ['png', 'jpg', 'tiff', 'bmp'];
+final String repositoryUrl = "https://github.com/mikolaj44/nail-disease-detection-app";
 
-final List<String> LANGUAGES = ["Polski", "English"];
-final List<Locale> LOCALES = [Locale('pl', 'PL'), Locale('en', 'UK')];
+final List<String> allowedFileExtensions = ['png', 'jpg', 'tiff', 'bmp'];
 
-ImageAnalysisController imageAnalysisController = ImageAnalysisController();
+final List<String> languages = ["Polski", "English"];
+final List<Locale> locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
+
+YOLOModel detectionModel = YOLODetectionModel(
+    yoloModelSetup: YOLOModelSetup(
+        modelPath: "yolov12n 50e 640 float32",
+        imageWidth: 640,
+        imageHeight: 640,
+        confidenceThreshold: confidenceThreshold,
+        iouThreshold: confidenceThreshold,
+        numItemsThreshold: 5,
+        inferenceFrequency: 20,
+        maxFps: 20,
+        cameraResolution: "1080p",
+        includeOriginalImage: true,
+        includeProcessingTimeMs: true
+    )
+);
+
+YOLOModel classificationModel = YOLODetectionModel(
+    yoloModelSetup: YOLOModelSetup(
+        modelPath: "yolov12n 50e 640 float32",
+        imageWidth: 640,
+        imageHeight: 640,
+        confidenceThreshold: confidenceThreshold,
+        iouThreshold: confidenceThreshold,
+        numItemsThreshold: 5,
+        inferenceFrequency: 20,
+        maxFps: 20,
+        cameraResolution: "1080p",
+        includeOriginalImage: true,
+        includeProcessingTimeMs: true
+    )
+);
+
+ImageAnalysisController imageAnalysisController = ImageAnalysisController(detectionModel: detectionModel, classificationModel: classificationModel);
 StorageController storageController = StorageController();
 
-List<CustomNavigationBarButton> buttons = [CustomNavigationBarButton(switchWidget: SettingsPage(), iconData: Icons.accessibility_rounded, iconColor: Colors.white60), CustomNavigationBarButton(switchWidget: HomePage(), iconData: Icons.home_rounded, iconColor: Colors.white), CustomNavigationBarButton(switchWidget: InfoPage(), iconData: Icons.contact_support_rounded, iconColor: Colors.white60)];
-CustomNavigationBar customNavigationBar = CustomNavigationBar(buttons: buttons);
-
-PageSwitchingController pageSwitchingController = PageSwitchingController(customNavigationBar: customNavigationBar);
+PageSwitchingController pageSwitchingController = PageSwitchingController(activePageIndex: 1);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,14 +75,15 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => yoloAnalysis),
+        ChangeNotifierProvider(create: (context) => detectionModel),
         ChangeNotifierProvider(create: (context) => storageController),
         ChangeNotifierProvider(create: (context) => pageSwitchingController),
+        ChangeNotifierProvider(create: (context) => imageAnalysisController)
       ],
       child: EasyLocalization(
-        supportedLocales: LOCALES,
+        supportedLocales: locales,
         path: 'assets/translations',
-        fallbackLocale: LOCALES[1],
+        fallbackLocale: locales[1],
         child: MyApp(),
       )
     ),
@@ -66,7 +98,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     String language = storageController.getLanguage();
 
-    context.setLocale(LOCALES[LANGUAGES.indexOf(language)]);
+    context.setLocale(locales[languages.indexOf(language)]);
 
     return MaterialApp(
         title: 'Nail App',

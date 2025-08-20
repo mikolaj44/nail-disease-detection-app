@@ -1,7 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:flutter_application_1/utils/dimension_utils.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
 

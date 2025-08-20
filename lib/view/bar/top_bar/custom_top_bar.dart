@@ -1,17 +1,17 @@
+import 'package:flutter_application_1/utils/dimension_utils.dart';
+import 'package:flutter_application_1/utils/style_methods.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/dimension_utils.dart';
-import '../../utils/style_methods.dart';
-
 class CustomTopBar extends StatelessWidget {
-  static final double HEIGHT_PERCENTAGE = 0.11;
+  final double heightPercentage;
 
   final String text;
   final Color color;
   final bool alignLeft;
 
-  const CustomTopBar({super.key, required this.color, required this.alignLeft, required this.text});
+  const CustomTopBar({super.key, required this.heightPercentage, required this.color, required this.alignLeft, required this.text});
 
   @override
   Widget build(BuildContext context) {

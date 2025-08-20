@@ -1,10 +1,9 @@
 import 'dart:typed_data' as td;
 
+import 'package:flutter_application_1/main.dart';
 import 'package:ultralytics_yolo/yolo.dart';
 
-import '../../controller/image_analysis/image_analysis_controller.dart';
 import '../../utils/image_methods.dart';
-import '../../model/preanalysis/yolo_constants.dart';
 
 enum ImageDetectionIssue {
   tooDark,
@@ -15,14 +14,14 @@ enum ImageDetectionIssue {
 
 class YOLOResultVerification {
   static ImageDetectionIssue getDetectionIssue({required List<YOLOResult> results, required td.Uint8List detectionImage}){
-    if(getImageBrightness(detectionImage) < MIN_BRIGHTNESS){
+    if(getImageBrightness(detectionImage) < minBrightness){
       return ImageDetectionIssue.tooDark;
     }
 
     List<YOLOResult> validResults = [];
 
     for(YOLOResult result in results){
-      if(result.confidence >= CONFIDENCE_THRESHOLD){
+      if(result.confidence >= confidenceThreshold){
         validResults.add(result);
       }
     }

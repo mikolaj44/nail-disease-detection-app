@@ -6,7 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../utils/dimension_utils.dart';
 import '../../utils/style_methods.dart';
-import '../main/main_page.dart';
+import '../page/main_page.dart';
 
 class IntroductionPage extends StatefulWidget {
 

@@ -1,15 +1,13 @@
-import 'dart:collection';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/view/bar/top_bar/custom_top_bar.dart';
+import 'package:flutter_application_1/utils/dimension_utils.dart';
+import 'package:flutter_application_1/controller/storage/storage_controller.dart';
+import 'package:flutter_application_1/utils/style_methods.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/view/top_bar/custom_top_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/utils/dimension_utils.dart';
-import 'package:flutter_application_1/view/navigation_bar/custom_navigation_bar.dart';
-
-import '../../controller/storage/storage_controller.dart';
-import '../../main.dart';
-import '../../utils/style_methods.dart';
+import 'dart:collection';
 
 typedef MenuEntry = DropdownMenuEntry<String>;
 
@@ -22,7 +20,7 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
-    LANGUAGES.map<MenuEntry>(
+    languages.map<MenuEntry>(
       (String name) => MenuEntry(
           value: name,
           label: name,
@@ -43,20 +41,15 @@ class SettingsPageState extends State<SettingsPage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-
                   child: SingleChildScrollView(
-                    //child: ConstrainedBox(
-        //           constraints: BoxConstraints(
-        // maxHeight: getHeight(context),
-        // minHeight: getHeight(context)
-        // ),
-                    child: Column(
-                      //mainAxisAlignment: MainAxisAlignment.center,
+                    child: SizedBox(
+                      height: getHeight(context),
+                      child:
+                    Column(
                       children: [
-                        CustomTopBar(text: context.tr("settings"), color: Colors.black, alignLeft: false),
+                        CustomTopBar(heightPercentage: 0.11, text: context.tr("settings"), color: Colors.black, alignLeft: false),
                         Column(
                           children: [
-                            //SizedBox(height: getHeight(context) * 0.1),
                             Padding(
                               padding: EdgeInsets.all(
                                 getMinDimension(context) * 0.05,
@@ -112,30 +105,10 @@ class SettingsPageState extends State<SettingsPage> {
                                               decoration: BoxDecoration(
                                                 gradient: const LinearGradient(
                                                   colors: [
-                                                    Color.fromARGB(
-                                                      255,
-                                                      155,
-                                                      176,
-                                                      208,
-                                                    ),
-                                                    Color.fromARGB(
-                                                      255,
-                                                      193,
-                                                      173,
-                                                      204,
-                                                    ),
-                                                    Color.fromARGB(
-                                                      255,
-                                                      222,
-                                                      177,
-                                                      181,
-                                                    ),
-                                                    Color.fromARGB(
-                                                      255,
-                                                      220,
-                                                      194,
-                                                      168,
-                                                    ),
+                                                    Color.fromARGB(255, 155, 176, 208),
+                                                    Color.fromARGB(255, 193, 173, 204),
+                                                    Color.fromARGB(255, 222, 177, 181),
+                                                    Color.fromARGB(255, 220, 194, 168),
                                                   ],
                                                   //stops: [0.2, 0.3, 0.4, 0.6],
                                                   begin: Alignment.centerLeft,
@@ -145,24 +118,18 @@ class SettingsPageState extends State<SettingsPage> {
                                               child: DropdownMenu<String>(
                                                 initialSelection: storageController.getString("language"),
                                                 onSelected: (String? value) async {
-                                                  context.setLocale(LOCALES[LANGUAGES.indexOf(value!)]);
+                                                  context.setLocale(locales[languages.indexOf(value!)]);
                                                   await storageController.setString("language", value);
                                                 },
-                                                dropdownMenuEntries:
-                                                    menuEntries,
-                                                textStyle: getTextStyle(
-                                                  context,
-                                                  Colors.black,
-                                                ),
+                                                dropdownMenuEntries: menuEntries,
+                                                textStyle: getTextStyle(context, Colors.black),
                                                 inputDecorationTheme:
                                                     InputDecorationTheme(
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                             borderSide:
                                                                 BorderSide(
-                                                                  color:
-                                                                      Colors
-                                                                          .black,
+                                                                  color: Colors.black,
                                                                 ),
                                                           ),
                                                     ),
@@ -236,22 +203,15 @@ class SettingsPageState extends State<SettingsPage> {
                                               "introduction",
                                             ),
                                             onChanged: (bool value) {
-                                              //setState(() async {
                                               storageController.setBool(
                                                 "introduction",
                                                 !storageController.getBool(
                                                   "introduction",
                                                 ),
                                               );
-                                              //});
                                             },
 
-                                            activeTrackColor: Color.fromARGB(
-                                              255,
-                                              155,
-                                              176,
-                                              208,
-                                            ),
+                                            activeTrackColor: Color.fromARGB(255, 155, 176, 208),
                                             //focusColor: Color.fromARGB(20, 0, 0, 0),
                                             trackOutlineColor:
                                                 MaterialStateProperty.resolveWith(
@@ -342,12 +302,7 @@ class SettingsPageState extends State<SettingsPage> {
                                               );
                                               //});
                                             },
-                                            activeTrackColor: Color.fromARGB(
-                                              255,
-                                              155,
-                                              176,
-                                              208,
-                                            ),
+                                            activeTrackColor: Color.fromARGB(255, 155, 176, 208),
                                             // trackColor: Color.fromARGB(255, 155, 176, 208),
                                             trackOutlineColor:
                                                 MaterialStateProperty.resolveWith(
@@ -374,11 +329,8 @@ class SettingsPageState extends State<SettingsPage> {
                             ),
                           ],
                         ),
-
-                        SizedBox(
-                          height: getHeight(context) * CustomNavigationBar.HEIGHT_PERCENTAGE,
-                        ),
                       ],
+                    ),
                     ),
                   ),
                 ),

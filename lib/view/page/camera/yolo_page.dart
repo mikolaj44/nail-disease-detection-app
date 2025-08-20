@@ -1,11 +1,13 @@
+import 'package:flutter_application_1/model/preanalysis/yolo_model.dart';
+
 import 'package:flutter/material.dart';
-import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
 
-import '../../controller/image_analysis/image_analysis_controller.dart';
-import '../../model/preanalysis/yolo_constants.dart';
-
 class YOLOPage extends StatefulWidget {
+  final YOLOModel _yoloModel;
+
+  const YOLOPage({super.key, required yoloModel}) : _yoloModel = yoloModel;
+
   @override
   YOLOPageState createState() => YOLOPageState();
 }
@@ -23,15 +25,15 @@ class YOLOPageState extends State<YOLOPage> {
       body: Stack(
           children: [
             YOLOView(
-                modelPath: MODEL_NAME,
-                task: YOLOTask.detect,
-                controller: yoloAnalysis.yoloViewController,
-                cameraResolution: CAMERA_RESOLUTION,
-                streamingConfig: yoloAnalysis.yoloStreamingConfig,
+                modelPath: widget._yoloModel.yoloModelSetup.modelPath,
+                task: widget._yoloModel.getYOLOTask(),
+                controller: widget._yoloModel.yoloViewController,
+                cameraResolution: widget._yoloModel.yoloModelSetup.cameraResolution,
+                streamingConfig: widget._yoloModel.yoloStreamingConfig,
 
                 onStreamingData: (streamData) {
                   setState(() {
-                    yoloAnalysis.onStreamData(streamData);
+                    widget._yoloModel.onStreamData(streamData);
                   });
                 },
 
