@@ -14,6 +14,7 @@ class YOLODetectionModel extends YOLOModel {
 
     if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {
       _currentImage = streamData["originalImage"] as td.Uint8List;
+      print("stream wdth: ${img.decodeImage(_currentImage)!.width} ${img.decodeImage(_currentImage)!.height}");
     }
   }
 

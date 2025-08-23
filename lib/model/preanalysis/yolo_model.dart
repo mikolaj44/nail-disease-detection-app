@@ -5,6 +5,7 @@ import 'dart:typed_data' as td;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/preanalysis/yolo_model_setup.dart';
+import 'package:image/image.dart' as img;
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';

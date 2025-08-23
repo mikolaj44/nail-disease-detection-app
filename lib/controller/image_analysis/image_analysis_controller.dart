@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as img;
 import 'dart:typed_data' as td;
 
+import 'package:path_provider/path_provider.dart';
+
 class ImageAnalysisController with ChangeNotifier {
   late td.Uint8List _imageBytes;
 
@@ -35,7 +37,7 @@ class ImageAnalysisController with ChangeNotifier {
 
     _isShowingImage = true;
 
-    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), true);
+    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), true);
 
     Future.delayed(Duration(milliseconds: 500), () {
       _isShowingImage = false;
@@ -56,7 +58,7 @@ class ImageAnalysisController with ChangeNotifier {
 
     _setLoadingImage(false);
 
-    _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), false);
+    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), false);
 
     return true;
   }
@@ -87,18 +89,25 @@ class ImageAnalysisController with ChangeNotifier {
     return true;
   }
 
-  void _showImage(BuildContext context, {double angle = 0}) {
-    img.Image croppedImage = img.decodeImage(_detectionModel.currentImage)!;
+  Future<void> _showImage(BuildContext context, {double angle = 0}) async {
+    final tempDir = await getTemporaryDirectory();
+
+    final file1 = File('${tempDir.path}/$tempStorageFolderName');
+
+    final file = File('${tempDir.path}/$tempStorageFolderName/$tempPhotoName');
+    final bytes = await file.readAsBytes();
+
+    img.Image croppedImage = img.decodeImage(bytes)!; //img.decodeImage(_detectionModel.currentImage)!;
 
     print("wdth: ${croppedImage.width} ${croppedImage.height}");
 
-    croppedImage = img.copyCrop(
-        img.decodeImage(_detectionModel.currentImage)!,
-        x: 0,
-        y: 0,
-        width: 640,
-        height: 480
-    );
+    // croppedImage = img.copyCrop(
+    //     img.decodeImage(_detectionModel.currentImage)!,
+    //     x: 0,
+    //     y: 0,
+    //     width: 640,
+    //     height: 480
+    // );
 
     print("wdth: ${croppedImage.width} ${croppedImage.height}");
 
@@ -122,12 +131,12 @@ class ImageAnalysisController with ChangeNotifier {
     );
   }
 
-  void _showNextScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) {
+  Future<void> _showNextScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) async {
     print("results:");
     print(_detectionModel.currentResults);
 
     if(issue == ImageDetectionIssue.noIssues){
-      _showImage(context, angle: isFromStream ? pi / 2 : 0);
+      await _showImage(context, angle: isFromStream ? pi / 2 : 0);
       return;
     }
     

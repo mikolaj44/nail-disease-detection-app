@@ -8,6 +8,7 @@ import 'package:flutter_application_1/view/introduction/introduction_page.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -16,6 +17,9 @@ final double minBrightness = 0.07;
 final double confidenceThreshold = 0.7;
 
 final String repositoryUrl = "https://github.com/mikolaj44/nail-disease-detection-app";
+
+final String tempStorageFolderName = "nail_app_temp";
+final String tempPhotoName = "temp.jpg";
 
 final List<String> allowedFileExtensions = ['png', 'jpg', 'tiff', 'bmp'];
 

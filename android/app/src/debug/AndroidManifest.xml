@@ -10,4 +10,5 @@
 <!--        android:icon="@mipmap/ic_launcher"-->
         <!-- your activities and other components go here -->
     </application>
+
 </manifest>
