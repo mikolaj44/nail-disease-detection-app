@@ -50,6 +50,6 @@ class YOLOPageState extends State<YOLOPage> {
   @override
   void dispose() {
     super.dispose();
-    //widget._yoloModel.yoloViewController.stop();
+    widget._yoloModel.yoloViewController.stop();
   }
 }

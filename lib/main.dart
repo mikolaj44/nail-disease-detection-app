@@ -8,12 +8,11 @@ import 'package:flutter_application_1/view/introduction/introduction_page.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 // Nail detection parameters
-final double minBrightness = 0.07;
+final double minBrightness = 0.02;
 final double confidenceThreshold = 0.7;
 
 final String repositoryUrl = "https://github.com/mikolaj44/nail-disease-detection-app";
@@ -29,7 +28,7 @@ final List<Locale> locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 YOLOModel detectionModel = YOLODetectionModel(
     yoloModelSetup: YOLOModelSetup(
         modelPath: "yolov12n 50e 640 float32",
-        imageWidth: 640,
+        imageWidth: 480,
         imageHeight: 640,
         confidenceThreshold: confidenceThreshold,
         iouThreshold: confidenceThreshold,
@@ -42,9 +41,9 @@ YOLOModel detectionModel = YOLODetectionModel(
     )
 );
 
-YOLOModel classificationModel = YOLODetectionModel(
+YOLOModel classificationModel = YOLOClassificationModel(
     yoloModelSetup: YOLOModelSetup(
-        modelPath: "yolov12n 50e 640 float32",
+        modelPath: "yolov11n-cls 100e 640 float32.tflite",
         imageWidth: 640,
         imageHeight: 640,
         confidenceThreshold: confidenceThreshold,
@@ -53,7 +52,7 @@ YOLOModel classificationModel = YOLODetectionModel(
         inferenceFrequency: 20,
         maxFps: 20,
         cameraResolution: "1080p",
-        includeOriginalImage: true,
+        includeOriginalImage: false,
         includeProcessingTimeMs: true
     )
 );

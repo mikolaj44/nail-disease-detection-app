@@ -14,7 +14,7 @@ class YOLODetectionModel extends YOLOModel {
 
     if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {
       _currentImage = streamData["originalImage"] as td.Uint8List;
-      print("stream wdth: ${img.decodeImage(_currentImage)!.width} ${img.decodeImage(_currentImage)!.height}");
+      //print("stream wdth: ${img.decodeImage(_currentImage)!.width} ${img.decodeImage(_currentImage)!.height}");
     }
   }
 
@@ -28,9 +28,6 @@ class YOLODetectionModel extends YOLOModel {
     else {
       _currentResults = [];
     }
-
-    _currentAnnotatedImage = results["annotatedImage"] as td.Uint8List;
-    _currentImage = imageBytes;
   }
 
   @override
@@ -57,7 +54,7 @@ class YOLODetectionModel extends YOLOModel {
       if(isFromStream) {
         yoloResults.add(YOLOResult.fromMap(result));
       }
-      else{
+      else {
         yoloResults.add(_yoloResultFromSingleImageResult(result));
       }
     }
@@ -76,12 +73,19 @@ class YOLODetectionModel extends YOLOModel {
       (map['y2'] as num).toDouble(),
     );
 
+    final normalizedBox = Rect.fromLTRB(
+      (map['x1_norm'] as num).toDouble(),
+      (map['y1_norm'] as num).toDouble(),
+      (map['x2_norm'] as num).toDouble(),
+      (map['y2_norm'] as num).toDouble(),
+    );
+
     return YOLOResult(
         classIndex: 0,
         className: className,
         confidence: confidence,
         boundingBox: boundingBox,
-        normalizedBox: Rect.zero
+        normalizedBox: normalizedBox
     );
   }
 }

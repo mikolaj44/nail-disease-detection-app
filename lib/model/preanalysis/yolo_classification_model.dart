@@ -5,36 +5,36 @@ class YOLOClassificationModel extends YOLOModel {
 
   @override
   void _onStreamData(Map<String, dynamic> streamData){
-    if (streamData.containsKey("detections") && streamData["detections"] != null) {
-      _currentResults = _resultsToYOLOResults(streamData, isFromStream: true);
-    }
-    else {
-      _currentResults = [];
-    }
-
-    if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {
-      _currentImage = streamData["originalImage"] as td.Uint8List;
-    }
+    throw UnsupportedError("Classification is only for static images.");
   }
 
   @override
   Future<void> onImageFromGallery(td.Uint8List imageBytes) async {
     final results = await _yolo.predict(imageBytes);
 
-    if(results.containsKey("boxes")) {
-      _currentResults = _resultsToYOLOResults(results, isFromStream: false);
-    }
-    else {
-      _currentResults = [];
+    print(results['classifications']);
+    print(results);
+
+    // Process classification results
+    final classifications = results['classifications'] as List<dynamic>? ?? [];
+    for (final classification in classifications) {
+      print('Class: ${classification['class']}');
+      print('Confidence: ${classification['confidence']}');
     }
 
-    _currentAnnotatedImage = results["annotatedImage"] as td.Uint8List;
-    _currentImage = imageBytes;
+    print("after classification");
+
+    // if(results.containsKey("boxes")) {
+    //   _currentResults = _resultsToYOLOResults(results, isFromStream: false);
+    // }
+    // else {
+    //   _currentResults = [];
+    // }
   }
 
   @override
   YOLOTask getYOLOTask() {
-    return YOLOTask.detect;
+    return YOLOTask.classify;
   }
 
   @override
@@ -44,43 +44,6 @@ class YOLOClassificationModel extends YOLOModel {
 
   @override
   bool _includeClassifications() {
-    return false;
-  }
-
-  List<YOLOResult> _resultsToYOLOResults(Map<String, dynamic> results, {required bool isFromStream}){
-    List<YOLOResult> yoloResults = [];
-
-    String resultContainerName = isFromStream ? "detections" : "boxes";
-
-    for(Map<Object?, Object?> result in results[resultContainerName]){
-      if(isFromStream) {
-        yoloResults.add(YOLOResult.fromMap(result));
-      }
-      else{
-        yoloResults.add(_yoloResultFromSingleImageResult(result));
-      }
-    }
-
-    return yoloResults;
-  }
-
-  YOLOResult _yoloResultFromSingleImageResult(Map<dynamic, dynamic> map) {
-    final className = map['class'] as String;
-    final confidence = (map['confidence'] as num).toDouble();
-
-    final boundingBox = Rect.fromLTRB(
-      (map['x1'] as num).toDouble(),
-      (map['y1'] as num).toDouble(),
-      (map['x2'] as num).toDouble(),
-      (map['y2'] as num).toDouble(),
-    );
-
-    return YOLOResult(
-        classIndex: 0,
-        className: className,
-        confidence: confidence,
-        boundingBox: boundingBox,
-        normalizedBox: Rect.zero
-    );
+    return true;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:ultralytics_yolo/ultralytics_yolo.dart';
 
 class YOLOModelSetup {
-  // Model file is located in android/app/assets/ (todo: move it so it can be used by both IOS and Android)
+  // Model file is located in android/app/src/main/assets (todo: move it so it can be used by both IOS and Android)
   final String modelPath;
 
   final int imageWidth;             // typically 640

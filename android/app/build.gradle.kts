@@ -16,7 +16,7 @@ android {
     }
 
     lint {
-        checkReleaseBuilds = false
+            checkReleaseBuilds = false
     }
 
     kotlinOptions {

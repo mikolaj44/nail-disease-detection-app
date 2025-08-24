@@ -50,9 +50,12 @@ abstract class YOLOModel with ChangeNotifier {
     _yolo = YOLO(
       modelPath: yoloModelSetup.modelPath,
       task: getYOLOTask(),
+      useMultiInstance: true
     );
 
-    await _yolo.loadModel();
+    bool loaded = await _yolo.loadModel();
+
+    print("${yoloModelSetup.modelPath} $loaded");
   }
 
   bool get viewHasLoaded => _viewHasLoaded;

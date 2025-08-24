@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as img;
 import 'dart:typed_data' as td;
 
-import 'package:path_provider/path_provider.dart';
+import 'package:ultralytics_yolo/ultralytics_yolo.dart';
 
 class ImageAnalysisController with ChangeNotifier {
   late td.Uint8List _imageBytes;
@@ -22,6 +22,8 @@ class ImageAnalysisController with ChangeNotifier {
 
   final YOLOModel _detectionModel;
   final YOLOModel _classificationModel;
+
+  final double scale = 1.2;
 
   ImageAnalysisController({required detectionModel, required classificationModel}) : _detectionModel = detectionModel, _classificationModel = classificationModel;
 
@@ -36,6 +38,10 @@ class ImageAnalysisController with ChangeNotifier {
     }
 
     _isShowingImage = true;
+
+    // print("before classification (stream)");
+
+    // await _classificationModel.onImageFromGallery(_detectionModel.currentImage);
 
     await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), true);
 
@@ -54,11 +60,15 @@ class ImageAnalysisController with ChangeNotifier {
       return false;
     }
 
+    // print("before classification (gallery)");
+
+    // await _classificationModel.onImageFromGallery(_imageBytes);
+
     await _detectionModel.onImageFromGallery(imageBytes);
 
     _setLoadingImage(false);
 
-    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), false);
+    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _imageBytes), false);
 
     return true;
   }
@@ -90,27 +100,32 @@ class ImageAnalysisController with ChangeNotifier {
   }
 
   Future<void> _showImage(BuildContext context, {double angle = 0}) async {
-    final tempDir = await getTemporaryDirectory();
+    img.Image croppedImage = img.copyResize(
+        img.decodeImage(_detectionModel.currentImage)!,
+        width: 640,
+        height: 640
+    );
 
-    final file1 = File('${tempDir.path}/$tempStorageFolderName');
+    print(_detectionModel.currentResults.first.boundingBox);
+    print(_detectionModel.currentResults.first.normalizedBox);
+    print("");
 
-    final file = File('${tempDir.path}/$tempStorageFolderName/$tempPhotoName');
-    final bytes = await file.readAsBytes();
+    int rectWidth = (_detectionModel.currentResults.first.normalizedBox.width * _detectionModel.yoloModelSetup.imageWidth).toInt();
+    int rectHeight = (_detectionModel.currentResults.first.normalizedBox.height * _detectionModel.yoloModelSetup.imageHeight).toInt();
+    int x = (_detectionModel.currentResults.first.normalizedBox.left * 640).toInt();
+    int y = (_detectionModel.currentResults.first.normalizedBox.top * 640).toInt();
 
-    img.Image croppedImage = img.decodeImage(bytes)!; //img.decodeImage(_detectionModel.currentImage)!;
+    croppedImage = img.copyCrop(
+        croppedImage,
+        x: (y - rectHeight * (scale / 2)).toInt(),
+        y: (_detectionModel.yoloModelSetup.imageHeight - x - rectWidth - rectWidth * (scale / 2)).toInt(),
+        width: (rectHeight * scale).toInt(),
+        height: (rectWidth * scale).toInt()
+    );
 
-    print("wdth: ${croppedImage.width} ${croppedImage.height}");
-
-    // croppedImage = img.copyCrop(
-    //     img.decodeImage(_detectionModel.currentImage)!,
-    //     x: 0,
-    //     y: 0,
-    //     width: 640,
-    //     height: 480
-    // );
-
-    print("wdth: ${croppedImage.width} ${croppedImage.height}");
-
+    print("left, top: ${_detectionModel.currentResults.first.normalizedBox.left * 640} ${_detectionModel.currentResults.first.normalizedBox.top * 640}");
+    print("final x, y: $x $y");
+    print("final width, height: $rectWidth $rectHeight");
 
     // if(bestResult != null) {
     //   Rect rect = yoloAnalysis.currentBestResult!.boundingBox;
@@ -132,10 +147,7 @@ class ImageAnalysisController with ChangeNotifier {
   }
 
   Future<void> _showNextScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) async {
-    print("results:");
-    print(_detectionModel.currentResults);
-
-    if(issue == ImageDetectionIssue.noIssues){
+    if(issue == ImageDetectionIssue.noIssues) {
       await _showImage(context, angle: isFromStream ? pi / 2 : 0);
       return;
     }
