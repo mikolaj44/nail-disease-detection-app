@@ -7,6 +7,7 @@ import 'package:flutter_application_1/utils/style_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_application_1/view/page/main_page.dart';
 
 part "no_detections_popup.dart";
 part "multiple_detections_popup.dart";
@@ -87,12 +88,11 @@ abstract class InfoPopup extends StatelessWidget {
 
 class InfoButton extends StatelessWidget {
   final String translationEntry;
-  final bool doesPushWidget;
   final Widget pageToGo;
   final double widthPercentage;
   final double heightPercentage;
 
-  const InfoButton({super.key, required this.translationEntry, required this.pageToGo, required this.doesPushWidget, required this.widthPercentage, required this.heightPercentage});
+  const InfoButton({super.key, required this.translationEntry, required this.pageToGo, required this.widthPercentage, required this.heightPercentage});
 
   @override
   Widget build(BuildContext context) {
@@ -114,13 +114,21 @@ class InfoButton extends StatelessWidget {
 
       child: TextButton(
         onPressed: () {
-          doesPushWidget ?
+          Navigator.of(context).popUntil((Route<dynamic> route) => false);
+          if(pageToGo.runtimeType != MainPage().runtimeType) {
+            Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+                  //transitionsBuilder: getSlideTransition(),
+                )
+            );
+          }
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => pageToGo,
               //transitionsBuilder: getSlideTransition(),
-            ),
-          ) : Navigator.of(context).pop();
+            )
+          );
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

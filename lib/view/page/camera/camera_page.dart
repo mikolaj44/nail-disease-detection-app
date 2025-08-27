@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/dimension_utils.dart';
@@ -10,7 +10,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class CameraPage extends StatefulWidget {
@@ -24,6 +23,8 @@ class CameraPageState extends State<CameraPage> {
   CameraState? cameraState;
   bool isTakingImage = false;
   bool yoloViewEnabled = true;
+
+  Timer? _debounceTimer;
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +145,18 @@ class CameraPageState extends State<CameraPage> {
                   },
 
                   onMediaCaptureEvent: (event) async {
-                    await imageAnalysisController.onMediaCaptureEvent(context);
-                  },
+                    _debounceTimer?.cancel();
+
+                    _debounceTimer = Timer(Duration(milliseconds: 200), () async {
+                      if (!imageAnalysisController.isShowingImage) {
+                        imageAnalysisController.isShowingImage = true;
+
+                        await imageAnalysisController.onMediaCaptureEvent(context);
+
+                        imageAnalysisController.isShowingImage = false;
+                      }
+                    });
+                  }
                 ),
               ]
           );

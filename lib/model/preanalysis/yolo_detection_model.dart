@@ -14,12 +14,11 @@ class YOLODetectionModel extends YOLOModel {
 
     if (streamData.containsKey("originalImage") && streamData["originalImage"] != null) {
       _currentImage = streamData["originalImage"] as td.Uint8List;
-      //print("stream wdth: ${img.decodeImage(_currentImage)!.width} ${img.decodeImage(_currentImage)!.height}");
     }
   }
 
   @override
-  Future<void> onImageFromGallery(td.Uint8List imageBytes) async {
+  Future<void> onImage(td.Uint8List imageBytes) async {
     final results = await _yolo.predict(imageBytes);
 
     if(results.containsKey("boxes")) {

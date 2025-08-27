@@ -9,27 +9,25 @@ class YOLOClassificationModel extends YOLOModel {
   }
 
   @override
-  Future<void> onImageFromGallery(td.Uint8List imageBytes) async {
+  Future<void> onImage(td.Uint8List imageBytes) async {
     final results = await _yolo.predict(imageBytes);
 
-    print(results['classifications']);
-    print(results);
+    if(results.containsKey("detections")) {
+      _currentResults = _resultsToYOLOResults(results);
+    }
+    else {
+      _currentResults = [];
+    }
+  }
 
-    // Process classification results
-    final classifications = results['classifications'] as List<dynamic>? ?? [];
-    for (final classification in classifications) {
-      print('Class: ${classification['class']}');
-      print('Confidence: ${classification['confidence']}');
+  List<YOLOResult> _resultsToYOLOResults(Map<String, dynamic> results){
+    List<YOLOResult> yoloResults = [];
+
+    for(Map<Object?, Object?> result in results["detections"]){
+      yoloResults.add(YOLOResult.fromMap(result));
     }
 
-    print("after classification");
-
-    // if(results.containsKey("boxes")) {
-    //   _currentResults = _resultsToYOLOResults(results, isFromStream: false);
-    // }
-    // else {
-    //   _currentResults = [];
-    // }
+    return yoloResults;
   }
 
   @override

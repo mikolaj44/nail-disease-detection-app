@@ -1,7 +1,9 @@
+import 'package:flutter_application_1/controller/image_analysis/yolo_model_controller/yolo_model_controller.dart';
+import 'package:flutter_application_1/controller/image_analysis/yolo_model_controller/yolo_model_controller.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/model/preanalysis/yolo_model.dart';
-import 'package:flutter_application_1/model/preanalysis/yolo_result_verification.dart';
-import 'package:flutter_application_1/view/page/camera/photo_page.dart';
+import 'package:flutter_application_1/model/preanalysis/yolo_utils.dart';
+import 'package:flutter_application_1/view/page/camera/final_result_page.dart';
 import 'package:flutter_application_1/view/info_popup/info_popup.dart';
 
 import 'dart:io';
@@ -15,39 +17,54 @@ import 'dart:typed_data' as td;
 import 'package:ultralytics_yolo/ultralytics_yolo.dart';
 
 class ImageAnalysisController with ChangeNotifier {
-  late td.Uint8List _imageBytes;
+  bool isShowingImage = false;
+
+  td.Uint8List _imageBytes = td.Uint8List.fromList([]);
 
   bool _isLoadingImage = false;
-  bool _isShowingImage = false;
 
-  final YOLOModel _detectionModel;
-  final YOLOModel _classificationModel;
+  final YOLOModelController _detectionModelController;
+  final YOLOModelController _classificationModelController;
 
-  final double scale = 1.2;
-
-  ImageAnalysisController({required detectionModel, required classificationModel}) : _detectionModel = detectionModel, _classificationModel = classificationModel;
+  ImageAnalysisController({required YOLOModelController detectionModelController, required YOLOModelController classificationModelController}) : _detectionModelController = detectionModelController, _classificationModelController = classificationModelController;
 
   Future<void> init() async {
-    await _detectionModel.init();
-    await _classificationModel.init();
+    await _detectionModelController.init();
+    await _classificationModelController.init();
   }
 
-  Future<void> onMediaCaptureEvent(BuildContext context) async {
-    if (isShowingImage) {
-      return;
+  Future<bool> onMediaCaptureEvent(BuildContext context) async {
+    print(isShowingImage);
+
+    ImageDetectionIssue issue = ImageDetectionIssue.noDetections;
+
+    if(_detectionModelController.hasResults()) {
+      _imageBytes = await _detectionModelController.postProcessCurrentImageBytes()!;
+
+      issue = getDetectionIssue(
+          results: _detectionModelController.yoloModel.currentResults,
+          detectionImage: _imageBytes
+      );
     }
 
-    _isShowingImage = true;
+    if(issue != ImageDetectionIssue.noIssues) {
+      if(!context.mounted) {
+        return false;
+      }
 
-    // print("before classification (stream)");
+      await _showIssueScreen(context, issue, true);
+      return false;
+    }
 
-    // await _classificationModel.onImageFromGallery(_detectionModel.currentImage);
+    YOLOResult yoloResult = await _classificationModelController.processImageBytes(_imageBytes)!;
 
-    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _detectionModel.currentImage), true);
+    if(!context.mounted) {
+      return false;
+    }
 
-    Future.delayed(Duration(milliseconds: 500), () {
-      _isShowingImage = false;
-    });
+    _showFinalResultPage(context, yoloResult, true);
+
+    return true;
   }
 
   Future<bool> onGalleryChosen(BuildContext context) async {
@@ -55,31 +72,41 @@ class ImageAnalysisController with ChangeNotifier {
 
     bool result = await _getImageFromGallery();
 
-    if(!result){
-      _setLoadingImage(false);
+    _setLoadingImage(false);
+
+    if(!result) {
       return false;
     }
 
-    // print("before classification (gallery)");
+    ImageDetectionIssue issue = ImageDetectionIssue.noDetections;
 
-    // await _classificationModel.onImageFromGallery(_imageBytes);
+    if(_detectionModelController.hasResults()) {
+      _imageBytes = await _detectionModelController.processImageBytes(_imageBytes)!;
 
-    await _detectionModel.onImageFromGallery(imageBytes);
+      issue = getDetectionIssue(
+          results: _detectionModelController.yoloModel.currentResults,
+          detectionImage: _imageBytes
+      );
+    }
 
-    _setLoadingImage(false);
+    if(issue != ImageDetectionIssue.noIssues) {
+      if(!context.mounted) {
+        return false;
+      }
 
-    await _showNextScreen(context, YOLOResultVerification.getDetectionIssue(results: _detectionModel.currentResults, detectionImage: _imageBytes), false);
+      await _showIssueScreen(context, issue, true);
+      return false;
+    }
+
+    YOLOResult yoloResult = await _classificationModelController.postProcessCurrentImageBytes();
+
+    if(!context.mounted) {
+      return false;
+    }
+
+    _showFinalResultPage(context, yoloResult, true);
 
     return true;
-  }
-
-  td.Uint8List get imageBytes => _imageBytes;
-  bool get isLoadingImage => _isLoadingImage;
-  bool get isShowingImage => _isShowingImage;
-
-  void _setLoadingImage(bool isLoading) {
-    _isLoadingImage = isLoading;
-    notifyListeners();
   }
 
   Future<bool> _getImageFromGallery() async {
@@ -99,59 +126,22 @@ class ImageAnalysisController with ChangeNotifier {
     return true;
   }
 
-  Future<void> _showImage(BuildContext context, {double angle = 0}) async {
-    img.Image croppedImage = img.copyResize(
-        img.decodeImage(_detectionModel.currentImage)!,
-        width: 640,
-        height: 640
-    );
-
-    print(_detectionModel.currentResults.first.boundingBox);
-    print(_detectionModel.currentResults.first.normalizedBox);
-    print("");
-
-    int rectWidth = (_detectionModel.currentResults.first.normalizedBox.width * _detectionModel.yoloModelSetup.imageWidth).toInt();
-    int rectHeight = (_detectionModel.currentResults.first.normalizedBox.height * _detectionModel.yoloModelSetup.imageHeight).toInt();
-    int x = (_detectionModel.currentResults.first.normalizedBox.left * 640).toInt();
-    int y = (_detectionModel.currentResults.first.normalizedBox.top * 640).toInt();
-
-    croppedImage = img.copyCrop(
-        croppedImage,
-        x: (y - rectHeight * (scale / 2)).toInt(),
-        y: (_detectionModel.yoloModelSetup.imageHeight - x - rectWidth - rectWidth * (scale / 2)).toInt(),
-        width: (rectHeight * scale).toInt(),
-        height: (rectWidth * scale).toInt()
-    );
-
-    print("left, top: ${_detectionModel.currentResults.first.normalizedBox.left * 640} ${_detectionModel.currentResults.first.normalizedBox.top * 640}");
-    print("final x, y: $x $y");
-    print("final width, height: $rectWidth $rectHeight");
-
-    // if(bestResult != null) {
-    //   Rect rect = yoloAnalysis.currentBestResult!.boundingBox;
-    //
-    //   croppedImage = img.copyCrop(
-    //       img.decodeImage(yoloAnalysis.currentImage)!,
-    //       x: rect.center.dx.toInt() - 50,
-    //       y: rect.center.dy.toInt() - 50,
-    //       width: rect.center.dx.toInt() + 50,
-    //       height: rect.center.dy.toInt() + 50,
-    //   );
-    // }
-
+  void _showFinalResultPage(BuildContext context, YOLOResult result, bool isFromStream) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => PhotoPage(image: croppedImage, angle: angle),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            FinalResultPage(
+                imageBytes: _imageBytes,
+                diseaseName: result.className,
+                confidence: result.confidence,
+                angle: isFromStream ? pi / 2 : 0
+            ),
       ),
     );
   }
 
-  Future<void> _showNextScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) async {
-    if(issue == ImageDetectionIssue.noIssues) {
-      await _showImage(context, angle: isFromStream ? pi / 2 : 0);
-      return;
-    }
-    
+
+  Future<void> _showIssueScreen(BuildContext context, ImageDetectionIssue issue, bool isFromStream) async {
     late Widget nextScreen;
 
     switch(issue){
@@ -173,4 +163,12 @@ class ImageAnalysisController with ChangeNotifier {
       ),
     );
   }
+
+  void _setLoadingImage(bool isLoading) {
+    _isLoadingImage = isLoading;
+    notifyListeners();
+  }
+
+  td.Uint8List get imageBytes => _imageBytes;
+  bool get isLoadingImage => _isLoadingImage;
 }

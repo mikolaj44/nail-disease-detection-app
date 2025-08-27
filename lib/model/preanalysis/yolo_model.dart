@@ -1,11 +1,11 @@
 library;
 
 import 'dart:typed_data' as td;
+import 'package:image/image.dart' as img;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/preanalysis/yolo_model_setup.dart';
-import 'package:image/image.dart' as img;
 import 'package:ultralytics_yolo/yolo.dart';
 import 'package:ultralytics_yolo/yolo_streaming_config.dart';
 import 'package:ultralytics_yolo/yolo_view.dart';
@@ -60,6 +60,8 @@ abstract class YOLOModel with ChangeNotifier {
 
   bool get viewHasLoaded => _viewHasLoaded;
 
+  YOLO get yolo => _yolo;
+
   YOLOModelSetup get yoloModelSetup => _yoloModelSetup;
 
   YOLOViewController get yoloViewController => _yoloViewController;
@@ -88,5 +90,5 @@ abstract class YOLOModel with ChangeNotifier {
   void _onStreamData(Map<String, dynamic> streamData);
 
   // Updates the current results and image from image data (sending a photo from gallery)
-  Future<void> onImageFromGallery(td.Uint8List imageBytes);
+  Future<void> onImage(td.Uint8List imageBytes);
 }
