@@ -1,22 +1,32 @@
-# NOTE: Work in progress, detecting diseases is not yet implemented
+# NOTE: Work in progress, detecting diseases needs to be improved
 
 # App designed for preliminary detection of nail diseases
 
 Created as part of the "Practice" student research group
 
-When it comes to detecting the nails, we use a YOLOv12n model trained on this dataset by Molka: https://universe.roboflow.com/molka-dztlf/nail_detection-rmp3o, it consists of 9302 images, 70% were used for training, 15% for validation and 15% for testing. 50 epochs were run for now. The model was converted to tflite and we use the float32 version (around 10.4 MB in size).
+When it comes to detecting the nails, we are using a YOLOv12n model trained on this dataset by Molka: https://universe.roboflow.com/molka-dztlf/nail_detection-rmp3o, it consists of 9302 images, 70% were used for training, 15% for validation and 15% for testing. 50 epochs were run for now. The model was converted to tflite and we use the float32 version (around 10.4 MB in size).
+
+We are using a float16 YOLOv11m-cls converted to tflite for disease classification, although we are testing other models too.
 
 ## What still needs to be done: (most to least important)
 
-Setup for the image analysis screen and some parameters to determine if a nail is healthy or not (like 70% certainty etc.)
+Prepare a better classification dataset
 
-Image cropping and calculating the brightness for the cropped image, not the full one as it is right now
+Some parameters to determine if a nail is healthy or not (like 70% certainty etc.)
 
 Faster analysis of images from gallery - scale them down before analysing
 
-Experimentation with some performance tweaks to the preanalysis model
+Some visual changes like displaying the info popups in a more intuitive way and some others
 
 ## What has been done
+
+Trained a YOLOv11m-cls model (and a YOLO11n-cls) on a custom nail disease detection dataset
+
+Added a screen displaying the classification results
+
+Image cropping and calculating the brightness for the cropped image
+
+Refactoring
 
 # Before this meeting
 
