@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:typed_data';
 
+import 'package:flutter_application_1/utils/style_methods.dart';
+
 class FinalResultPage extends StatelessWidget {
   final Uint8List imageBytes;
   final double angle;
@@ -67,17 +69,17 @@ class FinalResultPage extends StatelessWidget {
                                     ),
                                 ),
                                 Container(
+                                  height: getHeight(context) * 0.15,
+                                  width: getWidth(context) * 0.5,
                                   decoration: BoxDecoration(
                                     color: Colors.lightGreen,
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      AutoSizeText(diseaseName),
-                                      AutoSizeText(confidence.toString())
-                                    ],
-                                  )
+                                  child: AutoSizeText(
+                                      "$diseaseName\n${(confidence * 100).toStringAsFixed(2)}%",
+                                      style: getTextStyle(context, Colors.black, fontSize: 99999),
+                                  ),
                                 )
 
                                 // YOLOResultWidget()

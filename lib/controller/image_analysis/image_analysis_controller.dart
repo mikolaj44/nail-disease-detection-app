@@ -1,9 +1,7 @@
 import 'package:flutter_application_1/controller/image_analysis/yolo_model_controller/yolo_model_controller.dart';
-import 'package:flutter_application_1/controller/image_analysis/yolo_model_controller/yolo_model_controller.dart';
 import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/model/preanalysis/yolo_model.dart';
 import 'package:flutter_application_1/model/preanalysis/yolo_utils.dart';
-import 'package:flutter_application_1/view/page/camera/final_result_page.dart';
+import 'package:flutter_application_1/view/page/final_result_page.dart';
 import 'package:flutter_application_1/view/info_popup/info_popup.dart';
 
 import 'dart:io';
@@ -11,7 +9,6 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:image/image.dart' as img;
 import 'dart:typed_data' as td;
 
 import 'package:ultralytics_yolo/ultralytics_yolo.dart';
@@ -19,7 +16,7 @@ import 'package:ultralytics_yolo/ultralytics_yolo.dart';
 class ImageAnalysisController with ChangeNotifier {
   bool isShowingImage = false;
 
-  td.Uint8List _imageBytes = td.Uint8List.fromList([]);
+  td.Uint8List? _imageBytes = td.Uint8List.fromList([]);
 
   bool _isLoadingImage = false;
 
@@ -34,16 +31,15 @@ class ImageAnalysisController with ChangeNotifier {
   }
 
   Future<bool> onMediaCaptureEvent(BuildContext context) async {
-    print(isShowingImage);
-
     ImageDetectionIssue issue = ImageDetectionIssue.noDetections;
 
     if(_detectionModelController.hasResults()) {
-      _imageBytes = await _detectionModelController.postProcessCurrentImageBytes()!;
+      _imageBytes = await _detectionModelController.processImageBytes(_detectionModelController.yoloModel.currentImage!);
+      // _imageBytes = await _detectionModelController.postProcessCurrentImageBytes();
 
       issue = getDetectionIssue(
           results: _detectionModelController.yoloModel.currentResults,
-          detectionImage: _imageBytes
+          detectionImage: _imageBytes!
       );
     }
 
@@ -56,7 +52,7 @@ class ImageAnalysisController with ChangeNotifier {
       return false;
     }
 
-    YOLOResult yoloResult = await _classificationModelController.processImageBytes(_imageBytes)!;
+    YOLOResult yoloResult = await _classificationModelController.processImageBytes(_imageBytes!);
 
     if(!context.mounted) {
       return false;
@@ -80,12 +76,12 @@ class ImageAnalysisController with ChangeNotifier {
 
     ImageDetectionIssue issue = ImageDetectionIssue.noDetections;
 
-    if(_detectionModelController.hasResults()) {
-      _imageBytes = await _detectionModelController.processImageBytes(_imageBytes)!;
+    _imageBytes = await _detectionModelController.processImageBytes(_imageBytes!);
 
+    if(_imageBytes != null) {
       issue = getDetectionIssue(
           results: _detectionModelController.yoloModel.currentResults,
-          detectionImage: _imageBytes
+          detectionImage: _imageBytes!
       );
     }
 
@@ -98,13 +94,13 @@ class ImageAnalysisController with ChangeNotifier {
       return false;
     }
 
-    YOLOResult yoloResult = await _classificationModelController.postProcessCurrentImageBytes();
+    YOLOResult yoloResult = await _classificationModelController.processImageBytes(_imageBytes!);
 
     if(!context.mounted) {
       return false;
     }
 
-    _showFinalResultPage(context, yoloResult, true);
+    _showFinalResultPage(context, yoloResult, false);
 
     return true;
   }
@@ -131,7 +127,7 @@ class ImageAnalysisController with ChangeNotifier {
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             FinalResultPage(
-                imageBytes: _imageBytes,
+                imageBytes: _imageBytes!,
                 diseaseName: result.className,
                 confidence: result.confidence,
                 angle: isFromStream ? pi / 2 : 0
@@ -169,6 +165,6 @@ class ImageAnalysisController with ChangeNotifier {
     notifyListeners();
   }
 
-  td.Uint8List get imageBytes => _imageBytes;
+  td.Uint8List get imageBytes => _imageBytes!;
   bool get isLoadingImage => _isLoadingImage;
 }

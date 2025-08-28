@@ -26,6 +26,10 @@ abstract class YOLOModelController<ModelDataReturnType> {
   Future<ModelDataReturnType?> processImageBytes(Uint8List inputImageBytes) async {
     await _yoloModel.onImage(inputImageBytes);
 
+    if(!hasResults()) {
+      return null;
+    }
+
     return await postProcessCurrentImageBytes();
   }
 

@@ -18,6 +18,10 @@ class YOLOClassificationModel extends YOLOModel {
     else {
       _currentResults = [];
     }
+
+    if(_yoloModelSetup.includeOriginalImage) {
+      _currentImage = imageBytes;
+    }
   }
 
   List<YOLOResult> _resultsToYOLOResults(Map<String, dynamic> results){

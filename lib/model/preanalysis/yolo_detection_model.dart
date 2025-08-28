@@ -19,6 +19,14 @@ class YOLODetectionModel extends YOLOModel {
 
   @override
   Future<void> onImage(td.Uint8List imageBytes) async {
+    img.Image resizedImage = img.copyResize(
+        img.decodeImage(imageBytes)!,
+        width: _yoloModelSetup.imageWidth,
+        height: _yoloModelSetup.imageHeight
+    );
+
+    imageBytes = img.encodePng(resizedImage);
+
     final results = await _yolo.predict(imageBytes);
 
     if(results.containsKey("boxes")) {
@@ -26,6 +34,10 @@ class YOLODetectionModel extends YOLOModel {
     }
     else {
       _currentResults = [];
+    }
+
+    if(_yoloModelSetup.includeOriginalImage) {
+      _currentImage = imageBytes;
     }
   }
 

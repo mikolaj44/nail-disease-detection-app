@@ -30,7 +30,23 @@ final List<Locale> locales = [Locale('pl', 'PL'), Locale('en', 'UK')];
 YOLOModel detectionModel = YOLODetectionModel(
   yoloModelSetup: YOLOModelSetup(
     modelPath: "yolov12n 50e 640 float32",
-    imageWidth: 480,
+    imageWidth: 640,
+    imageHeight: 640,
+    confidenceThreshold: confidenceThreshold,
+    iouThreshold: confidenceThreshold,
+    numItemsThreshold: 5,
+    inferenceFrequency: 20,
+    maxFps: 20,
+    cameraResolution: "1440p",
+    includeOriginalImage: true,
+    includeProcessingTimeMs: true,
+  ),
+);
+
+YOLOModel classificationModel = YOLOClassificationModel(
+  yoloModelSetup: YOLOModelSetup(
+    modelPath: "new yolov11m-cls 100e 640 float16.tflite",
+    imageWidth: 640,
     imageHeight: 640,
     confidenceThreshold: confidenceThreshold,
     iouThreshold: confidenceThreshold,
@@ -43,28 +59,11 @@ YOLOModel detectionModel = YOLODetectionModel(
   ),
 );
 
-YOLOModel classificationModel = YOLOClassificationModel(
-  yoloModelSetup: YOLOModelSetup(
-    modelPath: "yolov11m-cls 100e 640 float32.tflite",
-    imageWidth: 640,
-    imageHeight: 640,
-    confidenceThreshold: confidenceThreshold,
-    iouThreshold: confidenceThreshold,
-    numItemsThreshold: 5,
-    inferenceFrequency: 20,
-    maxFps: 20,
-    cameraResolution: "1080p",
-    includeOriginalImage: false,
-    includeProcessingTimeMs: true,
-  ),
-);
-
 ImageAnalysisController imageAnalysisController = ImageAnalysisController(
   detectionModelController: YOLODetectionModelController(
     yoloModel: detectionModel,
     outputImageWidth: 640,
     outputImageHeight: 640,
-    croppedRectScale: 1.5,
   ),
   classificationModelController: YoloClassificationModelController(
     yoloModel: classificationModel,
